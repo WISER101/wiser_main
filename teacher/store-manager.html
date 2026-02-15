@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store Manager — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/teacher.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+<div class="teacher-page">
+
+  <!-- ========== TOP NAVBAR ========== -->
+  <nav class="teacher-topbar">
+    <div class="teacher-topbar-inner">
+      <a href="../index.html" class="teacher-topbar-logo"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"></a>
+      <div class="teacher-topbar-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="schools.html">Schools</a>
+        <a href="creator-hub.html">My Courses</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="community.html">Community</a>
+        <a href="payout.html">Payout</a>
+      </div>
+      <div class="teacher-topbar-actions">
+        <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" ><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')" ><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="stu-notif-badge">2</span></button>
+        <a href="course-builder.html" class="btn btn-primary btn-sm">Create a New Course &rarr;</a>
+        <button class="teacher-topbar-toggle" onclick="document.querySelector('.teacher-mobile-menu').classList.toggle('active');document.querySelector('.teacher-mobile-overlay').classList.toggle('active')" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Teacher Mobile Menu -->
+  <div class="teacher-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.teacher-mobile-menu').classList.remove('active')"></div>
+  <div class="teacher-mobile-menu">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="schools.html">Schools</a>
+    <a href="creator-hub.html">My Courses</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="community.html">Community</a>
+    <a href="payout.html">Payout</a>
+    <a href="settings.html">Settings</a>
+    <a href="course-builder.html">Create a New Course</a>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-backdrop" onclick="this.classList.remove('active');document.querySelector('.stu-notif-panel').classList.remove('active')"></div>
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header"><h3 style="font-size:16px;font-weight:700;">Notifications</h3><button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.style.display='none';document.querySelector('.stu-notif-badge').style.display='none';">Mark all read</button></div>
+    <div class="stu-notif-list" id="notifList"></div>
+  </div>
+
+  <!-- ========== COVER BANNER ========== -->
+  <div class="teacher-cover-banner">
+    <div class="teacher-cover-content">
+      <div class="teacher-cover-label">Bootcamp Instructor</div>
+      <h1 class="teacher-cover-name" id="coverName">Learn With Sarah</h1>
+    </div>
+  </div>
+  <div class="teacher-profile-bar">
+    <div class="teacher-profile-avatar"><img id="profileBarAvatar" src="../assets/Teacher-Student/1.png" alt="Sarah Chen"></div>
+    <div class="teacher-profile-info"><div class="teacher-profile-info-name" id="profileBarName">Sarah Chen</div><div class="teacher-profile-rating"><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span> <span style="color:rgba(255,255,255,0.7);margin-left:4px">(35 Reviews)</span></div></div>
+    <div class="teacher-profile-cta"><a href="course-builder.html" class="btn">Create a New Course &rarr;</a></div>
+  </div>
+
+  <!-- ========== MAIN BODY ========== -->
+  <div class="teacher-body">
+    <!-- Left Sidebar Navigation -->
+    <aside class="teacher-sidebar-card">
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label" id="sidebarWelcome">Welcome, Sarah Chen</div>
+        <a href="dashboard.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a>
+        <a href="schools.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Schools</a>
+        <a href="analytics.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Analytics</a>
+        <a href="payout.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Payout</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Instructor</div>
+        <a href="creator-hub.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> My Courses</a>
+        <a href="course-builder.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Course Builder</a>
+        <a href="community.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Community</a>
+        <a href="store-manager.html" class="teacher-nav-link active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Store Manager</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">User</div>
+        <a href="settings.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</a>
+        <a href="../auth/login.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Right Content Area -->
+    <div class="teacher-content">
+      <h2 class="teacher-content-title">Store Manager</h2>
+
+      <!-- Store Theme Selector -->
+      <div class="teacher-card" style="margin-bottom:var(--space-6)">
+        <h3 style="margin-bottom:var(--space-4)">Store Theme</h3>
+        <div id="themeSelector" class="tg-4"></div>
+      </div>
+
+      <!-- Visual Page Builder -->
+      <div class="teacher-card" style="margin-bottom:var(--space-6)">
+        <h3 style="margin-bottom:4px">Page Sections</h3>
+        <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-4)">Toggle sections on/off and reorder them to customize your store page layout.</p>
+        <div id="pageSectionsBuilder"></div>
+      </div>
+
+      <!-- Store Customization + Stats -->
+      <div class="tg-2 mb-6">
+        <!-- Customization Form -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Store Customization</h3>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Store Name</label>
+            <input id="storeName" type="text" class="form-input" value="Sarah's Academy" oninput="updateStorePreview()" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Tagline</label>
+            <input id="storeTagline" type="text" class="form-input" value="Learn to code with real-world projects" oninput="updateStorePreview()" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Store Bio</label>
+            <textarea id="storeBio" class="form-input" rows="3" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm);resize:vertical">Senior Software Engineer turned educator. Teaching 18,000+ students web development, React, and Node.js.</textarea>
+          </div>
+          <!-- Logo Upload -->
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Store Logo</label>
+            <div style="display:flex;align-items:center;gap:16px">
+              <div id="logoPreviewArea" style="width:72px;height:72px;border-radius:var(--radius-lg);border:2px dashed var(--border-light);display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg-secondary);flex-shrink:0">
+                <img id="logoPreviewImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
+                <span id="logoPlaceholder" style="font-size:24px;color:var(--text-tertiary)"><span class="wi wi-video"></span></span>
+              </div>
+              <div>
+                <input type="file" id="logoUploadInput" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
+                <button class="btn btn-ghost btn-sm" type="button" onclick="document.getElementById('logoUploadInput').click()">Upload Logo</button>
+                <button class="btn btn-ghost btn-sm" type="button" style="margin-left:4px;color:var(--text-tertiary)" onclick="removeLogo()" id="removeLogoBtn" hidden>Remove</button>
+                <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:6px">Recommended: 200×200px, PNG or JPG</p>
+              </div>
+            </div>
+          </div>
+          <!-- Banner Upload -->
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Shop Banner</label>
+            <div id="bannerPreviewArea" style="width:100%;height:120px;border-radius:var(--radius-lg);border:2px dashed var(--border-light);display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#3d8b1c,#9fe870);position:relative;margin-bottom:8px;cursor:pointer" onclick="document.getElementById('bannerUploadInput').click()">
+              <img id="bannerPreviewImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0;">
+              <div id="bannerPlaceholder" style="text-align:center;color:rgba(255,255,255,0.8)">
+                <div style="font-size:28px;margin-bottom:4px"><span class="wi wi-file"></span></div>
+                <div style="font-size:var(--text-xs)">Click to upload shop banner</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="file" id="bannerUploadInput" accept="image/*" style="display:none" onchange="handleBannerUpload(this)">
+              <button class="btn btn-ghost btn-sm" type="button" onclick="document.getElementById('bannerUploadInput').click()">Upload Banner</button>
+              <button class="btn btn-ghost btn-sm" type="button" style="color:var(--text-tertiary)" onclick="removeBanner()" id="removeBannerBtn" hidden>Remove</button>
+              <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin:0">Recommended: 1200×300px, PNG or JPG</p>
+            </div>
+          </div>
+          <div class="tg-form-row mb-4">
+            <div>
+              <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Brand Color</label>
+              <div style="display:flex;align-items:center;gap:8px">
+                <input id="brandColor" type="color" value="#3d8b1c" oninput="updateBrandColor(this.value)" style="width:40px;height:36px;border:1px solid var(--border-light);border-radius:var(--radius-md);cursor:pointer">
+                <span id="brandColorHex" style="font-size:var(--text-sm);color:var(--text-tertiary)">#3d8b1c</span>
+              </div>
+            </div>
+            <div>
+              <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Custom Domain</label>
+              <input id="customDomain" type="text" class="form-input" value="learn.sarahchen.com" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" style="width:100%" onclick="saveStoreSettings()">Save Changes</button>
+        </div>
+
+        <!-- Store Stats -->
+        <div>
+          <div class="tg-2 mb-4">
+            <div class="teacher-stat-card gradient-orange"><div class="teacher-stat-label">Total Visitors</div><div id="statVisitors" class="teacher-stat-value">0</div></div>
+            <div class="teacher-stat-card gradient-amber"><div class="teacher-stat-label">Conversion Rate</div><div id="statConversion" class="teacher-stat-value">0%</div></div>
+            <div class="teacher-stat-card gradient-yellow"><div class="teacher-stat-label">Products Sold</div><div id="statProductsSold" class="teacher-stat-value">0</div></div>
+            <div class="teacher-stat-card gradient-red"><div class="teacher-stat-label">Bounce Rate</div><div id="statBounce" class="teacher-stat-value">0%</div></div>
+          </div>
+          <div class="teacher-card">
+            <h4 style="margin-bottom:12px">Store Preview</h4>
+            <div id="storePreview" style="background:linear-gradient(135deg,#3d8b1c,#9fe870);border-radius:var(--radius-lg);padding:var(--space-5);text-align:center;color:#fff">
+              <div id="previewName" style="font-size:var(--text-xl);font-weight:800;margin-bottom:4px">Sarah's Academy</div>
+              <p id="previewTagline" style="font-size:var(--text-sm);opacity:0.85;margin-bottom:12px">Learn to code with real-world projects</p>
+              <div id="previewStats" style="display:flex;justify-content:center;gap:var(--space-4);font-size:var(--text-xs);opacity:0.8"><span>6 Courses</span><span>•</span><span>18,420 Students</span><span>•</span><span><span class="wi wi-star"></span> 4.8</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="teacher-card" style="margin-bottom:var(--space-6)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+          <h3>Digital Products</h3>
+          <button class="btn btn-primary btn-sm" onclick="addProduct()">+ Add Product</button>
+        </div>
+        <div id="productsGrid" class="tg-4"></div>
+      </div>
+
+      <!-- Affiliate Products -->
+      <div class="teacher-card" style="margin-bottom:var(--space-6)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+          <h3>Affiliate Products</h3>
+          <button class="btn btn-primary btn-sm" onclick="addAffiliateProduct()">+ Add Affiliate Product</button>
+        </div>
+        <div id="affiliateGrid" class="tg-4"></div>
+      </div>
+
+      <!-- Advertisements -->
+      <div class="teacher-card" style="margin-bottom:var(--space-6)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+          <h3>Advertisements</h3>
+          <button class="btn btn-primary btn-sm" onclick="toggleAdCreator()">+ Create Campaign</button>
+        </div>
+        <table class="teacher-table" style="margin-bottom:var(--space-4)">
+          <thead><tr><th>Campaign</th><th>Status</th><th>Impressions</th><th>Clicks</th><th>CTR</th></tr></thead>
+          <tbody id="adCampaignsBody">
+            <tr><td>Spring Launch 2026</td><td><span class="teacher-badge success">Active</span></td><td>24,500</td><td>1,820</td><td>7.4%</td></tr>
+            <tr><td>Holiday Bundle Promo</td><td><span class="teacher-badge success">Active</span></td><td>18,300</td><td>965</td><td>5.3%</td></tr>
+            <tr><td>Black Friday 2025</td><td><span class="teacher-badge" style="background:var(--bg-tertiary);color:var(--text-tertiary)">Ended</span></td><td>52,100</td><td>4,210</td><td>8.1%</td></tr>
+          </tbody>
+        </table>
+        <!-- Inline Ad Creator -->
+        <div id="adCreator" style="display:none;border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:var(--space-5);background:var(--bg-secondary)">
+          <h4 style="margin-bottom:var(--space-4)">New Ad Campaign</h4>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Campaign Name</label>
+            <input id="adCampaignName" type="text" class="form-input" placeholder="e.g. Summer Sale 2026" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+          </div>
+          <div class="tg-form-row mb-4">
+            <div>
+              <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Start Date</label>
+              <input id="adStartDate" type="date" class="form-input" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+            </div>
+            <div>
+              <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">End Date</label>
+              <input id="adEndDate" type="date" class="form-input" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+            </div>
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Banner Text / CTA</label>
+            <input id="adBannerText" type="text" class="form-input" placeholder="e.g. 30% off all courses this week!" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-ghost btn-sm" onclick="toggleAdCreator()">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="saveAdCampaign()">Launch Campaign</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discount Coupons -->
+      <div class="teacher-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+          <h3>Discount Coupons</h3>
+          <button class="btn btn-primary btn-sm" onclick="createCoupon()">+ Create Coupon</button>
+        </div>
+        <table class="teacher-table">
+          <thead><tr><th>Code</th><th>Discount</th><th>Uses</th><th>Expires</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><code style="font-size:var(--text-xs);background:var(--bg-secondary);padding:2px 8px;border-radius:var(--radius-sm)">NEWYEAR26</code></td><td>25%</td><td>142 / 500</td><td>Mar 31, 2026</td><td><span class="teacher-badge success">Active</span></td></tr>
+            <tr><td><code style="font-size:var(--text-xs);background:var(--bg-secondary);padding:2px 8px;border-radius:var(--radius-sm)">WELCOME20</code></td><td>20%</td><td>890 / 1000</td><td>Dec 31, 2026</td><td><span class="teacher-badge success">Active</span></td></tr>
+            <tr><td><code style="font-size:var(--text-xs);background:var(--bg-secondary);padding:2px 8px;border-radius:var(--radius-sm)">BLACKFRI</code></td><td>40%</td><td>500 / 500</td><td>Nov 30, 2025</td><td><span class="teacher-badge" style="background:var(--bg-tertiary);color:var(--text-tertiary)">Expired</span></td></tr>
+            <tr><td><code style="font-size:var(--text-xs);background:var(--bg-secondary);padding:2px 8px;border-radius:var(--radius-sm)">SUMMER25</code></td><td>30%</td><td>320 / 400</td><td>Aug 31, 2025</td><td><span class="teacher-badge" style="background:var(--bg-tertiary);color:var(--text-tertiary)">Expired</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Course Bundles -->
+      <div class="teacher-card" style="margin-top:var(--space-6)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+          <h3>Course Bundles</h3>
+          <button class="btn btn-primary btn-sm" onclick="openBundleCreator()">+ Create Bundle</button>
+        </div>
+
+        <!-- Bundle Cards -->
+        <div id="bundleCards" class="tg-2" style="margin-bottom:var(--space-4)"></div>
+
+        <!-- Inline Bundle Creator (hidden by default) -->
+        <div id="bundleCreator" style="display:none;border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:var(--space-5);background:var(--bg-secondary)">
+          <h4 style="margin-bottom:var(--space-4)">Create New Bundle</h4>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Bundle Name</label>
+            <input id="bundleName" type="text" class="form-input" placeholder="e.g. Full-Stack Developer Pack" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Description</label>
+            <textarea id="bundleDesc" class="form-input" rows="2" placeholder="Short description of this bundle..." style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm);resize:vertical"></textarea>
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:8px;color:var(--text-secondary)">Select Courses to Include</label>
+            <div id="bundleCourseList" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <div style="display:flex;align-items:center;gap:var(--space-4)">
+              <div style="flex:1">
+                <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Individual Total</label>
+                <div id="bundleOriginalTotal" style="font-size:var(--text-lg);font-weight:700;color:var(--text-tertiary);text-decoration:line-through">$0.00</div>
+              </div>
+              <div style="flex:1">
+                <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Bundle Price</label>
+                <input id="bundlePrice" type="number" class="form-input" placeholder="149.99" min="0" step="0.01" oninput="updateBundleSavings()" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+              </div>
+              <div style="flex:1">
+                <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Savings</label>
+                <div id="bundleSavings" style="font-size:var(--text-lg);font-weight:700;color:#16A34A">—</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-ghost btn-sm" onclick="closeBundleCreator()">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="saveBundle()">Save Bundle</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="teacher-footer">
+    <div class="teacher-footer-inner">
+      <div class="teacher-footer-grid">
+        <div><div class="teacher-footer-brand"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"><span>Wiser</span></div><p class="teacher-footer-desc">We're always in search for talented and motivated people.</p><div class="teacher-footer-socials"><a href="#" class="teacher-footer-social-icon">f</a><a href="#" class="teacher-footer-social-icon">t</a><a href="#" class="teacher-footer-social-icon">in</a><a href="#" class="teacher-footer-social-icon">ig</a></div></div>
+        <div><h4>Useful Links</h4><div class="teacher-footer-links"><a href="#">Marketplace</a><a href="#">Courses</a><a href="#">Community</a><a href="#">FAQ</a><a href="#">About Us</a></div></div>
+        <div><h4>Our Company</h4><div class="teacher-footer-links"><a href="#">Contact Us</a><a href="schools.html">Invite Teachers</a><a href="#">Blog</a><a href="#">Events</a><a href="#">Careers</a></div></div>
+        <div><h4>Get in Touch</h4><p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-2)">Phone: (406) 555-0120<br>Email: admin@wiser.com</p><div class="teacher-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button>Submit Now</button></div></div>
+      </div>
+      <div class="teacher-footer-bottom"><span>Copyright &copy; 2026 <strong>Wiser</strong>. All Rights Reserved</span><div class="teacher-footer-bottom-links"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="../auth/login.html">Login &amp; Register</a></div></div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  // ---- Module-level state ----
+  let _storeProducts = [];
+  let _teacherCourses = [];
+  let _analytics = {};
+  let _myStore = null;
+  let _profile = null;
+
+  const storeThemes = [
+    { name: 'Classic Orange', gradient: 'linear-gradient(135deg, #3d8b1c, #9fe870)', active: true },
+    { name: 'Midnight Pro', gradient: 'linear-gradient(135deg, #1E293B, #334155)', active: false },
+    { name: 'Ocean Blue', gradient: 'linear-gradient(135deg, #0EA5E9, #06B6D4)', active: false },
+    { name: 'Royal Purple', gradient: 'linear-gradient(135deg, #7C3AED, #A855F7)', active: false }
+  ];
+
+  // Helper to persist store updates via API
+  async function _persistStore(updates) {
+    if (!_myStore) return;
+    try {
+      _myStore = await WiserAPI.teacherStores.update(updates);
+    } catch (e) {
+      console.warn('Failed to persist store update', e);
+    }
+  }
+
+  // Helper to refresh store products from API
+  async function _refreshProducts() {
+    try {
+      _storeProducts = await WiserData.getStoreProducts();
+    } catch (e) {
+      console.warn('Failed to refresh products', e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Auth guard — server-side role verification
+    const __authProfile = await WiserAuth.requireAuth(['teacher', 'admin']);
+    if (!__authProfile) return;
+
+    // Load profile and update name elements dynamically
+    try {
+      _profile = await WiserAPI.profiles.getCurrent();
+      if (_profile) {
+        const fullName = [_profile.first_name, _profile.last_name].filter(Boolean).join(' ') || _profile.display_name || 'Teacher';
+        const firstName = _profile.first_name || fullName;
+        const coverName = document.getElementById('coverName');
+        const profileBarName = document.getElementById('profileBarName');
+        const profileBarAvatar = document.getElementById('profileBarAvatar');
+        const sidebarWelcome = document.getElementById('sidebarWelcome');
+        if (coverName) coverName.textContent = 'Learn With ' + firstName;
+        if (profileBarName) profileBarName.textContent = fullName;
+        if (profileBarAvatar) profileBarAvatar.alt = fullName;
+        if (sidebarWelcome) sidebarWelcome.textContent = 'Welcome, ' + fullName;
+        if (_profile.avatar_url && profileBarAvatar) profileBarAvatar.src = _profile.avatar_url;
+        const coverBanner = document.querySelector('.teacher-cover-banner');
+        if (coverBanner && _profile.cover_photo_url) { coverBanner.style.backgroundImage = 'url(' + _profile.cover_photo_url + ')'; coverBanner.style.backgroundSize = 'cover'; }
+      }
+    } catch (e) { console.warn('Failed to load profile', e); }
+
+    // Load all data in parallel
+    [_storeProducts, _analytics, _teacherCourses, _myStore] = await Promise.all([
+      WiserData.getStoreProducts().catch(() => []),
+      WiserData.getTeacherAnalytics().catch(() => ({})),
+      WiserData.getTeacherCourses().catch(() => []),
+      WiserAPI.teacherStores.getMyStore().catch(() => null)
+    ]);
+
+    // Populate form fields from store object
+    if (_myStore) {
+      if (_myStore.store_name) document.getElementById('storeName').value = _myStore.store_name;
+      if (_myStore.tagline) document.getElementById('storeTagline').value = _myStore.tagline;
+      if (_myStore.bio) document.getElementById('storeBio').value = _myStore.bio;
+      if (_myStore.brand_color) {
+        document.getElementById('brandColor').value = _myStore.brand_color;
+        document.getElementById('brandColorHex').textContent = _myStore.brand_color;
+      }
+      if (_myStore.custom_domain) document.getElementById('customDomain').value = _myStore.custom_domain;
+      if (typeof _myStore.theme_index === 'number') {
+        storeThemes.forEach((t, i) => t.active = i === _myStore.theme_index);
+      }
+      if (Array.isArray(_myStore.affiliate_products)) affiliateProducts = _myStore.affiliate_products;
+      if (Array.isArray(_myStore.page_sections)) pageSections = _myStore.page_sections;
+
+      // Load bundles from API
+      try {
+        const apiBundles = await WiserAPI.teacherStores.getBundles(_myStore.id);
+        if (apiBundles && apiBundles.length > 0) {
+          courseBundles.length = 0;
+          apiBundles.forEach(b => courseBundles.push(b));
+        }
+      } catch (e) { console.warn('Failed to load bundles', e); }
+    }
+
+    renderThemes();
+    renderProducts();
+    renderAffiliateProducts();
+    renderBundles();
+    renderPageSections();
+    populateStoreStats();
+    updateStorePreview();
+    loadStoreLogo();
+    loadStoreBanner();
+  });
+
+  function renderThemes() {
+    document.getElementById('themeSelector').innerHTML = storeThemes.map((t, i) => `
+      <div onclick="selectTheme(${i})" style="cursor:pointer;border:2px solid ${t.active ? 'var(--primary-600)' : 'var(--border-light)'};border-radius:var(--radius-lg);overflow:hidden;transition:border-color .2s" id="theme-${i}">
+        <div style="height:80px;background:${t.gradient}"></div>
+        <div style="padding:10px;text-align:center">
+          <strong style="font-size:var(--text-sm)">${t.name}</strong>
+          ${t.active ? '<br><span class="teacher-badge success" style="margin-top:4px;display:inline-block">Active</span>' : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function selectTheme(index) {
+    storeThemes.forEach((t, i) => t.active = i === index);
+    renderThemes();
+    document.getElementById('storePreview').style.background = storeThemes[index].gradient;
+    await _persistStore({ theme_index: index });
+    Toast.show('Theme updated!', storeThemes[index].name + ' applied', 'success', 2000);
+  }
+
+  function renderProducts() {
+    document.getElementById('productsGrid').innerHTML = _storeProducts.map((p, idx) => `
+      <div style="border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:var(--space-4);text-align:center">
+        <div style="font-size:var(--text-3xl);margin-bottom:8px">${p.icon || '<span class="wi wi-package"></span>'}</div>
+        <strong style="font-size:var(--text-sm);display:block;margin-bottom:4px">${p.name}</strong>
+        <div style="font-size:var(--text-lg);font-weight:700;color:var(--primary-600);margin-bottom:8px">$${(p.price || 0).toFixed(2)}</div>
+        <div style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:12px">${Utils.formatNumber(p.sales || 0)} sales</div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm" style="flex:1;font-size:11px" onclick="editProduct(${idx})">Edit</button>
+          <button class="btn btn-primary btn-sm" style="flex:1;font-size:11px" onclick="viewProductAnalytics(${idx})">Analytics</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function populateStoreStats() {
+    const totalSales = _storeProducts.reduce((s, p) => s + (p.sales || 0), 0);
+    const totalStudents = _analytics.totalStudents || 0;
+    const visitors = totalStudents > 0 ? Math.round(totalStudents * 3.2) : 0;
+    document.getElementById('statVisitors').textContent = Utils.formatNumber(visitors);
+    document.getElementById('statConversion').textContent = visitors > 0 ? (totalSales / visitors * 100).toFixed(1) + '%' : '0%';
+    document.getElementById('statProductsSold').textContent = Utils.formatNumber(totalSales);
+    document.getElementById('statBounce').textContent = '32%';
+  }
+
+  function updateStorePreview() {
+    const name = document.getElementById('storeName').value || 'My Store';
+    const tagline = document.getElementById('storeTagline').value || 'Learn to code with real-world projects';
+    document.getElementById('previewName').textContent = name;
+    document.getElementById('previewTagline').textContent = tagline;
+    const courses = _teacherCourses.filter(c => c.status === 'published').length;
+    const students = Utils.formatNumber(_analytics.totalStudents || 0);
+    const rating = _analytics.avgRating || 0;
+    document.getElementById('previewStats').innerHTML = `<span>${courses} Courses</span><span>•</span><span>${students} Students</span><span>•</span><span><span class="wi wi-star"></span> ${rating}</span>`;
+  }
+
+  function updateBrandColor(hex) {
+    document.getElementById('brandColorHex').textContent = hex.toUpperCase();
+    // Build new gradient using the chosen color
+    const preview = document.getElementById('storePreview');
+    const activeTheme = storeThemes.find(t => t.active);
+    if (activeTheme) {
+      // Replace first color in gradient
+      preview.style.background = `linear-gradient(135deg, ${hex}, #9fe870)`;
+    }
+  }
+
+  async function saveStoreSettings() {
+    const settings = {
+      store_name: document.getElementById('storeName').value,
+      tagline: document.getElementById('storeTagline').value,
+      bio: document.getElementById('storeBio').value,
+      brand_color: document.getElementById('brandColor').value,
+      custom_domain: document.getElementById('customDomain').value,
+      theme_index: storeThemes.findIndex(t => t.active)
+    };
+    await _persistStore(settings);
+    updateStorePreview();
+    Toast.show('Store updated!', 'All changes saved successfully', 'success', 2000);
+  }
+
+  async function addProduct() {
+    const name = prompt('Product name:');
+    if (!name || !name.trim()) return;
+    const priceStr = prompt('Price (USD):');
+    if (!priceStr) return;
+    const price = parseFloat(priceStr);
+    if (isNaN(price) || price <= 0) { Toast.show('Invalid price', '', 'error', 2000); return; }
+    const icons = ['<span class="wi wi-file"></span>', '<span class="wi wi-clipboard"></span>', '<span class="wi wi-palette"></span>', '<span class="wi wi-atom"></span>', '<span class="wi wi-package"></span>', '<span class="wi wi-bulb"></span>', '<span class="wi wi-wrench"></span>', '<span class="wi wi-book"></span>'];
+    try {
+      await WiserAPI.teacherStores.createProduct({ name: name.trim(), price, type: 'resource', icon: icons[Math.floor(Math.random() * icons.length)], sales: 0 });
+      await _refreshProducts();
+      renderProducts();
+      populateStoreStats();
+      Toast.show('Product added!', `"${name.trim()}" — $${price.toFixed(2)}`, 'success', 2000);
+    } catch (e) {
+      console.error('Failed to add product', e);
+      Toast.show('Error', 'Failed to add product', 'error', 2000);
+    }
+  }
+
+  async function editProduct(idx) {
+    const p = _storeProducts[idx];
+    if (!p) return;
+    const newName = prompt('Edit product name:', p.name);
+    if (!newName) return;
+    const newPrice = prompt('Edit price:', p.price);
+    if (!newPrice) return;
+    const price = parseFloat(newPrice);
+    if (isNaN(price) || price <= 0) { Toast.show('Invalid price', '', 'error', 2000); return; }
+    try {
+      await WiserAPI.teacherStores.updateProduct(p.id, { name: newName.trim(), price });
+      await _refreshProducts();
+      renderProducts();
+      Toast.show('Product updated!', '', 'success', 2000);
+    } catch (e) {
+      console.error('Failed to update product', e);
+      Toast.show('Error', 'Failed to update product', 'error', 2000);
+    }
+  }
+
+  function viewProductAnalytics(idx) {
+    const p = _storeProducts[idx];
+    if (!p) return;
+    const revenue = (p.sales || 0) * (p.price || 0);
+    const revenueStr = revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    // Generate monthly data for bar chart
+    const months = ['Jan','Feb','Mar','Apr','May','Jun'];
+    const monthlyData = months.map(() => Math.floor(Math.random() * (p.sales / 3)) + Math.floor(p.sales / 12));
+    const maxVal = Math.max(...monthlyData, 1);
+    // Remove existing modal if any
+    let modal = document.getElementById('analyticsModal');
+    if (modal) modal.remove();
+    modal = document.createElement('div');
+    modal.id = 'analyticsModal';
+    modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.innerHTML = `
+      <div style="background:var(--bg-primary, #fff);border-radius:16px;max-width:520px;width:100%;padding:28px;position:relative;box-shadow:0 25px 50px rgba(0,0,0,0.25)">
+        <button onclick="document.getElementById('analyticsModal').remove()" style="position:absolute;top:14px;right:14px;border:none;background:transparent;font-size:20px;cursor:pointer;color:var(--text-tertiary)">✕</button>
+        <h3 style="margin-bottom:4px;font-size:var(--text-lg)">${p.icon} ${p.name}</h3>
+        <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:20px">${Utils.formatNumber(p.sales)} total sales &bull; ${revenueStr} revenue</p>
+        <h4 style="font-size:var(--text-sm);font-weight:600;margin-bottom:12px;color:var(--text-secondary)">Monthly Sales</h4>
+        <div style="display:flex;align-items:flex-end;gap:8px;height:140px;padding:0 4px;margin-bottom:8px">
+          ${monthlyData.map((val, i) => `
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">
+              <div style="flex:1;display:flex;align-items:flex-end;width:100%">
+                <div style="width:100%;height:${Math.max((val / maxVal) * 100, 5)}%;background:linear-gradient(180deg, #3d8b1c, #9fe870);border-radius:4px 4px 0 0;transition:height .3s;min-height:4px" title="${val} sales"></div>
+              </div>
+              <span style="font-size:10px;font-weight:700;color:var(--text-secondary)">${val}</span>
+              <span style="font-size:10px;color:var(--text-tertiary)">${months[i]}</span>
+            </div>`).join('')}
+        </div>
+        <div style="display:flex;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-light)">
+          <div style="flex:1;text-align:center;padding:8px;background:var(--bg-secondary);border-radius:var(--radius-md)"><div style="font-size:var(--text-lg);font-weight:700;color:var(--primary-600)">$${p.price.toFixed(2)}</div><div style="font-size:var(--text-xs);color:var(--text-tertiary)">Unit Price</div></div>
+          <div style="flex:1;text-align:center;padding:8px;background:var(--bg-secondary);border-radius:var(--radius-md)"><div style="font-size:var(--text-lg);font-weight:700;color:#16A34A">${revenueStr}</div><div style="font-size:var(--text-xs);color:var(--text-tertiary)">Total Revenue</div></div>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+  }
+
+  async function createCoupon() {
+    const code = prompt('Coupon code (e.g. SUMMER26):');
+    if (!code || !code.trim()) return;
+    const discount = prompt('Discount percentage (e.g. 25):');
+    if (!discount) return;
+    const pct = parseInt(discount);
+    if (isNaN(pct) || pct < 1 || pct > 100) { Toast.show('Invalid discount', 'Enter a number 1-100', 'error', 2000); return; }
+    const coupon = { code: code.toUpperCase(), discount_percent: pct, uses: 0, max_uses: 500, expires_at: '2026-12-31', status: 'active' };
+    try {
+      await WiserAPI.teacherStores.createCoupon(coupon);
+      Toast.show('Coupon created!', `${coupon.code} \u2014 ${pct}% off`, 'success', 3000);
+      // Add row to table
+      const tbody = document.querySelector('.teacher-table tbody');
+      const row = document.createElement('tr');
+      row.innerHTML = `<td><code style="font-size:var(--text-xs);background:var(--bg-secondary);padding:2px 8px;border-radius:var(--radius-sm)">${coupon.code}</code></td><td>${pct}%</td><td>0 / ${coupon.max_uses}</td><td>Dec 31, 2026</td><td><span class="teacher-badge success">Active</span></td>`;
+      tbody.insertBefore(row, tbody.firstChild);
+    } catch (e) {
+      console.error('Failed to create coupon', e);
+      Toast.show('Error', 'Failed to create coupon', 'error', 2000);
+    }
+  }
+
+  // ---- Course Bundles ----
+  const courseBundles = [
+    {
+      id: 1,
+      name: 'Full-Stack Developer Pack',
+      description: 'Master front-end and back-end development with this curated bundle.',
+      courseIds: [1, 3],
+      bundlePrice: 129.99,
+      sales: 342
+    },
+    {
+      id: 2,
+      name: 'Data & Web Combo',
+      description: 'Learn web development and data science together at a discounted price.',
+      courseIds: [1, 2],
+      bundlePrice: 149.99,
+      sales: 218
+    }
+  ];
+
+  function getBundleOriginalPrice(courseIds) {
+    return courseIds.reduce((sum, id) => {
+      const c = _teacherCourses.find(tc => tc.id === id);
+      return sum + (c ? c.price : 0);
+    }, 0);
+  }
+
+  function renderBundles() {
+    const container = document.getElementById('bundleCards');
+    if (courseBundles.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No bundles yet. Click "+ Create Bundle" to get started.</p>';
+      return;
+    }
+    container.innerHTML = courseBundles.map((b, idx) => {
+      const originalPrice = getBundleOriginalPrice(b.courseIds);
+      const savingsPct = originalPrice > 0 ? Math.round((1 - b.bundlePrice / originalPrice) * 100) : 0;
+      const courseNames = b.courseIds.map(id => {
+        const c = _teacherCourses.find(tc => tc.id === id);
+        return c ? c.title : 'Unknown';
+      });
+      return `
+        <div style="border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:var(--space-4)">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+            <div>
+              <strong style="font-size:var(--text-base);display:block;margin-bottom:4px">${b.name}</strong>
+              <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:8px">${b.description}</p>
+            </div>
+            <span class="teacher-badge success" style="white-space:nowrap">${savingsPct}% off</span>
+          </div>
+          <div style="margin-bottom:12px">
+            ${courseNames.map(n => `<div style="font-size:var(--text-xs);color:var(--text-secondary);padding:3px 0;display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${n}</div>`).join('')}
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <span style="font-size:var(--text-sm);color:var(--text-tertiary);text-decoration:line-through;margin-right:6px">$${originalPrice.toFixed(2)}</span>
+              <span style="font-size:var(--text-lg);font-weight:700;color:var(--primary-600)">$${b.bundlePrice.toFixed(2)}</span>
+            </div>
+            <span style="font-size:var(--text-xs);color:var(--text-tertiary)">${Utils.formatNumber(b.sales)} sold</span>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-ghost btn-sm" style="flex:1;font-size:11px" onclick="editBundle(${idx})">Edit</button>
+            <button class="btn btn-sm" style="flex:1;font-size:11px;background:var(--error-bg);color:var(--error-text);border:1px solid var(--error-border)" onclick="deleteBundle(${idx})">Delete</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function openBundleCreator() {
+    document.getElementById('bundleCreator').style.display = 'block';
+    document.getElementById('bundleName').value = '';
+    document.getElementById('bundleDesc').value = '';
+    document.getElementById('bundlePrice').value = '';
+    document.getElementById('bundleOriginalTotal').textContent = '$0.00';
+    document.getElementById('bundleSavings').textContent = '—';
+    // Populate course checkboxes
+    const list = document.getElementById('bundleCourseList');
+    list.innerHTML = _teacherCourses.filter(c => c.status === 'published').map(c => `
+      <label style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--border-light);border-radius:var(--radius-md);cursor:pointer;font-size:var(--text-sm);transition:background .15s" onmouseover="this.style.background='var(--bg-tertiary)'" onmouseout="this.style.background=''">
+        <input type="checkbox" value="${c.id}" onchange="updateBundleTotal()" style="width:16px;height:16px;accent-color:var(--primary-600)">
+        <span style="flex:1;font-weight:500">${c.title}</span>
+        <span style="color:var(--text-tertiary);font-weight:600">$${c.price.toFixed(2)}</span>
+      </label>
+    `).join('');
+    document.getElementById('bundleCreator').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function closeBundleCreator() {
+    document.getElementById('bundleCreator').style.display = 'none';
+  }
+
+  function updateBundleTotal() {
+    const checked = [...document.querySelectorAll('#bundleCourseList input[type="checkbox"]:checked')];
+    const total = checked.reduce((sum, cb) => {
+      const c = _teacherCourses.find(tc => tc.id === parseInt(cb.value));
+      return sum + (c ? c.price : 0);
+    }, 0);
+    document.getElementById('bundleOriginalTotal').textContent = '$' + total.toFixed(2);
+    updateBundleSavings();
+  }
+
+  function updateBundleSavings() {
+    const originalText = document.getElementById('bundleOriginalTotal').textContent.replace('$', '');
+    const original = parseFloat(originalText) || 0;
+    const bundlePrice = parseFloat(document.getElementById('bundlePrice').value) || 0;
+    if (original > 0 && bundlePrice > 0 && bundlePrice < original) {
+      const pct = Math.round((1 - bundlePrice / original) * 100);
+      document.getElementById('bundleSavings').textContent = pct + '% off';
+      document.getElementById('bundleSavings').style.color = '#16A34A';
+    } else if (bundlePrice >= original && original > 0) {
+      document.getElementById('bundleSavings').textContent = 'No savings';
+      document.getElementById('bundleSavings').style.color = 'var(--text-tertiary)';
+    } else {
+      document.getElementById('bundleSavings').textContent = '—';
+      document.getElementById('bundleSavings').style.color = '#16A34A';
+    }
+  }
+
+  function saveBundle() {
+    const name = document.getElementById('bundleName').value.trim();
+    const desc = document.getElementById('bundleDesc').value.trim();
+    const price = parseFloat(document.getElementById('bundlePrice').value);
+    const checked = [...document.querySelectorAll('#bundleCourseList input[type="checkbox"]:checked')];
+    const courseIds = checked.map(cb => parseInt(cb.value));
+
+    if (!name) { Toast.show('Missing name', 'Please enter a bundle name', 'error', 2000); return; }
+    if (courseIds.length < 2) { Toast.show('Select courses', 'A bundle needs at least 2 courses', 'error', 2000); return; }
+    if (isNaN(price) || price <= 0) { Toast.show('Invalid price', 'Enter a valid bundle price', 'error', 2000); return; }
+
+    courseBundles.push({
+      id: Date.now(),
+      name,
+      description: desc || 'Course bundle',
+      courseIds,
+      bundlePrice: price,
+      sales: 0
+    });
+
+    renderBundles();
+    closeBundleCreator();
+    Toast.show('Bundle created!', `"${name}" — $${price.toFixed(2)}`, 'success', 3000);
+  }
+
+  function editBundle(idx) {
+    const b = courseBundles[idx];
+    const newName = prompt('Edit bundle name:', b.name);
+    if (!newName) return;
+    const newPrice = prompt('Edit bundle price:', b.bundlePrice);
+    if (!newPrice) return;
+    const price = parseFloat(newPrice);
+    if (isNaN(price) || price <= 0) { Toast.show('Invalid price', '', 'error', 2000); return; }
+    b.name = newName.trim();
+    b.bundlePrice = price;
+    renderBundles();
+    Toast.show('Bundle updated!', `"${b.name}" — $${price.toFixed(2)}`, 'success', 2000);
+  }
+
+  function deleteBundle(idx) {
+    const b = courseBundles[idx];
+    if (!confirm(`Delete bundle "${b.name}"?`)) return;
+    courseBundles.splice(idx, 1);
+    renderBundles();
+    Toast.show('Bundle deleted', '', 'info', 2000);
+  }
+
+  // ---- Logo Upload ----
+  function handleLogoUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      document.getElementById('logoPreviewImg').src = dataUrl;
+      document.getElementById('logoPreviewImg').style.display = 'block';
+      document.getElementById('logoPlaceholder').style.display = 'none';
+      document.getElementById('removeLogoBtn').hidden = false;
+      if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { logo_url: dataUrl }).catch(e => console.warn('Logo save error:', e));
+      Toast.show('Logo uploaded!', '', 'success', 2000);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeLogo() {
+    document.getElementById('logoPreviewImg').src = '';
+    document.getElementById('logoPreviewImg').style.display = 'none';
+    document.getElementById('logoPlaceholder').style.display = '';
+    document.getElementById('removeLogoBtn').hidden = true;
+    document.getElementById('logoUploadInput').value = '';
+    if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { logo_url: null }).catch(e => console.warn('Logo remove error:', e));
+    Toast.show('Logo removed', '', 'info', 2000);
+  }
+
+  function loadStoreLogo() {
+    const saved = _myStore?.logo_url;
+    if (saved) {
+      document.getElementById('logoPreviewImg').src = saved;
+      document.getElementById('logoPreviewImg').style.display = 'block';
+      document.getElementById('logoPlaceholder').style.display = 'none';
+      document.getElementById('removeLogoBtn').hidden = false;
+    }
+  }
+
+  // ---- Banner Upload ----
+  function handleBannerUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      document.getElementById('bannerPreviewImg').src = dataUrl;
+      document.getElementById('bannerPreviewImg').style.display = 'block';
+      document.getElementById('bannerPlaceholder').style.display = 'none';
+      document.getElementById('removeBannerBtn').hidden = false;
+      if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { banner_url: dataUrl }).catch(e => console.warn('Banner save error:', e));
+      // Also update the cover banner at top of page
+      const coverBanner = document.querySelector('.teacher-cover-banner');
+      if (coverBanner) coverBanner.style.backgroundImage = 'url(' + dataUrl + ')';
+      Toast.show('Banner uploaded!', 'Your shop banner has been updated', 'success', 2000);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeBanner() {
+    document.getElementById('bannerPreviewImg').src = '';
+    document.getElementById('bannerPreviewImg').style.display = 'none';
+    document.getElementById('bannerPlaceholder').style.display = '';
+    document.getElementById('removeBannerBtn').hidden = true;
+    document.getElementById('bannerUploadInput').value = '';
+    if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { banner_url: null }).catch(e => console.warn('Banner remove error:', e));
+    const coverBanner = document.querySelector('.teacher-cover-banner');
+    if (coverBanner) coverBanner.style.backgroundImage = '';
+    Toast.show('Banner removed', '', 'info', 2000);
+  }
+
+  function loadStoreBanner() {
+    const saved = _myStore?.banner_url;
+    if (saved) {
+      document.getElementById('bannerPreviewImg').src = saved;
+      document.getElementById('bannerPreviewImg').style.display = 'block';
+      document.getElementById('bannerPlaceholder').style.display = 'none';
+      document.getElementById('removeBannerBtn').hidden = false;
+      const coverBanner = document.querySelector('.teacher-cover-banner');
+      if (coverBanner) coverBanner.style.backgroundImage = 'url(' + saved + ')';
+    }
+  }
+
+  // ---- Affiliate Products ----
+  const affiliateProducts = (_myStore?.affiliate_products) || ([
+    { id: 1, name: 'VS Code Pro Tips eBook', url: 'https://example.com/vscode-ebook', price: 19.99, commission: 25 },
+    { id: 2, name: 'Cloud Hosting — DigitalSea', url: 'https://example.com/cloud', price: 12.00, commission: 30 },
+    { id: 3, name: 'UX Design Masterclass', url: 'https://example.com/ux-course', price: 89.99, commission: 15 }
+  ]);
+
+  function renderAffiliateProducts() {
+    const grid = document.getElementById('affiliateGrid');
+    if (affiliateProducts.length === 0) {
+      grid.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No affiliate products yet. Click "+ Add Affiliate Product" to get started.</p>';
+      return;
+    }
+    grid.innerHTML = affiliateProducts.map((p, idx) => `
+      <div style="border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:var(--space-4);text-align:center;position:relative">
+        <div style="position:absolute;top:10px;right:10px">
+          <a href="${p.url}" target="_blank" rel="noopener" title="Open external link" style="color:var(--text-tertiary);text-decoration:none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+        <div style="font-size:var(--text-3xl);margin-bottom:8px"><span class="wi wi-link"></span></div>
+        <strong style="font-size:var(--text-sm);display:block;margin-bottom:4px">${p.name}</strong>
+        <div style="font-size:var(--text-lg);font-weight:700;color:var(--primary-600);margin-bottom:4px">$${p.price.toFixed(2)}</div>
+        <div style="font-size:var(--text-xs);color:#16A34A;font-weight:600;margin-bottom:12px">${p.commission}% commission</div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-ghost btn-sm" style="flex:1;font-size:11px" onclick="editAffiliateProduct(${idx})">Edit</button>
+          <button class="btn btn-sm" style="flex:1;font-size:11px;background:var(--error-bg);color:var(--error-text);border:1px solid var(--error-border)" onclick="deleteAffiliateProduct(${idx})">Delete</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function addAffiliateProduct() {
+    const name = prompt('Affiliate product name:');
+    if (!name || !name.trim()) return;
+    const url = prompt('External URL:');
+    if (!url || !url.trim()) return;
+    const priceStr = prompt('Product price (USD):');
+    if (!priceStr) return;
+    const price = parseFloat(priceStr);
+    if (isNaN(price) || price <= 0) { Toast.show('Invalid price', '', 'error', 2000); return; }
+    const commStr = prompt('Your commission percentage (e.g. 20):');
+    if (!commStr) return;
+    const commission = parseInt(commStr);
+    if (isNaN(commission) || commission < 1 || commission > 100) { Toast.show('Invalid commission', 'Enter 1-100', 'error', 2000); return; }
+    affiliateProducts.push({ id: Date.now(), name: name.trim(), url: url.trim(), price, commission });
+    if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { affiliate_products: affiliateProducts }).catch(e => console.warn(e));
+    renderAffiliateProducts();
+    Toast.show('Affiliate product added!', `"${name.trim()}" — ${commission}% commission`, 'success', 2000);
+  }
+
+  function editAffiliateProduct(idx) {
+    const p = affiliateProducts[idx];
+    const newName = prompt('Edit name:', p.name);
+    if (!newName) return;
+    const newUrl = prompt('Edit URL:', p.url);
+    if (!newUrl) return;
+    const newPrice = prompt('Edit price:', p.price);
+    if (!newPrice) return;
+    const price = parseFloat(newPrice);
+    if (isNaN(price) || price <= 0) { Toast.show('Invalid price', '', 'error', 2000); return; }
+    const newComm = prompt('Edit commission %:', p.commission);
+    if (!newComm) return;
+    const commission = parseInt(newComm);
+    if (isNaN(commission) || commission < 1 || commission > 100) { Toast.show('Invalid commission', '', 'error', 2000); return; }
+    p.name = newName.trim();
+    p.url = newUrl.trim();
+    p.price = price;
+    p.commission = commission;
+    if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { affiliate_products: affiliateProducts }).catch(e => console.warn(e));
+    renderAffiliateProducts();
+    Toast.show('Affiliate product updated!', '', 'success', 2000);
+  }
+
+  function deleteAffiliateProduct(idx) {
+    if (!confirm(`Delete "${affiliateProducts[idx].name}"?`)) return;
+    affiliateProducts.splice(idx, 1);
+    if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { affiliate_products: affiliateProducts }).catch(e => console.warn(e));
+    renderAffiliateProducts();
+    Toast.show('Affiliate product deleted', '', 'info', 2000);
+  }
+
+  // ---- Ad Management ----
+  function toggleAdCreator() {
+    const el = document.getElementById('adCreator');
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    if (el.style.display === 'block') {
+      document.getElementById('adCampaignName').value = '';
+      document.getElementById('adStartDate').value = '';
+      document.getElementById('adEndDate').value = '';
+      document.getElementById('adBannerText').value = '';
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function saveAdCampaign() {
+    const name = document.getElementById('adCampaignName').value.trim();
+    const start = document.getElementById('adStartDate').value;
+    const end = document.getElementById('adEndDate').value;
+    const banner = document.getElementById('adBannerText').value.trim();
+    if (!name) { Toast.show('Missing name', 'Enter a campaign name', 'error', 2000); return; }
+    if (!start || !end) { Toast.show('Missing dates', 'Select start and end dates', 'error', 2000); return; }
+    // Add row to table
+    const tbody = document.getElementById('adCampaignsBody');
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${name}</td><td><span class="teacher-badge success">Active</span></td><td>0</td><td>0</td><td>0.0%</td>`;
+    tbody.insertBefore(row, tbody.firstChild);
+    toggleAdCreator();
+    Toast.show('Campaign launched!', `"${name}" is now active`, 'success', 3000);
+  }
+
+  // ---- Visual Page Builder ----
+  let pageSections = (_myStore?.page_sections) || ([
+    { id: 'hero', label: 'Hero Banner', icon: '<span class="wi wi-file"></span>', enabled: true },
+    { id: 'about', label: 'About Me', icon: '<span class="wi wi-user"></span>', enabled: true },
+    { id: 'courses', label: 'Featured Courses', icon: '<span class="wi wi-book"></span>', enabled: true },
+    { id: 'testimonials', label: 'Testimonials', icon: '<span class="wi wi-message"></span>', enabled: true },
+    { id: 'newsletter', label: 'Newsletter Signup', icon: '<span class="wi wi-mail"></span>', enabled: false },
+    { id: 'contact', label: 'Contact', icon: '<span class="wi wi-phone"></span>', enabled: false }
+  ]);
+
+  function renderPageSections() {
+    const container = document.getElementById('pageSectionsBuilder');
+    container.innerHTML = pageSections.map((s, i) => `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid ${s.enabled ? 'var(--primary-200, #c2eb9e)' : 'var(--border-light)'};border-radius:var(--radius-md);margin-bottom:8px;background:${s.enabled ? 'var(--primary-50, #f2fbe8)' : 'var(--bg-secondary)'};transition:all .2s">
+        <span style="font-size:20px">${s.icon}</span>
+        <strong style="flex:1;font-size:var(--text-sm)">${s.label}</strong>
+        <div style="display:flex;align-items:center;gap:4px">
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:14px" onclick="moveSection(${i},-1)" ${i === 0 ? 'disabled style="padding:4px 8px;font-size:14px;opacity:0.3;cursor:default"' : ''} title="Move up">↑</button>
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;font-size:14px" onclick="moveSection(${i},1)" ${i === pageSections.length - 1 ? 'disabled style="padding:4px 8px;font-size:14px;opacity:0.3;cursor:default"' : ''} title="Move down">↓</button>
+        </div>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:var(--text-xs);font-weight:600;color:${s.enabled ? '#16A34A' : 'var(--text-tertiary)'}">
+          <input type="checkbox" ${s.enabled ? 'checked' : ''} onchange="toggleSection(${i},this.checked)" style="width:16px;height:16px;accent-color:var(--primary-600)">
+          ${s.enabled ? 'ON' : 'OFF'}
+        </label>
+      </div>
+    `).join('');
+  }
+
+  function moveSection(index, direction) {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= pageSections.length) return;
+    const temp = pageSections[index];
+    pageSections[index] = pageSections[newIndex];
+    pageSections[newIndex] = temp;
+    if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { page_sections: pageSections }).catch(e => console.warn(e));
+    renderPageSections();
+  }
+
+  function toggleSection(index, enabled) {
+    pageSections[index].enabled = enabled;
+    if (_myStore) WiserAPI.teacherStores.updateStore(_myStore.id, { page_sections: pageSections }).catch(e => console.warn(e));
+    renderPageSections();
+    Toast.show(pageSections[index].label, enabled ? 'Section enabled' : 'Section hidden', enabled ? 'success' : 'info', 1500);
+  }
+</script>
+</body>
+</html>

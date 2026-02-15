@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help Center — Wiser</title>
+  <meta name="description" content="Find answers to common questions, troubleshoot issues, and get support from the Wiser team.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="icon" type="image/png" href="assets/wiser-logo.png">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+  <style>
+    .info-page-hero { padding: 140px 0 60px; background: var(--bg-secondary); text-align: center; }
+    .info-page-hero h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: var(--text-primary); margin-bottom: var(--space-3); }
+    .info-page-hero p { font-size: var(--text-lg); color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+    .help-search { max-width: 500px; margin: var(--space-6) auto 0; position: relative; }
+    .help-search input { width: 100%; padding: var(--space-4) var(--space-4) var(--space-4) 48px; border: 1px solid var(--border-light); border-radius: var(--radius-xl); font-size: var(--text-base); background: var(--bg-primary); color: var(--text-primary); box-shadow: var(--shadow-md); }
+    .help-search input:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 3px rgba(159,232,112,0.15); }
+    .help-search svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); }
+    .help-content { max-width: 900px; margin: 0 auto; padding: var(--space-16) var(--space-6); }
+    .help-categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6); margin-bottom: var(--space-12); }
+    .help-cat-card { background: var(--bg-primary); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: var(--space-6); text-align: center; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .help-cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .help-cat-icon { width: 56px; height: 56px; border-radius: var(--radius-lg); background: var(--primary-50); color: var(--primary-600); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-3); }
+    .help-cat-card h3 { font-size: var(--text-base); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-1); }
+    .help-cat-card p { font-size: var(--text-sm); color: var(--text-tertiary); }
+    .faq-section h2 { font-size: var(--text-2xl); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-6); }
+    .faq-item { background: var(--bg-primary); border: 1px solid var(--border-light); border-radius: var(--radius-xl); margin-bottom: var(--space-3); overflow: hidden; }
+    .faq-question { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: var(--space-5) var(--space-6); font-size: var(--text-base); font-weight: 600; color: var(--text-primary); background: none; border: none; cursor: pointer; text-align: left; font-family: inherit; }
+    .faq-question svg { flex-shrink: 0; transition: transform 0.2s; color: var(--text-tertiary); }
+    .faq-question.active svg { transform: rotate(180deg); }
+    .faq-answer { padding: 0 var(--space-6) var(--space-5); font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.8; display: none; }
+    .faq-answer.show { display: block; }
+    .help-cta { text-align: center; margin-top: var(--space-12); padding: var(--space-10); background: var(--bg-secondary); border-radius: var(--radius-2xl); }
+    .help-cta h2 { font-size: var(--text-xl); font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2); }
+    .help-cta p { font-size: var(--text-base); color: var(--text-secondary); margin-bottom: var(--space-6); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="landing-nav">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo"><img src="assets/logo-Light-Theme.png" alt="Wiser" class="logo-icon logo-light"><img src="assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-icon logo-dark"></a>
+    <div class="nav-links">
+      <a href="courses.html" class="nav-link">Courses</a>
+      <a href="schools.html" class="nav-link">Schools</a>
+      <a href="index.html#features" class="nav-link">Features</a>
+      <a href="index.html#pricing" class="nav-link">Pricing</a>
+      <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+      <a href="auth/login.html" class="nav-link">Log In</a>
+      <a href="auth/register.html" class="btn btn-primary btn-sm">Get Started Free</a>
+    </div>
+    <button class="hamburger" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+</nav>
+<div class="nav-overlay"></div>
+<div class="mobile-nav-drawer">
+  <div class="mobile-nav-header"><a href="index.html" class="nav-logo"><img src="assets/logo-Light-Theme.png" alt="Wiser" class="logo-icon logo-light"><img src="assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-icon logo-dark"></a><button class="mobile-nav-close">&times;</button></div>
+  <div class="mobile-nav-links">
+    <a href="courses.html" class="nav-link">Courses</a>
+    <a href="schools.html" class="nav-link">Schools</a>
+    <a href="index.html#features" class="nav-link">Features</a>
+    <a href="index.html#pricing" class="nav-link">Pricing</a>
+    <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+    <a href="auth/login.html" class="nav-link">Log In</a>
+    <a href="auth/register.html" class="btn btn-primary" style="width:100%;text-align:center;">Get Started Free</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="info-page-hero">
+  <div class="container">
+    <h1>Help Center</h1>
+    <p>Find answers, get support, and learn how to get the most out of Wiser.</p>
+    <div class="help-search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search for help articles...">
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="help-content">
+  <div class="help-categories">
+    <div class="help-cat-card">
+      <div class="help-cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+      <h3>Getting Started</h3>
+      <p>Account setup, enrollment, navigation basics</p>
+    </div>
+    <div class="help-cat-card">
+      <div class="help-cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <h3>Courses &amp; Learning</h3>
+      <p>Enrolling, tracking progress, certificates</p>
+    </div>
+    <div class="help-cat-card">
+      <div class="help-cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <h3>Billing &amp; Payments</h3>
+      <p>Subscriptions, refunds, payment methods</p>
+    </div>
+    <div class="help-cat-card">
+      <div class="help-cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <h3>Teaching on Wiser</h3>
+      <p>Course creation, payouts, analytics</p>
+    </div>
+    <div class="help-cat-card">
+      <div class="help-cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      <h3>Account &amp; Security</h3>
+      <p>Password, privacy, account settings</p>
+    </div>
+    <div class="help-cat-card">
+      <div class="help-cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <h3>Troubleshooting</h3>
+      <p>Technical issues, bugs, browser support</p>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('show')">How do I enroll in a course? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer">Browse our course catalog, find a course you like, and click "Enroll." If it's a paid course, you'll be prompted to complete payment. Free courses can be started immediately.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('show')">Can I get a refund? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer">Yes! We offer a 30-day money-back guarantee on all paid courses. If you're not satisfied, contact our support team and we'll process your refund.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('show')">How do I become a teacher on Wiser? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer">Sign up for a teacher account, complete your profile, and use our Course Builder to create your first course. Our team reviews submissions within 48 hours.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('show')">Do I get a certificate after completing a course? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer">Yes, you receive a verifiable certificate of completion for every course you finish. You can share it on LinkedIn or download it as a PDF.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('show')">What payment methods do you accept? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer">We accept all major credit/debit cards (Visa, Mastercard, Amex), PayPal, and Apple Pay. Bank transfers are available in select countries.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.classList.toggle('active');this.nextElementSibling.classList.toggle('show')">Can I access courses offline? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-answer">Currently, courses require an internet connection. We're working on an offline mode feature that will allow downloading lessons for later viewing.</div>
+    </div>
+  </div>
+
+  <div class="help-cta">
+    <h2>Still need help?</h2>
+    <p>Our support team typically responds within 2 hours during business hours.</p>
+    <a href="contact.html" class="btn btn-primary">Contact Support</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo"><img src="assets/logo-Light-Theme.png" alt="Wiser" class="logo-icon logo-light"><img src="assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-icon logo-dark"></div><p class="footer-tagline">The smarter way to learn and teach. Empowering millions of learners and educators worldwide.</p></div>
+      <div class="footer-col"><h4>For Students</h4><a href="courses.html">Explore Courses</a><a href="schools.html">Explore Schools</a><a href="index.html#features">Features</a><a href="index.html#pricing">Pricing</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="careers.html">Careers</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h4>Support</h4><a href="help.html">Help Center</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="cookies.html">Cookie Policy</a><a href="accessibility.html">Accessibility</a></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 Wiser Learning, Inc. All rights reserved.</p><div class="footer-bottom-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="cookies.html">Cookies</a></div></div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>

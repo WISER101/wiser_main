@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payout — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/teacher.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+<div class="teacher-page">
+
+  <!-- ========== TOP NAVBAR ========== -->
+  <nav class="teacher-topbar">
+    <div class="teacher-topbar-inner">
+      <a href="../index.html" class="teacher-topbar-logo"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"></a>
+      <div class="teacher-topbar-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="schools.html">Schools</a>
+        <a href="creator-hub.html">My Courses</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="community.html">Community</a>
+        <a href="payout.html">Payout</a>
+      </div>
+      <div class="teacher-topbar-actions">
+        <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" ><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')" ><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="stu-notif-badge">2</span></button>
+        <a href="course-builder.html" class="btn btn-primary btn-sm">Create a New Course &rarr;</a>
+        <button class="teacher-topbar-toggle" onclick="document.querySelector('.teacher-mobile-menu').classList.toggle('active');document.querySelector('.teacher-mobile-overlay').classList.toggle('active')" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Teacher Mobile Menu -->
+  <div class="teacher-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.teacher-mobile-menu').classList.remove('active')"></div>
+  <div class="teacher-mobile-menu">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="schools.html">Schools</a>
+    <a href="creator-hub.html">My Courses</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="community.html">Community</a>
+    <a href="payout.html">Payout</a>
+    <a href="settings.html">Settings</a>
+    <a href="course-builder.html">Create a New Course</a>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-backdrop" onclick="this.classList.remove('active');document.querySelector('.stu-notif-panel').classList.remove('active')"></div>
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header"><h3 style="font-size:16px;font-weight:700;">Notifications</h3><button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.style.display='none';document.querySelector('.stu-notif-badge').style.display='none';">Mark all read</button></div>
+    <div class="stu-notif-list" id="notifList"></div>
+  </div>
+
+  <!-- ========== COVER BANNER ========== -->
+  <div class="teacher-cover-banner">
+    <div class="teacher-cover-content">
+      <div class="teacher-cover-label">Bootcamp Instructor</div>
+      <h1 class="teacher-cover-name">Learn With Sarah</h1>
+    </div>
+  </div>
+  <div class="teacher-profile-bar">
+    <div class="teacher-profile-avatar"><img src="../assets/Teacher-Student/1.png" alt="Sarah Chen"></div>
+    <div class="teacher-profile-info"><div class="teacher-profile-info-name">Sarah Chen</div><div class="teacher-profile-rating"><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span> <span style="color:rgba(255,255,255,0.7);margin-left:4px">(35 Reviews)</span></div></div>
+    <div class="teacher-profile-cta"><a href="course-builder.html" class="btn">Create a New Course &rarr;</a></div>
+  </div>
+
+  <!-- ========== MAIN BODY ========== -->
+  <div class="teacher-body">
+    <!-- Left Sidebar Navigation -->
+    <aside class="teacher-sidebar-card">
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Welcome, Sarah Chen</div>
+        <a href="dashboard.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a>
+        <a href="schools.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Schools</a>
+        <a href="analytics.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Analytics</a>
+        <a href="payout.html" class="teacher-nav-link active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Payout</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Instructor</div>
+        <a href="creator-hub.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> My Courses</a>
+        <a href="course-builder.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Course Builder</a>
+        <a href="community.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Community</a>
+        <a href="store-manager.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Store Manager</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">User</div>
+        <a href="settings.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</a>
+        <a href="../auth/login.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Right Content Area -->
+    <div class="teacher-content">
+      <h2 class="teacher-content-title">Payout</h2>
+
+      <!-- Earnings Summary Cards -->
+      <div class="tg-3 mb-6">
+        <!-- Balance Card (gradient hero) -->
+        <div style="background:linear-gradient(135deg,#3d8b1c,#9fe870);border-radius:var(--radius-xl);padding:var(--space-6);color:#fff;grid-column:span 1">
+          <div style="font-size:var(--text-sm);opacity:0.85;margin-bottom:4px">Available Balance</div>
+          <div id="balanceValue" style="font-size:var(--text-3xl);font-weight:800;margin-bottom:var(--space-3)">$0.00</div>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.3)" onclick="withdrawFunds()">Withdraw Funds →</button>
+        </div>
+        <div class="teacher-stat-card gradient-amber"><div class="teacher-stat-label">Total Earned (All Time)</div><div id="totalEarned" class="teacher-stat-value">$0</div><div class="teacher-stat-change positive">↑ 24% this year</div></div>
+        <div class="teacher-stat-card gradient-yellow"><div class="teacher-stat-label">This Month</div><div id="monthEarned" class="teacher-stat-value">$0</div><div class="teacher-stat-change positive">↑ 18% vs last month</div></div>
+      </div>
+
+      <!-- Payment Methods -->
+      <div class="teacher-card" style="margin-bottom:var(--space-6)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+          <h3>Payment Methods</h3>
+          <button class="btn btn-primary btn-sm" onclick="addPaymentMethod()">+ Add Method</button>
+        </div>
+        <div class="tg-3">
+          <div style="border:2px solid var(--primary-200);border-radius:var(--radius-lg);padding:var(--space-4);background:var(--primary-50)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <span style="font-size:var(--text-2xl)"><span class="wi wi-credit"></span></span>
+              <span class="teacher-badge success">Primary</span>
+            </div>
+            <strong style="font-size:var(--text-sm)">Stripe</strong>
+            <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:4px">sarah.chen@email.com<br>Connected • Instant Payouts</p>
+          </div>
+          <div style="border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:var(--space-4)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <span style="font-size:var(--text-2xl)"><span class="wi wi-bank"></span></span>
+              <span class="teacher-badge" style="background:var(--bg-tertiary);color:var(--text-tertiary)">Backup</span>
+            </div>
+            <strong style="font-size:var(--text-sm)">Bank Transfer</strong>
+            <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:4px">Chase •••• 4821<br>ACH Transfer • 2-3 days</p>
+          </div>
+          <div style="border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:var(--space-4)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <span style="font-size:var(--text-2xl)"><span class="wi wi-globe"></span></span>
+              <span class="teacher-badge" style="background:var(--bg-tertiary);color:var(--text-tertiary)">Active</span>
+            </div>
+            <strong style="font-size:var(--text-sm)">Payoneer</strong>
+            <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:4px">sarah@payoneer.com<br>International • 1-2 days</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two Column: Payout Schedule + Tax Info -->
+      <div class="tg-2 mb-6">
+        <!-- Payout Schedule -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Payout Schedule</h3>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Frequency</label>
+            <select id="payoutFrequency" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm);background:var(--bg-primary, #fff);color:var(--text-primary)">
+              <option value="weekly">Weekly</option><option value="biweekly" selected>Bi-weekly</option><option value="monthly">Monthly</option>
+            </select>
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:6px;color:var(--text-secondary)">Minimum Payout Threshold</label>
+            <select id="payoutThreshold" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm);background:var(--bg-primary, #fff);color:var(--text-primary)">
+              <option value="25">$25</option><option value="50" selected>$50</option><option value="100">$100</option><option value="250">$250</option>
+            </select>
+          </div>
+          <div style="padding:12px;background:var(--bg-secondary);border-radius:var(--radius-md);font-size:var(--text-sm)">
+            <strong>Next payout:</strong> <span style="color:var(--primary-600)">February 15, 2026</span><br>
+            <span style="color:var(--text-tertiary)">Estimated amount: $2,890.00 via Stripe</span>
+          </div>
+          <button class="btn btn-primary btn-sm" style="width:100%;margin-top:var(--space-4)" onclick="savePayoutSettings()">Save Settings</button>
+        </div>
+        <!-- Tax Information -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Tax Information</h3>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(34,197,94,0.08);border-radius:var(--radius-md);margin-bottom:var(--space-4)">
+            <span style="font-size:20px"><span class="wi wi-check"></span></span>
+            <div><strong style="font-size:var(--text-sm);color:#16A34A">W-9 Form Submitted</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px">Last updated: January 5, 2026</p></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-light);font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Tax ID</span><span>•••-••-4567</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-light);font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Filing Status</span><span>Independent Contractor</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-light);font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Country</span><span>United States</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">YTD Earnings (2026)</span><span id="ytdEarnings" style="font-weight:700;color:var(--primary-600)">$0.00</span></div>
+          <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:var(--space-3)" onclick="download1099()">Download 1099 Form</button>
+        </div>
+      </div>
+
+      <!-- Payout History Table -->
+      <div class="teacher-card">
+        <h3 style="margin-bottom:var(--space-4)">Payout History</h3>
+        <table class="teacher-table">
+          <thead><tr><th>Reference</th><th>Date</th><th>Method</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody id="payoutHistoryTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="teacher-footer">
+    <div class="teacher-footer-inner">
+      <div class="teacher-footer-grid">
+        <div><div class="teacher-footer-brand"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"><span>Wiser</span></div><p class="teacher-footer-desc">We're always in search for talented and motivated people.</p><div class="teacher-footer-socials"><a href="#" class="teacher-footer-social-icon">f</a><a href="#" class="teacher-footer-social-icon">t</a><a href="#" class="teacher-footer-social-icon">in</a><a href="#" class="teacher-footer-social-icon">ig</a></div></div>
+        <div><h4>Useful Links</h4><div class="teacher-footer-links"><a href="#">Marketplace</a><a href="#">Courses</a><a href="#">Community</a><a href="#">FAQ</a><a href="#">About Us</a></div></div>
+        <div><h4>Our Company</h4><div class="teacher-footer-links"><a href="#">Contact Us</a><a href="schools.html">Invite Teachers</a><a href="#">Blog</a><a href="#">Events</a><a href="#">Careers</a></div></div>
+        <div><h4>Get in Touch</h4><p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-2)">Phone: (406) 555-0120<br>Email: admin@wiser.com</p><div class="teacher-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button>Submit Now</button></div></div>
+      </div>
+      <div class="teacher-footer-bottom"><span>Copyright &copy; 2026 <strong>Wiser</strong>. All Rights Reserved</span><div class="teacher-footer-bottom-links"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="../auth/login.html">Login &amp; Register</a></div></div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  let _payoutAnalytics = null;
+  let _payoutHistory = [];
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Auth guard — server-side role verification
+    const __authProfile = await WiserAuth.requireAuth(['teacher', 'admin']);
+    if (!__authProfile) return;
+
+    // Load profile dynamically
+    try {
+      const profile = await WiserAPI.profiles.getCurrent();
+      if (profile) {
+        const displayName = profile.display_name || ((profile.first_name || '') + ' ' + (profile.last_name || '')).trim() || 'Teacher';
+        const firstName = profile.first_name || displayName.split(' ')[0] || 'Teacher';
+        const coverNameEl = document.querySelector('.teacher-cover-name');
+        const profileNameEl = document.querySelector('.teacher-profile-info-name');
+        const sidebarLabel = document.querySelector('.teacher-sidebar-label');
+        const profileAvatar = document.querySelector('.teacher-profile-avatar img');
+        if (coverNameEl) coverNameEl.textContent = 'Learn With ' + firstName;
+        if (profileNameEl) profileNameEl.textContent = displayName;
+        if (sidebarLabel) sidebarLabel.textContent = 'Welcome, ' + displayName;
+        if (profileAvatar && profile.avatar_url) profileAvatar.src = profile.avatar_url;
+        const coverBanner = document.querySelector('.teacher-cover-banner');
+        if (coverBanner && profile.cover_photo_url) { coverBanner.style.backgroundImage = 'url(' + profile.cover_photo_url + ')'; coverBanner.style.backgroundSize = 'cover'; }
+      }
+    } catch (e) { console.warn('Profile load error:', e); }
+
+    const [analytics, payoutHistory, payoutSettings] = await Promise.all([
+      WiserData.getTeacherAnalytics().catch(() => ({ totalRevenue: 0, monthlyRevenue: 0 })),
+      WiserData.getPayoutHistory().catch(() => []),
+      WiserAPI.payouts.getSettings ? WiserAPI.payouts.getSettings().catch(() => ({})) : Promise.resolve({})
+    ]);
+    _payoutAnalytics = analytics;
+    _payoutHistory = payoutHistory || [];
+
+    const pendingPayout = _payoutHistory.find(p => p.status === 'pending');
+    const balance = pendingPayout ? pendingPayout.amount : 0;
+
+    document.getElementById('balanceValue').textContent = '$' + balance.toLocaleString('en-US', { minimumFractionDigits: 2 });
+    document.getElementById('totalEarned').textContent = '$' + Utils.formatNumber(analytics.totalRevenue || 0);
+    document.getElementById('monthEarned').textContent = '$' + Utils.formatNumber(analytics.monthlyRevenue || 0);
+    document.getElementById('ytdEarnings').textContent = '$' + (analytics.monthlyRevenue || 0).toLocaleString('en-US', { minimumFractionDigits: 2 });
+
+    // Load saved schedule preferences from Supabase
+    if (payoutSettings.frequency) document.getElementById('payoutFrequency').value = payoutSettings.frequency;
+    if (payoutSettings.threshold) document.getElementById('payoutThreshold').value = payoutSettings.threshold;
+
+    renderPayoutHistory();
+  });
+
+  function renderPayoutHistory() {
+    document.getElementById('payoutHistoryTable').innerHTML = _payoutHistory.map(p => {
+      const statusClass = p.status === 'completed' ? 'success' : p.status === 'pending' ? 'warning' : '';
+      return `<tr>
+        <td><code style="font-size:var(--text-xs);background:var(--bg-secondary);padding:2px 8px;border-radius:var(--radius-sm)">${p.reference}</code></td>
+        <td>${p.date}</td>
+        <td>${p.method}</td>
+        <td style="font-weight:600">$${p.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+        <td><span class="teacher-badge ${statusClass}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span></td>
+      </tr>`;
+    }).join('');
+  }
+
+  async function withdrawFunds() {
+    const pendingPayout = _payoutHistory.find(p => p.status === 'pending');
+    const balance = pendingPayout ? pendingPayout.amount : 0;
+    if (balance <= 0) { Toast.show('No funds', 'Your available balance is $0.00', 'error', 2500); return; }
+    const input = prompt(`Enter withdrawal amount (max $${balance.toFixed(2)}):`);
+    if (!input) return;
+    const amount = parseFloat(input);
+    if (isNaN(amount) || amount <= 0) { Toast.show('Invalid amount', 'Please enter a valid number', 'error', 2500); return; }
+    if (amount > balance) { Toast.show('Insufficient funds', `Maximum available: $${balance.toFixed(2)}`, 'error', 2500); return; }
+
+    try {
+      await WiserAPI.payouts.requestPayout(amount, 'stripe');
+      // Refresh payout history from Supabase
+      _payoutHistory = await WiserData.getPayoutHistory().catch(() => _payoutHistory);
+      WiserData.clearCache('payoutHistory');
+      const newPending = _payoutHistory.find(p => p.status === 'pending');
+      const newBalance = newPending ? newPending.amount : 0;
+      document.getElementById('balanceValue').textContent = '$' + newBalance.toLocaleString('en-US', { minimumFractionDigits: 2 });
+      renderPayoutHistory();
+      Toast.show('Withdrawal initiated', `$${amount.toFixed(2)} payout processing via Stripe`, 'success', 3000);
+    } catch (err) {
+      Toast.show('Withdrawal failed', err.message, 'error', 3000);
+    }
+  }
+
+  async function addPaymentMethod() {
+    const method = prompt('Enter payment method name (e.g., "PayPal", "Wise"):');
+    if (!method || !method.trim()) return;
+    const email = prompt('Enter account email or identifier:');
+    if (!email || !email.trim()) return;
+    const icons = { paypal: '<span class="wi wi-dollar"></span>', wise: '<span class="wi wi-globe"></span>', venmo: '<span class="wi wi-credit"></span>', cashapp: '<span class="wi wi-banknote"></span>', stripe: '<span class="wi wi-credit"></span>', bank: '<span class="wi wi-bank"></span>' };
+    const icon = icons[method.trim().toLowerCase()] || '<span class="wi wi-credit"></span>';
+    const paymentGrid = document.querySelector('[onclick="addPaymentMethod()"]').closest('.teacher-card').querySelector('.tg-3');
+    if (paymentGrid) {
+      const card = document.createElement('div');
+      card.style.cssText = 'border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:var(--space-4)';
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <span style="font-size:var(--text-2xl)">${icon}</span>
+          <span class="teacher-badge" style="background:var(--bg-tertiary);color:var(--text-tertiary)">Active</span>
+        </div>
+        <strong style="font-size:var(--text-sm)">${method.trim()}</strong>
+        <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:4px">${email.trim()}<br>Connected \u2022 Just now</p>`;
+      paymentGrid.appendChild(card);
+    }
+    // Save to Supabase
+    try {
+      if (WiserAPI.payouts.addPaymentMethod) {
+        await WiserAPI.payouts.addPaymentMethod({ name: method.trim(), email: email.trim(), icon });
+      }
+    } catch (e) { console.warn('Payment method save error:', e); }
+    Toast.show('Method added!', `${method.trim()} (${email.trim()}) connected successfully`, 'success', 3000);
+  }
+
+  async function savePayoutSettings() {
+    const frequency = document.getElementById('payoutFrequency').value;
+    const threshold = document.getElementById('payoutThreshold').value;
+    try {
+      if (WiserAPI.payouts.updateSettings) {
+        await WiserAPI.payouts.updateSettings({ frequency, threshold });
+      }
+    } catch (e) { console.warn('Payout settings save error:', e); }
+    Toast.show('Settings saved', `Frequency: ${frequency}, Threshold: $${threshold}`, 'success', 2000);
+  }
+
+  async function download1099() {
+    const profile = await WiserAPI.profiles.getCurrent().catch(() => null);
+    const analytics = _payoutAnalytics || await WiserData.getTeacherAnalytics().catch(() => ({ totalRevenue: 0 }));
+    const name = profile ? (profile.display_name || ((profile.first_name || '') + ' ' + (profile.last_name || '')).trim()) : 'Instructor';
+    const blob = new Blob(['Wiser 1099 Tax Form — 2026\nInstructor: ' + name + '\nTotal Earnings: $' + (analytics.totalRevenue || 0).toLocaleString() + '\n\nThis is a sample document.'], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'Wiser_1099_2026.txt'; a.click();
+    URL.revokeObjectURL(url);
+    Toast.show('Downloaded', '1099 form saved as Wiser_1099_2026.txt', 'success', 2000);
+  }
+</script>
+</body>
+</html>

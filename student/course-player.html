@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Player — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/student.css">
+  <link rel="icon" type="image/png" href="../assets/wiser-logo.png">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+  <style>
+    /* ==========================================================================
+       COURSE PLAYER — COMPLETE REDESIGN
+       Fully responsive (320px to 4K), dark mode, layout toggle
+       ========================================================================== */
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg-secondary, #f5f7fa);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ---------- Top Bar ---------- */
+    .cp-topbar {
+      height: 56px;
+      background: var(--bg-primary, #fff);
+      border-bottom: 1px solid var(--border-light, #e5e7eb);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 100;
+      position: relative;
+    }
+    .cp-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .cp-back-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--bg-secondary, #f3f4f6);
+      border: none;
+      color: var(--text-secondary, #6b7280);
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .cp-back-btn:hover {
+      background: var(--bg-tertiary, #e5e7eb);
+      color: var(--text-primary, #111827);
+    }
+    .cp-topbar-course {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .cp-topbar-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary, #111827);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cp-topbar-meta {
+      font-size: 11px;
+      color: var(--text-tertiary, #9ca3af);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cp-topbar-center {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cp-progress-mini {
+      width: 120px;
+      height: 4px;
+      background: var(--border-light, #e5e7eb);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .cp-progress-mini-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3d8b1c, #9fe870);
+      border-radius: 2px;
+      transition: width 0.5s;
+    }
+    .cp-progress-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #3d8b1c;
+      white-space: nowrap;
+    }
+    .cp-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cp-toolbar-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary, #6b7280);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .cp-toolbar-btn:hover {
+      background: var(--bg-secondary, #f3f4f6);
+      color: var(--text-primary, #111827);
+    }
+    .cp-toolbar-btn.active {
+      background: rgba(61, 139, 28, 0.1);
+      color: #3d8b1c;
+    }
+    .cp-toolbar-btn .indicator {
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 2px;
+      background: #5ab82e;
+      border-radius: 1px;
+      display: none;
+    }
+    .cp-toolbar-btn.active .indicator { display: block; }
+    .cp-toolbar-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border-light, #e5e7eb);
+      margin: 0 4px;
+    }
+
+    /* ---------- Main Layout Container ---------- */
+    .cp-container {
+      display: flex;
+      height: calc(100vh - 56px);
+      overflow: hidden;
+    }
+    .cp-container.reversed { flex-direction: row-reverse; }
+
+    /* ---------- Video Panel ---------- */
+    .cp-video-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    /* ---------- Video Player Area ---------- */
+    .cp-video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .cp-video-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cp-video-center {
+      text-align: center;
+      color: #fff;
+      z-index: 1;
+      position: relative;
+    }
+    .cp-video-badge {
+      display: inline-block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: 0.6;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .cp-video-lesson-title {
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 800;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .cp-video-lesson-sub {
+      font-size: clamp(12px, 1.2vw, 15px);
+      opacity: 0.5;
+      font-weight: 400;
+    }
+    .cp-video-play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .cp-video-bg:hover .cp-video-play-overlay { opacity: 1; }
+    .cp-play-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+    .cp-play-circle:hover {
+      background: rgba(255,255,255,0.25);
+      transform: scale(1.08);
+    }
+
+    /* Subtitle */
+    .cp-subtitle {
+      position: absolute;
+      bottom: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      padding: 6px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      max-width: 80%;
+      text-align: center;
+      line-height: 1.5;
+      display: none;
+      z-index: 4;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .cp-subtitle.active { display: block; }
+
+    /* Controls */
+    .cp-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      padding: 20px 16px 12px;
+      z-index: 5;
+    }
+    .cp-progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 2px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      position: relative;
+      transition: height 0.15s;
+    }
+    .cp-progress-bar:hover { height: 6px; }
+    .cp-progress-fill {
+      height: 100%;
+      background: #9fe870;
+      border-radius: 2px;
+      position: relative;
+    }
+    .cp-progress-dot {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px;
+      height: 14px;
+      background: #9fe870;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 2;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .cp-progress-bar:hover .cp-progress-dot { opacity: 1; }
+    .cp-controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cp-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cp-ctrl-btn {
+      color: rgba(255,255,255,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      border-radius: 6px;
+    }
+    .cp-ctrl-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+    }
+    .cp-time {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+      margin-left: 4px;
+    }
+    .cp-speed-wrap { position: relative; }
+    .cp-speed-toggle {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .cp-speed-menu {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      right: 0;
+      background: rgba(20,20,30,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 10px;
+      padding: 4px;
+      display: none;
+      z-index: 10;
+      min-width: 80px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .cp-speed-menu.show { display: block; }
+    .cp-speed-menu button {
+      display: block;
+      width: 100%;
+      padding: 7px 14px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 6px;
+      text-align: center;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .cp-speed-menu button:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .cp-speed-menu button.active { color: #9fe870; font-weight: 600; }
+
+    /* ---------- Video Info + Tabs (Below Video) ---------- */
+    .cp-below-video {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--bg-primary, #fff);
+    }
+
+    /* Info Bar */
+    .cp-info-bar {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border-light, #f0f0f0);
+    }
+    .cp-info-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .cp-lesson-title {
+      font-size: clamp(16px, 1.8vw, 22px);
+      font-weight: 800;
+      color: var(--text-primary, #111827);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .cp-instructor-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cp-instructor-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border-light, #e5e7eb);
+    }
+    .cp-instructor-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #3d8b1c;
+      text-decoration: none;
+      cursor: pointer;
+      border-bottom: 1px dashed rgba(61,139,28,0.3);
+      transition: color 0.2s;
+    }
+    .cp-instructor-name:hover { color: #2d6914; }
+    .cp-instructor-course {
+      font-size: 12px;
+      color: var(--text-tertiary, #9ca3af);
+    }
+    .cp-lesson-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      background: rgba(61,139,28,0.08);
+      color: #3d8b1c;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .cp-action-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .cp-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border: 1px solid var(--border-light, #e5e7eb);
+      border-radius: 10px;
+      background: var(--bg-primary, #fff);
+      color: var(--text-secondary, #6b7280);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .cp-action-btn:hover {
+      border-color: var(--border-medium, #d1d5db);
+      background: var(--bg-secondary, #f9fafb);
+      color: var(--text-primary, #111827);
+    }
+    .cp-action-btn.completed {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #16a34a;
+    }
+
+    /* Tabs */
+    .cp-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-light, #f0f0f0);
+      padding: 0 24px;
+      gap: 0;
+      background: var(--bg-primary, #fff);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .cp-tab {
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-tertiary, #9ca3af);
+      border: none;
+      background: none;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .cp-tab:hover { color: var(--text-primary, #111827); }
+    .cp-tab.active { color: #3d8b1c; }
+    .cp-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 16px;
+      right: 16px;
+      height: 3px;
+      background: #3d8b1c;
+      border-radius: 3px 3px 0 0;
+    }
+    .cp-tab-panel {
+      display: none;
+      padding: 20px 24px;
+    }
+    .cp-tab-panel.active { display: block; }
+
+    /* Composer */
+    .cp-composer {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .cp-composer textarea {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border-light, #e5e7eb);
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      resize: none;
+      background: var(--bg-secondary, #f9fafb);
+      color: var(--text-primary, #111827);
+      transition: border-color 0.2s;
+      min-height: 44px;
+    }
+    .cp-composer textarea:focus {
+      outline: none;
+      border-color: #3d8b1c;
+      background: var(--bg-primary, #fff);
+    }
+    .cp-composer-btn {
+      padding: 10px 18px;
+      background: linear-gradient(135deg, #3d8b1c, #5ab82e);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .cp-composer-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(61,139,28,0.3);
+    }
+
+    /* Notes */
+    .cp-note {
+      position: relative;
+      padding: 14px 16px;
+      background: var(--bg-secondary, #f9fafb);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      border-left: 3px solid #9fe870;
+      transition: background 0.2s;
+    }
+    .cp-note:hover { background: var(--surface-hover, #f3f4f6); }
+    .cp-note-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #3d8b1c;
+      background: rgba(61,139,28,0.08);
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+    .cp-note-text {
+      font-size: 13px;
+      color: var(--text-primary, #374151);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .cp-note-delete {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: var(--text-tertiary, #d1d5db);
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.2s;
+      padding: 4px;
+      border-radius: 6px;
+    }
+    .cp-note:hover .cp-note-delete { opacity: 1; }
+    .cp-note-delete:hover { color: #ef4444; background: rgba(239,68,68,0.08); }
+
+    /* Q&A */
+    .cp-qa {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-light, #f3f4f6);
+    }
+    .cp-qa:last-child { border-bottom: none; }
+    .cp-qa-q {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .cp-qa-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .cp-qa-author {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary, #111827);
+    }
+    .cp-qa-text {
+      font-size: 13px;
+      color: var(--text-primary, #374151);
+      margin: 4px 0 2px;
+      line-height: 1.5;
+    }
+    .cp-qa-time {
+      font-size: 11px;
+      color: var(--text-tertiary, #9ca3af);
+    }
+    .cp-qa-answer {
+      margin-top: 10px;
+      margin-left: 42px;
+      padding: 12px 14px;
+      background: rgba(61,139,28,0.04);
+      border-radius: 10px;
+      border-left: 3px solid #3d8b1c;
+      font-size: 13px;
+      color: var(--text-primary, #374151);
+      line-height: 1.5;
+    }
+    .cp-qa-answer-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #3d8b1c;
+      margin-bottom: 4px;
+    }
+    .cp-qa-pending {
+      margin-top: 8px;
+      margin-left: 42px;
+      font-size: 12px;
+      color: var(--text-tertiary, #9ca3af);
+      font-style: italic;
+    }
+
+    /* Comments */
+    .cp-comment {
+      display: flex;
+      gap: 10px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-light, #f3f4f6);
+    }
+    .cp-comment:last-child { border-bottom: none; }
+    .cp-comment-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .cp-comment-body { flex: 1; min-width: 0; }
+    .cp-comment-author {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary, #111827);
+    }
+    .cp-comment-time {
+      font-size: 11px;
+      color: var(--text-tertiary, #9ca3af);
+      margin-left: 6px;
+    }
+    .cp-comment-text {
+      font-size: 13px;
+      color: var(--text-primary, #374151);
+      margin: 4px 0 8px;
+      line-height: 1.6;
+    }
+    .cp-comment-actions {
+      display: flex;
+      gap: 14px;
+    }
+    .cp-comment-act {
+      font-size: 12px;
+      color: var(--text-tertiary, #9ca3af);
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+      padding: 0;
+    }
+    .cp-comment-act:hover { color: var(--text-primary, #374151); }
+    .cp-comment-act.liked { color: #ef4444; }
+
+    /* ---------- Sidebar Panel ---------- */
+    .cp-sidebar {
+      width: 380px;
+      background: var(--bg-primary, #fff);
+      border-left: 1px solid var(--border-light, #e5e7eb);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow: hidden;
+      transition: width 0.3s;
+    }
+    .cp-container.reversed .cp-sidebar {
+      border-left: none;
+      border-right: 1px solid var(--border-light, #e5e7eb);
+    }
+    .cp-sidebar-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-light, #e5e7eb);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-primary, #fff);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    .cp-sidebar-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary, #111827);
+    }
+    .cp-sidebar-close {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: var(--bg-secondary, #f3f4f6);
+      color: var(--text-secondary, #6b7280);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+    .cp-sidebar-progress {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-light, #e5e7eb);
+    }
+    .cp-sidebar-progress-bar {
+      height: 4px;
+      background: var(--border-light, #e5e7eb);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .cp-sidebar-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3d8b1c, #9fe870);
+      border-radius: 2px;
+      transition: width 0.5s;
+    }
+    .cp-sidebar-progress-text {
+      font-size: 11px;
+      color: var(--text-tertiary, #9ca3af);
+      font-weight: 500;
+    }
+    .cp-sidebar-lessons {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Sections */
+    .cp-section {
+      border-bottom: 1px solid var(--border-light, #f0f0f0);
+    }
+    .cp-section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .cp-section-header:hover { background: var(--surface-hover, #f9fafb); }
+    .cp-section-chevron {
+      color: var(--text-tertiary, #d1d5db);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    .cp-section-chevron.open { transform: rotate(90deg); }
+    .cp-section-info { display: flex; flex-direction: column; gap: 1px; }
+    .cp-section-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary, #111827);
+    }
+    .cp-section-count {
+      font-size: 11px;
+      color: var(--text-tertiary, #9ca3af);
+    }
+
+    /* Lesson Items */
+    .cp-lessons { overflow: hidden; }
+    .cp-lesson {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px 10px 44px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .cp-lesson:hover { background: var(--surface-hover, #f9fafb); }
+    .cp-lesson.active {
+      background: rgba(61,139,28,0.06);
+      border-left-color: #3d8b1c;
+    }
+    .cp-lesson.completed { opacity: 0.6; }
+    .cp-lesson.completed .cp-lesson-name { text-decoration: line-through; }
+    .cp-lesson-status {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .cp-lesson-num {
+      font-size: 11px;
+      color: var(--text-tertiary, #d1d5db);
+      font-weight: 500;
+    }
+    .cp-lesson-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+    .cp-lesson-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary, #374151);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cp-lesson-type {
+      font-size: 11px;
+      color: var(--text-tertiary, #9ca3af);
+      text-transform: capitalize;
+    }
+
+    /* ---------- Mobile Sidebar Toggle ---------- */
+    .cp-mobile-sidebar-toggle {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #3d8b1c, #5ab82e);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      z-index: 200;
+      box-shadow: 0 4px 20px rgba(61,139,28,0.35);
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .cp-mobile-sidebar-toggle:hover { transform: scale(1.05); }
+
+    /* ---------- Motivation Toast ---------- */
+    .cp-motivation {
+      display: none;
+      position: fixed;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120px);
+      background: linear-gradient(135deg, #9fe870, #3d8b1c);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 2000;
+      box-shadow: 0 8px 32px rgba(61,139,28,0.3);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+      pointer-events: none;
+    }
+    .cp-motivation.show { display: block; transform: translateX(-50%) translateY(0); }
+    .cp-motivation-emoji { font-size: 22px; margin-bottom: 2px; }
+    .cp-motivation-xp { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+
+    /* ==========================================================================
+       DARK MODE
+       ========================================================================== */
+    [data-theme="dark"] .cp-topbar {
+      background: #1a3d06;
+      border-bottom-color: rgba(159,232,112,0.1);
+    }
+    [data-theme="dark"] .cp-back-btn {
+      background: rgba(159,232,112,0.08);
+      color: #c2eb9e;
+    }
+    [data-theme="dark"] .cp-back-btn:hover {
+      background: rgba(159,232,112,0.15);
+      color: #fff;
+    }
+    [data-theme="dark"] .cp-topbar-title { color: #fff; }
+    [data-theme="dark"] .cp-topbar-meta { color: #8ab57a; }
+    [data-theme="dark"] .cp-progress-mini { background: rgba(159,232,112,0.12); }
+    [data-theme="dark"] .cp-progress-label { color: #9fe870; }
+    [data-theme="dark"] .cp-toolbar-btn { color: #8ab57a; }
+    [data-theme="dark"] .cp-toolbar-btn:hover { background: rgba(159,232,112,0.1); color: #c2eb9e; }
+    [data-theme="dark"] .cp-toolbar-btn.active { background: rgba(159,232,112,0.12); color: #9fe870; }
+    [data-theme="dark"] .cp-toolbar-divider { background: rgba(159,232,112,0.1); }
+
+    [data-theme="dark"] body { background: #0f2600; }
+    [data-theme="dark"] .cp-below-video { background: #163300; }
+    [data-theme="dark"] .cp-info-bar { border-bottom-color: rgba(159,232,112,0.08); }
+    [data-theme="dark"] .cp-lesson-title { color: #fff; }
+    [data-theme="dark"] .cp-instructor-name { color: #9fe870; border-bottom-color: rgba(159,232,112,0.3); }
+    [data-theme="dark"] .cp-instructor-course { color: #8ab57a; }
+    [data-theme="dark"] .cp-instructor-avatar { border-color: rgba(159,232,112,0.2); }
+    [data-theme="dark"] .cp-lesson-badge { background: rgba(159,232,112,0.1); color: #9fe870; }
+    [data-theme="dark"] .cp-action-btn {
+      background: #1a3d06;
+      border-color: rgba(159,232,112,0.12);
+      color: #c2eb9e;
+    }
+    [data-theme="dark"] .cp-action-btn:hover {
+      background: #1e4a0d;
+      border-color: rgba(159,232,112,0.2);
+      color: #fff;
+    }
+    [data-theme="dark"] .cp-action-btn.completed {
+      background: rgba(22,163,74,0.15);
+      border-color: rgba(22,163,74,0.3);
+      color: #86efac;
+    }
+
+    [data-theme="dark"] .cp-tabs {
+      background: #163300;
+      border-bottom-color: rgba(159,232,112,0.08);
+    }
+    [data-theme="dark"] .cp-tab { color: #8ab57a; }
+    [data-theme="dark"] .cp-tab:hover { color: #c2eb9e; }
+    [data-theme="dark"] .cp-tab.active { color: #9fe870; }
+    [data-theme="dark"] .cp-tab.active::after { background: #9fe870; }
+
+    [data-theme="dark"] .cp-composer textarea {
+      background: #1a3d06;
+      border-color: rgba(159,232,112,0.12);
+      color: #e0f5cc;
+    }
+    [data-theme="dark"] .cp-composer textarea:focus {
+      border-color: #9fe870;
+      background: #163300;
+    }
+    [data-theme="dark"] .cp-note {
+      background: #1a3d06;
+      border-left-color: #5ab82e;
+    }
+    [data-theme="dark"] .cp-note:hover { background: #1e4a0d; }
+    [data-theme="dark"] .cp-note-time { background: rgba(159,232,112,0.08); color: #9fe870; }
+    [data-theme="dark"] .cp-note-text { color: #c2eb9e; }
+    [data-theme="dark"] .cp-note-delete { color: #8ab57a; }
+    [data-theme="dark"] .cp-note-delete:hover { color: #ef4444; background: rgba(239,68,68,0.1); }
+
+    [data-theme="dark"] .cp-qa { border-bottom-color: rgba(159,232,112,0.06); }
+    [data-theme="dark"] .cp-qa-author { color: #e0f5cc; }
+    [data-theme="dark"] .cp-qa-text { color: #c2eb9e; }
+    [data-theme="dark"] .cp-qa-time { color: #8ab57a; }
+    [data-theme="dark"] .cp-qa-answer {
+      background: rgba(61,139,28,0.06);
+      border-left-color: #5ab82e;
+      color: #c2eb9e;
+    }
+    [data-theme="dark"] .cp-qa-answer-badge { color: #9fe870; }
+
+    [data-theme="dark"] .cp-comment { border-bottom-color: rgba(159,232,112,0.06); }
+    [data-theme="dark"] .cp-comment-author { color: #e0f5cc; }
+    [data-theme="dark"] .cp-comment-text { color: #c2eb9e; }
+    [data-theme="dark"] .cp-comment-time { color: #8ab57a; }
+    [data-theme="dark"] .cp-comment-act { color: #8ab57a; }
+    [data-theme="dark"] .cp-comment-act:hover { color: #c2eb9e; }
+
+    [data-theme="dark"] .cp-sidebar {
+      background: #163300;
+      border-left-color: rgba(159,232,112,0.08);
+    }
+    [data-theme="dark"] .cp-container.reversed .cp-sidebar {
+      border-right-color: rgba(159,232,112,0.08);
+    }
+    [data-theme="dark"] .cp-sidebar-head {
+      background: #163300;
+      border-bottom-color: rgba(159,232,112,0.08);
+    }
+    [data-theme="dark"] .cp-sidebar-title { color: #fff; }
+    [data-theme="dark"] .cp-sidebar-close { background: rgba(159,232,112,0.08); color: #c2eb9e; }
+    [data-theme="dark"] .cp-sidebar-progress {
+      border-bottom-color: rgba(159,232,112,0.08);
+    }
+    [data-theme="dark"] .cp-sidebar-progress-bar { background: rgba(159,232,112,0.08); }
+    [data-theme="dark"] .cp-sidebar-progress-text { color: #8ab57a; }
+
+    [data-theme="dark"] .cp-section { border-bottom-color: rgba(159,232,112,0.06); }
+    [data-theme="dark"] .cp-section-header:hover { background: #1a3d06; }
+    [data-theme="dark"] .cp-section-chevron { color: #8ab57a; }
+    [data-theme="dark"] .cp-section-name { color: #e0f5cc; }
+    [data-theme="dark"] .cp-section-count { color: #8ab57a; }
+    [data-theme="dark"] .cp-lesson:hover { background: #1a3d06; }
+    [data-theme="dark"] .cp-lesson.active {
+      background: rgba(159,232,112,0.06);
+      border-left-color: #9fe870;
+    }
+    [data-theme="dark"] .cp-lesson-name { color: #c2eb9e; }
+    [data-theme="dark"] .cp-lesson-num { color: #8ab57a; }
+    [data-theme="dark"] .cp-lesson-type { color: #8ab57a; }
+
+    /* Dark mode completion modal */
+    [data-theme="dark"] .cp-modal-overlay { background: rgba(0,0,0,0.7); }
+    [data-theme="dark"] .cp-modal-card {
+      background: #1a3d06 !important;
+      border: 1px solid rgba(159,232,112,0.1);
+    }
+    [data-theme="dark"] .cp-reward-box {
+      background: rgba(159,232,112,0.06) !important;
+      border-color: rgba(159,232,112,0.15) !important;
+    }
+    [data-theme="dark"] .cp-reward-label { color: #8ab57a !important; }
+    [data-theme="dark"] .cp-rate-box {
+      background: #163300 !important;
+      border-color: rgba(159,232,112,0.1) !important;
+    }
+    [data-theme="dark"] .cp-next-box {
+      background: #163300 !important;
+      border-color: rgba(159,232,112,0.1) !important;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE
+       ========================================================================== */
+
+    /* Tablet (1024px) */
+    @media (max-width: 1024px) {
+      .cp-sidebar { width: 300px; }
+      .cp-topbar-center { display: none; }
+    }
+
+    /* Mobile (768px) — sidebar becomes overlay */
+    @media (max-width: 768px) {
+      .cp-sidebar {
+        position: fixed;
+        top: 56px;
+        right: 0;
+        bottom: 0;
+        width: 320px;
+        z-index: 300;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+      }
+      .cp-container.reversed .cp-sidebar {
+        right: auto;
+        left: 0;
+        transform: translateX(-100%);
+        border-right: none;
+      }
+      .cp-sidebar.open { transform: translateX(0) !important; }
+      .cp-sidebar-close { display: flex; }
+      .cp-mobile-sidebar-toggle { display: flex; }
+
+      .cp-topbar-center { display: none; }
+      .cp-topbar-course { max-width: 140px; }
+      .cp-action-row { width: 100%; justify-content: stretch; }
+      .cp-action-btn { flex: 1; justify-content: center; font-size: 12px; padding: 8px 10px; }
+      .cp-info-bar { padding: 16px; }
+      .cp-tabs { padding: 0 16px; }
+      .cp-tab { padding: 12px 14px; font-size: 12px; }
+      .cp-tab-panel { padding: 16px; }
+      .cp-lesson { padding-left: 32px; }
+    }
+
+    /* Small mobile (480px) */
+    @media (max-width: 480px) {
+      .cp-topbar { padding: 0 10px; height: 50px; }
+      .cp-topbar-title { font-size: 12px; }
+      .cp-topbar-meta { font-size: 10px; }
+      .cp-topbar-course { max-width: 110px; }
+      .cp-toolbar-btn { width: 32px; height: 32px; }
+      .cp-toolbar-divider { display: none; }
+      .cp-video-wrapper { aspect-ratio: 16 / 10; }
+      .cp-info-bar { padding: 12px; }
+      .cp-lesson-title { font-size: 15px; }
+      .cp-action-btn span { display: none; }
+      .cp-sidebar { width: 100%; top: 50px; }
+      .cp-tab { padding: 10px 12px; }
+      .cp-composer { flex-direction: column; }
+      .cp-composer-btn { width: 100%; text-align: center; }
+    }
+
+    /* Large (1440px) */
+    @media (min-width: 1440px) {
+      .cp-sidebar { width: 420px; }
+      .cp-lesson-title { font-size: 24px; }
+    }
+
+    /* Ultra-wide (1920px) */
+    @media (min-width: 1920px) {
+      .cp-sidebar { width: 460px; }
+      .cp-info-bar { padding: 24px 32px; }
+      .cp-tabs { padding: 0 32px; }
+      .cp-tab-panel { padding: 24px 32px; }
+    }
+
+    /* 4K (2560px) */
+    @media (min-width: 2560px) {
+      .cp-sidebar { width: 520px; }
+      .cp-topbar { height: 64px; padding: 0 24px; }
+      .cp-topbar-title { font-size: 16px; }
+      .cp-toolbar-btn { width: 42px; height: 42px; }
+      .cp-lesson-title { font-size: 28px; }
+      .cp-info-bar { padding: 28px 40px; }
+      .cp-tabs { padding: 0 40px; }
+      .cp-tab { font-size: 14px; padding: 16px 24px; }
+      .cp-tab-panel { padding: 28px 40px; }
+      .cp-section-name { font-size: 14px; }
+      .cp-lesson-name { font-size: 14px; }
+      .cp-note { padding: 18px 20px; }
+    }
+
+    /* Sidebar overlay backdrop */
+    .cp-sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      top: 56px;
+      background: rgba(0,0,0,0.4);
+      z-index: 299;
+    }
+    .cp-sidebar-backdrop.show { display: block; }
+    [data-theme="dark"] .cp-sidebar-backdrop { background: rgba(0,0,0,0.6); }
+  </style>
+</head>
+<body>
+
+  <!-- ===== TOP BAR ===== -->
+  <div class="cp-topbar">
+    <div class="cp-topbar-left">
+      <a href="dashboard.html" class="cp-back-btn" title="Back to Dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </a>
+      <div class="cp-topbar-course">
+        <div class="cp-topbar-title">Complete Web Development Bootcamp 2026</div>
+        <div class="cp-topbar-meta">Sarah Chen · 19 lessons</div>
+      </div>
+    </div>
+    <div class="cp-topbar-center">
+      <div class="cp-progress-mini">
+        <div class="cp-progress-mini-fill" style="width: 26%"></div>
+      </div>
+      <span class="cp-progress-label">26%</span>
+    </div>
+    <div class="cp-topbar-right">
+      <button class="cp-toolbar-btn" onclick="toggleLayout()" title="Swap layout — move sidebar to the other side" id="layoutToggleBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>
+      </button>
+      <div class="cp-toolbar-divider"></div>
+      <button class="cp-toolbar-btn" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" title="Toggle theme">
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTAINER ===== -->
+  <div class="cp-container" id="cpContainer">
+    <!-- Video Panel -->
+    <div class="cp-video-panel">
+      <!-- Video Player -->
+      <div class="cp-video-wrapper">
+        <div class="cp-video-bg">
+          <div class="cp-video-center">
+            <div class="cp-video-badge">Lesson 5 of 19</div>
+            <h2 class="cp-video-lesson-title">Neural Networks Deep Dive</h2>
+            <p class="cp-video-lesson-sub">Complete Web Development Bootcamp 2026</p>
+          </div>
+          <div class="cp-video-play-overlay">
+            <div class="cp-play-circle">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="8 5 19 12 8 19 8 5"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subtitle -->
+        <div class="cp-subtitle" id="subtitleBar">Welcome to Neural Networks Deep Dive</div>
+
+        <!-- Controls -->
+        <div class="cp-controls">
+          <div class="cp-progress-bar">
+            <div class="cp-progress-fill" style="width: 35%"></div>
+            <div class="cp-progress-dot" style="left: 35%"></div>
+          </div>
+          <div class="cp-controls-row">
+            <div class="cp-controls-group">
+              <button class="cp-ctrl-btn" title="Previous">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+              </button>
+              <button class="cp-ctrl-btn" title="Play">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="8 5 19 12 8 19 8 5"/></svg>
+              </button>
+              <button class="cp-ctrl-btn" title="Next">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+              </button>
+              <span class="cp-time">9:02 / 25:40</span>
+            </div>
+            <div class="cp-controls-group">
+              <div class="cp-speed-wrap">
+                <button class="cp-speed-toggle" id="speedBtn">1x</button>
+                <div class="cp-speed-menu" id="speedMenu">
+                  <button onclick="setSpeed(0.5)">0.5x</button>
+                  <button onclick="setSpeed(0.75)">0.75x</button>
+                  <button class="active" onclick="setSpeed(1)">1x</button>
+                  <button onclick="setSpeed(1.25)">1.25x</button>
+                  <button onclick="setSpeed(1.5)">1.5x</button>
+                  <button onclick="setSpeed(2)">2x</button>
+                </div>
+              </div>
+              <button class="cp-ctrl-btn" title="Volume">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              </button>
+              <button class="cp-ctrl-btn" id="subtitleToggle" title="Subtitles" onclick="toggleSubtitles()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M6 12h4"/><path d="M14 12h4"/><path d="M6 16h12"/></svg>
+                <span class="indicator" id="subtitleIndicator"></span>
+              </button>
+              <button class="cp-ctrl-btn" title="Fullscreen">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Below Video (scrollable) -->
+      <div class="cp-below-video">
+        <!-- Info Bar -->
+        <div class="cp-info-bar">
+          <div class="cp-info-top">
+            <div style="flex:1;min-width:0;">
+              <h1 class="cp-lesson-title">Neural Networks Deep Dive</h1>
+              <div class="cp-instructor-row">
+                <img src="../assets/Teacher-Student/1.png" alt="Sarah Chen" class="cp-instructor-avatar">
+                <div>
+                  <a class="cp-instructor-name" onclick="showTeacherProfile(event)">Sarah Chen</a>
+                  <span class="cp-instructor-course"> · Complete Web Development Bootcamp 2026</span>
+                </div>
+                <span class="cp-lesson-badge">Lesson 5</span>
+              </div>
+            </div>
+            <div class="cp-action-row">
+              <button class="cp-action-btn" onclick="toggleVideoBookmark(this)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                <span>Bookmark</span>
+              </button>
+              <button class="cp-action-btn" id="completeBtn" onclick="completeLesson()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Complete</span>
+              </button>
+              <button class="cp-action-btn" onclick="navigator.clipboard.writeText(window.location.href).then(()=>Toast.show('Link Copied!','Course link copied to clipboard','success',2000)).catch(()=>Toast.show('Copy failed','Please copy the URL manually','error',2000))">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="cp-tabs">
+          <button class="cp-tab active" data-cp-tab="notes"><span class="wi wi-edit"></span> Notes</button>
+          <button class="cp-tab" data-cp-tab="qa"><span class="wi wi-help"></span> Q&A</button>
+          <button class="cp-tab" data-cp-tab="comments"><span class="wi wi-message"></span> Comments</button>
+        </div>
+
+        <!-- Notes Panel -->
+        <div class="cp-tab-panel active" data-cp-panel="notes">
+          <div class="cp-composer">
+            <textarea id="noteInput" placeholder="Add a note at current timestamp..." rows="2"></textarea>
+            <button class="cp-composer-btn" onclick="addNote()">Add Note</button>
+          </div>
+          <div id="notesContainer"></div>
+        </div>
+
+        <!-- Q&A Panel -->
+        <div class="cp-tab-panel" data-cp-panel="qa">
+          <div class="cp-composer">
+            <textarea id="qaInput" placeholder="Ask a question about this lesson..." rows="2"></textarea>
+            <button class="cp-composer-btn" onclick="addQuestion()">Ask Question</button>
+          </div>
+          <div id="qaContainer"></div>
+        </div>
+
+        <!-- Comments Panel -->
+        <div class="cp-tab-panel" data-cp-panel="comments">
+          <div class="cp-composer">
+            <img src="../assets/Teacher-Student/3.png" alt="You" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+            <textarea id="commentInput" placeholder="Share your thoughts..." rows="2"></textarea>
+            <button class="cp-composer-btn" onclick="addComment()">Post</button>
+          </div>
+          <div id="commentsContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Panel -->
+    <div class="cp-sidebar" id="cpSidebar">
+      <div class="cp-sidebar-head">
+        <span class="cp-sidebar-title">Course Content</span>
+        <button class="cp-sidebar-close" onclick="closeSidebar()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="cp-sidebar-progress">
+        <div class="cp-sidebar-progress-bar">
+          <div class="cp-sidebar-progress-fill" style="width: 26%"></div>
+        </div>
+        <span class="cp-sidebar-progress-text">5 of 19 lessons completed (26%)</span>
+      </div>
+      <div class="cp-sidebar-lessons" id="lessonSectionsContainer"></div>
+    </div>
+  </div>
+
+  <!-- Sidebar Backdrop (mobile) -->
+  <div class="cp-sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+  <!-- Mobile Sidebar FAB -->
+  <button class="cp-mobile-sidebar-toggle" onclick="openSidebar()" title="Course Content">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+  </button>
+
+  <!-- Motivation Toast (hidden by default, shown dynamically on lesson complete) -->
+  <div class="cp-motivation" id="motivationToast">
+    <div class="cp-motivation-emoji" id="motivationEmoji"></div>
+    <div id="motivationText"></div>
+    <div class="cp-motivation-xp" id="motivationXP"></div>
+  </div>
+
+  <!-- Completion Modal -->
+  <div class="cp-modal-overlay" id="completionModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;padding:20px;">
+    <div class="cp-modal-card" style="background:var(--bg-primary,#fff);border-radius:20px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,0.25);padding:32px;text-align:center;position:relative;">
+      <div class="confetti-container" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:64px;margin-bottom:12px;"><span class="wi wi-gift"></span></div>
+        <h2 style="font-size:24px;font-weight:800;color:var(--text-primary,#111);margin-bottom:8px;">Congratulations!</h2>
+        <p style="color:var(--text-secondary,#6b7280);font-size:14px;margin-bottom:20px;">You've completed <strong>Complete Web Development Bootcamp 2026</strong></p>
+
+        <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;">
+          <div class="cp-reward-box" style="background:linear-gradient(135deg,#f2fbe8,#e0f5cc);border:1px solid #c2eb9e;border-radius:14px;padding:14px 20px;text-align:center;flex:1;min-width:100px;">
+            <div style="font-size:24px;"><span class="wi wi-zap"></span></div>
+            <div style="font-size:20px;font-weight:800;color:#3d8b1c;">+500 XP</div>
+            <div class="cp-reward-label" style="font-size:11px;color:var(--gray-500,#9ca3af);">Experience</div>
+          </div>
+          <div class="cp-reward-box" style="background:linear-gradient(135deg,#f2fbe8,#e0f5cc);border:1px solid #c2eb9e;border-radius:14px;padding:14px 20px;text-align:center;flex:1;min-width:100px;">
+            <div style="font-size:24px;"><span class="wi wi-award"></span></div>
+            <div style="font-size:13px;font-weight:700;color:#2d6914;">Web Dev Expert</div>
+            <div class="cp-reward-label" style="font-size:11px;color:var(--gray-500,#9ca3af);">Badge Unlocked</div>
+          </div>
+          <div class="cp-reward-box" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:14px;padding:14px 20px;text-align:center;flex:1;min-width:100px;">
+            <div style="font-size:24px;"><span class="wi wi-flame"></span></div>
+            <div style="font-size:13px;font-weight:700;color:#16a34a;">24-day streak!</div>
+            <div class="cp-reward-label" style="font-size:11px;color:var(--gray-500,#9ca3af);">Keep it going</div>
+          </div>
+        </div>
+
+        <div style="border:3px solid #3d8b1c;border-radius:14px;padding:24px;background:linear-gradient(135deg,#fafffe,#f0f0ff);margin-bottom:20px;">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#3d8b1c;margin-bottom:10px;">Certificate of Completion</div>
+          <div style="font-size:20px;font-weight:700;color:var(--text-primary,#111);margin-bottom:4px;" id="certStudentName">Jordan Rivera</div>
+          <div style="font-size:13px;color:var(--text-secondary,#6b7280);margin-bottom:10px;">Complete Web Development Bootcamp 2026</div>
+          <div style="font-size:11px;color:var(--text-tertiary,#9ca3af);">Issued: February 12, 2026 · Instructor: Sarah Chen</div>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+          <button class="btn btn-primary" onclick="downloadCertificate()" style="gap:6px;display:inline-flex;align-items:center;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Certificate
+          </button>
+          <button class="btn btn-secondary" onclick="shareToLinkedIn()" style="gap:6px;display:inline-flex;align-items:center;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/></svg>
+            Share Achievement
+          </button>
+        </div>
+
+        <!-- Rate Instructor -->
+        <div class="cp-rate-box" style="padding:18px;border:1px solid var(--border-light,#e5e7eb);border-radius:14px;background:var(--bg-secondary,#f9fafb);text-align:center;margin-bottom:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#9ca3af);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;">Rate Your Instructor</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;">
+            <img src="../assets/Teacher-Student/1.png" alt="Sarah Chen" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+            <strong style="font-size:14px;color:var(--text-primary,#111);">Sarah Chen</strong>
+          </div>
+          <div id="teacherRatingStars" style="display:flex;justify-content:center;gap:6px;margin-bottom:10px;">
+            <span onclick="setTeacherRating(1)" style="font-size:26px;cursor:pointer;transition:transform .15s;" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">☆</span>
+            <span onclick="setTeacherRating(2)" style="font-size:26px;cursor:pointer;transition:transform .15s;" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">☆</span>
+            <span onclick="setTeacherRating(3)" style="font-size:26px;cursor:pointer;transition:transform .15s;" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">☆</span>
+            <span onclick="setTeacherRating(4)" style="font-size:26px;cursor:pointer;transition:transform .15s;" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">☆</span>
+            <span onclick="setTeacherRating(5)" style="font-size:26px;cursor:pointer;transition:transform .15s;" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">☆</span>
+          </div>
+          <textarea id="teacherReviewText" placeholder="Share your experience..." rows="2" style="width:100%;padding:10px 14px;border:1px solid var(--border-light,#e5e7eb);border-radius:10px;font-size:13px;font-family:inherit;resize:vertical;margin-bottom:10px;background:var(--bg-primary,#fff);color:var(--text-primary,#111);"></textarea>
+          <button class="btn btn-primary btn-sm" onclick="submitTeacherRating()" style="width:100%;">Submit Review</button>
+        </div>
+
+        <!-- Next Course -->
+        <div class="cp-next-box" style="padding:14px;border:1px solid var(--border-light,#e5e7eb);border-radius:12px;background:var(--bg-secondary,#f9fafb);text-align:left;margin-bottom:16px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text-tertiary,#9ca3af);margin-bottom:8px;">UP NEXT — RECOMMENDED</div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);flex-shrink:0;"><span class="wi wi-atom"></span></div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:600;color:var(--text-primary,#111);">Advanced React & Next.js Development</div>
+              <div style="font-size:11px;color:var(--text-tertiary,#9ca3af);">Alex Thompson · 256 lessons</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='explore.html'">Enroll →</button>
+          </div>
+        </div>
+
+        <button class="btn btn-ghost" onclick="document.getElementById('completionModal').style.display='none'" style="width:100%;">Continue Learning</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    // =====================================
+    // STATE
+    // =====================================
+    let subtitlesEnabled = false;
+    let subtitleTimer = null;
+    let layoutReversed = false; // will be loaded from profile preferences
+    let teacherRating = 0;
+    let allCourses = [];
+    let allSubtitles = [];
+    let playerDisplayName = 'Student';
+    let playerInitials = 'S';
+
+    // =====================================
+    // INIT
+    // =====================================
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Auth guard — server-side role verification
+      const __authProfile = await WiserAuth.requireAuth(['student', 'admin']);
+      if (!__authProfile) return;
+
+      try {
+        const { user, profile, displayName, firstName } = await StudentPage.init();
+        playerDisplayName = displayName;
+        playerInitials = displayName.split(' ').map(w => w[0]).join('').toUpperCase();
+
+        // Update certificate name
+        const certName = document.getElementById('certStudentName');
+        if (certName) certName.textContent = displayName;
+
+        // Apply saved layout preference
+        if (layoutReversed) {
+          document.getElementById('cpContainer').classList.add('reversed');
+          document.getElementById('layoutToggleBtn').classList.add('active');
+        }
+
+        const [curriculum, notes, qna, comments, subtitles, courses] = await Promise.all([
+          WiserData.getCurriculum(),
+          WiserData.getNotes(),
+          WiserData.getQnA(),
+          WiserData.getComments(),
+          WiserData.getSubtitles ? WiserData.getSubtitles() : Promise.resolve([]),
+          WiserData.getCourses()
+        ]);
+        allCourses = courses || [];
+        allSubtitles = subtitles || [];
+        const curriculumData = curriculum || [];
+        const notesData = notes || [];
+        const qaData = qna || [];
+        const commentsData = comments || [];
+
+        // Dynamically update instructor info from course data
+        const params = new URLSearchParams(window.location.search);
+        const courseId = params.get('courseId');
+        let instructorName = 'Instructor';
+        if (courseId && allCourses.length) {
+          const course = allCourses.find(c => String(c.id) === courseId);
+          if (course && course.instructor) instructorName = course.instructor;
+        } else if (allCourses.length) {
+          instructorName = allCourses[0]?.instructor || 'Instructor';
+        }
+        // Update all static teacher name references
+        document.querySelectorAll('.cp-instructor-name').forEach(el => el.textContent = instructorName);
+        document.querySelectorAll('.cp-topbar-meta').forEach(el => el.textContent = instructorName + ' · 19 lessons');
+        const teacherNameEls = document.querySelectorAll('[data-teacher-name]');
+        teacherNameEls.forEach(el => el.textContent = instructorName);
+
+        // Render curriculum sidebar
+        const container = document.getElementById('lessonSectionsContainer');
+        container.innerHTML = curriculumData.map((section, si) => `
+        <div class="cp-section">
+          <div class="cp-section-header" onclick="toggleSection(this)">
+            <span class="cp-section-chevron open">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </span>
+            <div class="cp-section-info">
+              <span class="cp-section-name">${WiserSanitize.e(section.title)}</span>
+              <span class="cp-section-count">${section.lessons.length} lessons</span>
+            </div>
+          </div>
+          <div class="cp-lessons">
+            ${section.lessons.map((lesson, li) => `
+              <div class="cp-lesson ${lesson.completed ? 'completed' : ''} ${si === 1 && li === 0 ? 'active' : ''}" onclick="selectLesson(this, '${WiserSanitize.e(lesson.title).replace(/'/g, "\\'")}')">
+                <span class="cp-lesson-status">
+                  ${lesson.completed
+                    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5ab82e" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'
+                    : si === 1 && li === 0
+                      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:#3d8b1c"><polygon points="8 5 19 12 8 19 8 5"/></svg>'
+                      : `<span class="cp-lesson-num">${lesson.order || (li + 1)}</span>`}
+                </span>
+                <div class="cp-lesson-detail">
+                  <span class="cp-lesson-name">${WiserSanitize.e(lesson.title)}</span>
+                  <span class="cp-lesson-type">${lesson.type === 'video' ? '<span class="wi wi-video"></span>' : lesson.type === 'quiz' ? '<span class="wi wi-edit"></span>' : lesson.type === 'assignment' ? '<span class="wi wi-clipboard"></span>' : '<span class="wi wi-file"></span>'} ${WiserSanitize.e(lesson.type)} · ${WiserSanitize.e(lesson.duration)}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      // Render notes
+      document.getElementById('notesContainer').innerHTML = notesData.map(n => `
+        <div class="cp-note">
+          <span class="cp-note-time">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ${n.timestamp}
+          </span>
+          <p class="cp-note-text">${WiserSanitize.e(n.text)}</p>
+          <button class="cp-note-delete" onclick="this.parentElement.remove(); Toast.show('Note deleted', '', 'info', 2000)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      `).join('');
+
+      // Render Q&A
+      document.getElementById('qaContainer').innerHTML = qaData.map(qa => {
+        const authorName = qa.student || qa.author || 'Student';
+        const initials = qa.studentAvatar || qa.initials || authorName.split(' ').map(w => w[0]).join('');
+        const avatarBg = qa.avatarBg || 'linear-gradient(135deg, #3d8b1c, #2d6914)';
+        const answerText = typeof qa.answer === 'object' ? qa.answer.text : qa.answer;
+        const answerAuthor = typeof qa.answer === 'object' ? qa.answer.author : 'Instructor';
+        return `
+        <div class="cp-qa">
+          <div class="cp-qa-q">
+            <div class="cp-qa-avatar" style="background: ${avatarBg}">${initials}</div>
+            <div>
+              <div class="cp-qa-author">${WiserSanitize.e(authorName)}</div>
+              <p class="cp-qa-text">${WiserSanitize.e(qa.question)}</p>
+              <span class="cp-qa-time">${qa.time}</span>
+            </div>
+          </div>
+          ${answerText ? `
+          <div class="cp-qa-answer">
+            <div class="cp-qa-answer-badge">${WiserSanitize.e(answerAuthor)}</div>
+            <p style="margin:0;">${WiserSanitize.e(answerText)}</p>
+          </div>` : '<div class="cp-qa-pending"><span class="wi wi-bell"></span> Awaiting answer</div>'}
+        </div>`;
+      }).join('');
+
+      // Render comments
+      document.getElementById('commentsContainer').innerHTML = commentsData.map(c => `
+        <div class="cp-comment">
+          <div class="cp-qa-avatar" style="background: ${c.avatarBg || 'linear-gradient(135deg, #3d8b1c, #2d6914)'};width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">${c.avatar}</div>
+          <div class="cp-comment-body">
+            <span class="cp-comment-author">${WiserSanitize.e(c.author)}</span>
+            <span class="cp-comment-time"> · ${WiserSanitize.e(c.time)}</span>
+            <p class="cp-comment-text">${WiserSanitize.e(c.text)}</p>
+            <div class="cp-comment-actions">
+              <button class="cp-comment-act" onclick="this.classList.toggle('liked')"><span class="wi wi-heart"></span> ${c.likes}</button>
+              <button class="cp-comment-act" onclick="handleReply(this)">Reply</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Tab switching
+      document.querySelectorAll('.cp-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.cp-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.cp-tab-panel').forEach(p => p.classList.remove('active'));
+          tab.classList.add('active');
+          document.querySelector(`[data-cp-panel="${tab.dataset.cpTab}"]`).classList.add('active');
+        });
+      });
+
+      // Speed menu
+      document.getElementById('speedBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('speedMenu').classList.toggle('show');
+      });
+      document.addEventListener('click', () => document.getElementById('speedMenu').classList.remove('show'));
+
+      // Subtitle cycle
+      startSubtitleCycle();
+      } catch(err) {
+        console.error('Course player init error:', err);
+      }
+    });
+
+    // =====================================
+    // LAYOUT TOGGLE
+    // =====================================
+    function toggleLayout() {
+      layoutReversed = !layoutReversed;
+      const container = document.getElementById('cpContainer');
+      const btn = document.getElementById('layoutToggleBtn');
+      container.classList.toggle('reversed', layoutReversed);
+      btn.classList.toggle('active', layoutReversed);
+      // Persist layout preference via learning preferences
+      if (WiserAPI.learningPreferences) {
+        WiserAPI.learningPreferences.update({ player_layout: layoutReversed ? 'reversed' : 'normal' }).catch(e => console.warn(e));
+      }
+      Toast.show('Layout updated', layoutReversed ? 'Sidebar moved to the left' : 'Sidebar moved to the right', 'info', 2000);
+    }
+
+    // =====================================
+    // MOBILE SIDEBAR
+    // =====================================
+    function openSidebar() {
+      document.getElementById('cpSidebar').classList.add('open');
+      document.getElementById('sidebarBackdrop').classList.add('show');
+    }
+    function closeSidebar() {
+      document.getElementById('cpSidebar').classList.remove('open');
+      document.getElementById('sidebarBackdrop').classList.remove('show');
+    }
+
+    // =====================================
+    // SECTION TOGGLE
+    // =====================================
+    function toggleSection(header) {
+      const chevron = header.querySelector('.cp-section-chevron');
+      const lessons = header.nextElementSibling;
+      const isOpen = chevron.classList.contains('open');
+      chevron.classList.toggle('open', !isOpen);
+      lessons.style.display = isOpen ? 'none' : 'block';
+    }
+
+    // =====================================
+    // LESSON SELECT
+    // =====================================
+    function selectLesson(el, title) {
+      document.querySelectorAll('.cp-lesson').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelector('.cp-video-lesson-title').textContent = title;
+      document.querySelector('.cp-lesson-title').textContent = title;
+      Toast.show('Loading lesson...', title, 'info', 2000);
+      if (window.innerWidth <= 768) closeSidebar();
+    }
+
+    // =====================================
+    // SPEED
+    // =====================================
+    function setSpeed(speed) {
+      document.getElementById('speedBtn').textContent = speed + 'x';
+      document.getElementById('speedMenu').classList.remove('show');
+      document.querySelectorAll('#speedMenu button').forEach(b =>
+        b.classList.toggle('active', b.textContent === speed + 'x')
+      );
+      Toast.show('Speed: ' + speed + 'x', '', 'info', 1500);
+    }
+
+    // =====================================
+    // SUBTITLES
+    // =====================================
+    function toggleSubtitles() {
+      subtitlesEnabled = !subtitlesEnabled;
+      const bar = document.getElementById('subtitleBar');
+      const toggle = document.getElementById('subtitleToggle');
+      if (subtitlesEnabled) {
+        bar.classList.add('active');
+        toggle.classList.add('active');
+        Toast.show('Subtitles enabled', '', 'info', 1500);
+        startSubtitleCycle();
+      } else {
+        bar.classList.remove('active');
+        toggle.classList.remove('active');
+        Toast.show('Subtitles disabled', '', 'info', 1500);
+        if (subtitleTimer) clearInterval(subtitleTimer);
+      }
+    }
+
+    function startSubtitleCycle() {
+      if (subtitleTimer) clearInterval(subtitleTimer);
+      const subs = allSubtitles;
+      if (!subs.length) return;
+      let idx = 0;
+      const bar = document.getElementById('subtitleBar');
+      subtitleTimer = setInterval(() => {
+        if (subtitlesEnabled && subs[idx]) {
+          bar.textContent = subs[idx].text;
+          idx = (idx + 1) % subs.length;
+        }
+      }, 3000);
+    }
+
+    // =====================================
+    // COMPLETE LESSON
+    // =====================================
+    const motivationMessages = [
+      { emoji: '<span class="wi wi-rocket"></span>', text: "Great job! Keep going!", xp: "+50 XP" },
+      { emoji: '<span class="wi wi-flame"></span>', text: "You're on fire!", xp: "+50 XP" },
+      { emoji: '<span class="wi wi-zap"></span>', text: "Knowledge is power!", xp: "+50 XP" },
+      { emoji: '<span class="wi wi-star"></span>', text: "One step closer to mastery!", xp: "+75 XP" },
+      { emoji: '<span class="wi wi-star"></span>', text: "Brilliant work!", xp: "+75 XP" },
+      { emoji: '<span class="wi wi-bulb"></span>', text: "Your brain just leveled up!", xp: "+50 XP" },
+      { emoji: '<span class="wi wi-trophy"></span>', text: "Champion move!", xp: "+100 XP" },
+      { emoji: '<span class="wi wi-star"></span>', text: "Another lesson conquered!", xp: "+50 XP" }
+    ];
+
+    function completeLesson() {
+      const btn = document.getElementById('completeBtn');
+      if (btn.classList.contains('completed')) return;
+      btn.classList.add('completed');
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Completed ✓</span>';
+      const msg = motivationMessages[Math.floor(Math.random() * motivationMessages.length)];
+      const toast = document.getElementById('motivationToast');
+      document.getElementById('motivationEmoji').textContent = msg.emoji || '<span class="wi wi-gift"></span>';
+      document.getElementById('motivationText').textContent = msg.text;
+      document.getElementById('motivationXP').textContent = msg.xp;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    // =====================================
+    // COMPLETION MODAL
+    // =====================================
+    function showCompletion() {
+      document.getElementById('completionModal').style.display = 'flex';
+      launchConfetti();
+    }
+
+    function downloadCertificate() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 800; canvas.height = 560;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#f2fbe8'; ctx.fillRect(0, 0, 800, 560);
+      ctx.strokeStyle = '#9fe870'; ctx.lineWidth = 6; ctx.strokeRect(20, 20, 760, 520);
+      ctx.strokeStyle = '#3d8b1c'; ctx.lineWidth = 2; ctx.strokeRect(30, 30, 740, 500);
+      ctx.fillStyle = '#3d8b1c'; ctx.font = 'bold 28px Inter, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('Certificate of Completion', 400, 90);
+      ctx.beginPath(); ctx.moveTo(200, 110); ctx.lineTo(600, 110); ctx.strokeStyle = '#9fe870'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = '#6B7280'; ctx.font = '16px Inter, sans-serif';
+      ctx.fillText('This certificate is proudly presented to', 400, 160);
+      ctx.fillStyle = '#1F2937'; ctx.font = 'bold 36px Inter, sans-serif';
+      ctx.fillText(playerDisplayName, 400, 210);
+      ctx.fillStyle = '#6B7280'; ctx.font = '16px Inter, sans-serif';
+      ctx.fillText('for successfully completing the course', 400, 260);
+      ctx.fillStyle = '#3d8b1c'; ctx.font = 'bold 22px Inter, sans-serif';
+      ctx.fillText('Complete Web Development Bootcamp 2026', 400, 300);
+      ctx.fillStyle = '#9CA3AF'; ctx.font = '14px Inter, sans-serif';
+      ctx.fillText('Issued: February 12, 2026', 400, 360);
+      ctx.fillText('Instructor: ' + (document.querySelector('.cp-instructor-name')?.textContent || 'Instructor'), 400, 385);
+      ctx.fillStyle = '#9fe870'; ctx.font = 'bold 20px Inter, sans-serif';
+      ctx.fillText('WISER', 400, 440);
+      ctx.fillStyle = '#D1D5DB'; ctx.font = '12px Inter, sans-serif';
+      ctx.fillText('www.wiser.edu', 400, 460);
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'Wiser-Certificate-WebDev.png';
+        a.click(); URL.revokeObjectURL(url);
+        Toast.show('Certificate Downloaded!', 'Saved as Wiser-Certificate-WebDev.png', 'success', 3000);
+      });
+    }
+
+    function shareToLinkedIn() {
+      const text = encodeURIComponent('I just completed Complete Web Development Bootcamp 2026 on Wiser! <span class="wi wi-grad"></span><span class="wi wi-rocket"></span> #WebDevelopment #Wiser #OnlineLearning');
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=500');
+      Toast.show('Opening LinkedIn...', 'Share your achievement!', 'success', 2000);
+    }
+
+    // =====================================
+    // NOTES / QA / COMMENTS COMPOSERS
+    // =====================================
+    function addNote() {
+      const input = document.getElementById('noteInput');
+      const text = input.value.trim();
+      if (!text) { Toast.show('Empty note', 'Please type something', 'error', 2000); return; }
+      const noteHtml = `<div class="cp-note">
+        <span class="cp-note-time"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 9:02</span>
+        <p class="cp-note-text">${WiserSanitize.e(text)}</p>
+        <button class="cp-note-delete" onclick="this.parentElement.remove(); Toast.show('Note deleted','','info',2000)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+      </div>`;
+      document.getElementById('notesContainer').insertAdjacentHTML('afterbegin', noteHtml);
+      input.value = '';
+      Toast.show('Note added', 'at 9:02', 'success', 2000);
+    }
+
+    function addQuestion() {
+      const input = document.getElementById('qaInput');
+      const text = input.value.trim();
+      if (!text) { Toast.show('Empty question', 'Please type something', 'error', 2000); return; }
+      const html = `<div class="cp-qa">
+        <div class="cp-qa-q">
+          <div class="cp-qa-avatar" style="background:linear-gradient(135deg,#667eea,#764ba2)">${playerInitials}</div>
+          <div><div class="cp-qa-author">${WiserSanitize.e(playerDisplayName)}</div><p class="cp-qa-text">${WiserSanitize.e(text)}</p><span class="cp-qa-time">just now</span></div>
+        </div>
+        <div class="cp-qa-pending"><span class="wi wi-bell"></span> Awaiting answer</div>
+      </div>`;
+      document.getElementById('qaContainer').insertAdjacentHTML('afterbegin', html);
+      input.value = '';
+      Toast.show('Question posted!', '', 'success', 2000);
+    }
+
+    function addComment() {
+      const input = document.getElementById('commentInput');
+      const text = input.value.trim();
+      if (!text) { Toast.show('Empty comment', 'Please type something', 'error', 2000); return; }
+      const html = `<div class="cp-comment">
+        <img src="../assets/Teacher-Student/3.png" alt="You" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+        <div class="cp-comment-body">
+          <span class="cp-comment-author">${WiserSanitize.e(playerDisplayName)}</span><span class="cp-comment-time"> · just now</span>
+          <p class="cp-comment-text">${WiserSanitize.e(text)}</p>
+          <div class="cp-comment-actions"><button class="cp-comment-act" onclick="this.classList.toggle('liked')"><span class="wi wi-heart"></span> 0</button><button class="cp-comment-act" onclick="handleReply(this)">Reply</button></div>
+        </div>
+      </div>`;
+      document.getElementById('commentsContainer').insertAdjacentHTML('afterbegin', html);
+      input.value = '';
+      Toast.show('Comment posted!', '', 'success', 2000);
+    }
+
+    // =====================================
+    // REPLY
+    // =====================================
+    function handleReply(btn) {
+      const body = btn.closest('.cp-comment-body');
+      if (body.querySelector('.reply-form')) { body.querySelector('.reply-form').remove(); return; }
+      const form = document.createElement('div');
+      form.className = 'reply-form';
+      form.style.cssText = 'margin-top:8px;display:flex;gap:8px;align-items:flex-start;';
+      form.innerHTML = `
+        <textarea placeholder="Write a reply..." rows="2" style="flex:1;padding:8px 12px;border:1px solid var(--border-light,#e5e7eb);border-radius:8px;font-size:12px;resize:none;font-family:inherit;background:var(--bg-secondary,#f9fafb);color:var(--text-primary,#111);"></textarea>
+        <button class="cp-composer-btn" onclick="submitReply(this)" style="padding:8px 14px;font-size:12px;">Post</button>`;
+      body.appendChild(form);
+      form.querySelector('textarea').focus();
+    }
+
+    function submitReply(btn) {
+      const textarea = btn.previousElementSibling;
+      const text = textarea.value.trim();
+      if (!text) { Toast.show('Empty reply', 'Please write something', 'error', 2000); return; }
+      const el = document.createElement('div');
+      el.style.cssText = 'margin-top:8px;padding:8px 12px;background:var(--bg-secondary,#f9fafb);border-radius:10px;font-size:13px;border-left:3px solid #9fe870;';
+      el.innerHTML = `<strong style="color:#3d8b1c;">${WiserSanitize.e(playerDisplayName)}</strong> <span style="color:var(--text-tertiary,#9ca3af);font-size:11px;">· just now</span><p style="margin:4px 0 0;color:var(--text-primary,#374151);">${WiserSanitize.e(text)}</p>`;
+      const form = btn.closest('.reply-form');
+      form.parentElement.insertBefore(el, form);
+      form.remove();
+      Toast.show('Reply posted!', '', 'success', 2000);
+    }
+
+    // =====================================
+    // BOOKMARK
+    // =====================================
+    async function toggleVideoBookmark(btn) {
+      const timestamp = '9:02';
+      const courseTitle = document.querySelector('.cp-lesson-title').textContent;
+      const isActive = btn.classList.contains('active');
+      try {
+        if (isActive) {
+          btn.classList.remove('active');
+          Toast.show('Bookmark removed', '', 'info', 2000);
+        } else {
+          btn.classList.add('active');
+          Toast.show('Bookmarked at ' + timestamp, 'Saved to your bookmarks', 'success', 2000);
+        }
+        // Save via notes API as a bookmark-type note
+        if (WiserAPI.notes) {
+          await WiserAPI.notes.create({ content: 'Bookmark at ' + timestamp, course_title: courseTitle, timestamp, type: 'bookmark' });
+        }
+      } catch(e) { console.warn('Bookmark error:', e); }
+    }
+
+    // =====================================
+    // TEACHER RATING
+    // =====================================
+    function setTeacherRating(rating) {
+      teacherRating = rating;
+      const stars = document.querySelectorAll('#teacherRatingStars span');
+      stars.forEach((s, i) => {
+        s.textContent = i < rating ? '★' : '☆';
+        s.style.color = i < rating ? '#9fe870' : '#CBD5E1';
+      });
+    }
+
+    async function submitTeacherRating() {
+      if (teacherRating === 0) { Toast.show('Please select a rating', 'Click the stars to rate', 'error', 2000); return; }
+      const review = document.getElementById('teacherReviewText').value.trim();
+      try {
+        // Get the current course context
+        const params = new URLSearchParams(window.location.search);
+        const courseId = params.get('courseId');
+        if (courseId) {
+          await WiserAPI.reviews.create({ course_id: courseId, rating: teacherRating, comment: review });
+        }
+      } catch(e) { console.warn('Review submit error:', e); }
+      const container = document.getElementById('teacherRatingStars').parentElement.parentElement;
+      const teacherName = document.querySelector('.cp-teacher-name')?.textContent || 'Instructor';
+      container.innerHTML = `<div style="text-align:center;padding:12px;"><div style="font-size:30px;margin-bottom:6px;"><span class="wi wi-check"></span></div><div style="font-size:14px;font-weight:700;color:var(--text-primary,#111);margin-bottom:4px;">Thank you for your review!</div><div style="font-size:12px;color:var(--text-tertiary,#9ca3af);">You rated ${WiserSanitize.e(teacherName)} ${'★'.repeat(teacherRating)}${'☆'.repeat(5 - teacherRating)}</div></div>`;
+      Toast.show('Review submitted!', `You rated ${teacherName} ${teacherRating}/5 stars`, 'success', 3000);
+    }
+
+    // =====================================
+    // TEACHER PROFILE MODAL
+    // =====================================
+    function showTeacherProfile(e) {
+      e.preventDefault();
+      const instructorName = document.querySelector('.cp-instructor-name')?.textContent || 'Instructor';
+      const teacherCourses = allCourses.filter(c => c.instructor === instructorName);
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const modal = document.createElement('div');
+      modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;padding:20px;';
+      modal.innerHTML = `
+        <div style="background:${isDark ? '#1a3d06' : '#fff'};border-radius:20px;max-width:520px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,0.25);position:relative;${isDark ? 'border:1px solid rgba(159,232,112,0.1);' : ''}">
+          <button onclick="this.closest('div[style*=fixed]').remove()" style="position:absolute;top:12px;right:12px;border:none;background:${isDark ? 'rgba(159,232,112,0.1)' : 'rgba(0,0,0,0.07)'};border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1;color:${isDark ? '#c2eb9e' : '#374151'};">✕</button>
+          <div style="background:linear-gradient(135deg,#667eea,#764ba2);padding:32px 24px;text-align:center;border-radius:20px 20px 0 0;">
+            <img src="../assets/Teacher-Student/1.png" alt="${WiserSanitize.e(instructorName)}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.4);margin-bottom:10px;">
+            <h3 style="color:#fff;font-size:20px;margin-bottom:4px;">${WiserSanitize.e(instructorName)}</h3>
+            <p style="color:rgba(255,255,255,0.8);font-size:13px;">Senior Software Engineer & Educator</p>
+          </div>
+          <div style="padding:20px 24px;">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;">
+              <div style="text-align:center;padding:12px;background:${isDark ? '#163300' : 'var(--gray-50,#f9fafb)'};border-radius:12px;"><div style="font-size:20px;font-weight:800;color:#3d8b1c;">${teacherCourses.length}</div><div style="font-size:11px;color:${isDark ? '#8ab57a' : 'var(--gray-500)'};">Courses</div></div>
+              <div style="text-align:center;padding:12px;background:${isDark ? '#163300' : 'var(--gray-50,#f9fafb)'};border-radius:12px;"><div style="font-size:20px;font-weight:800;color:#3d8b1c;">18.4K</div><div style="font-size:11px;color:${isDark ? '#8ab57a' : 'var(--gray-500)'};">Students</div></div>
+              <div style="text-align:center;padding:12px;background:${isDark ? '#163300' : 'var(--gray-50,#f9fafb)'};border-radius:12px;"><div style="font-size:20px;font-weight:800;color:#9fe870;">4.8 <span class="wi wi-star"></span></div><div style="font-size:11px;color:${isDark ? '#8ab57a' : 'var(--gray-500)'};">Rating</div></div>
+            </div>
+            <p style="font-size:13px;color:${isDark ? '#c2eb9e' : 'var(--gray-600,#4b5563)'};line-height:1.6;margin-bottom:16px;">Senior Software Engineer turned educator. Teaching 18,000+ students web development, React, and Node.js. Passionate about making complex topics simple and accessible.</p>
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:10px;color:${isDark ? '#e0f5cc' : 'var(--text-primary)'};">Courses by Sarah</h4>
+            ${teacherCourses.map(c => `
+              <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid ${isDark ? 'rgba(159,232,112,0.1)' : 'var(--gray-200,#e5e7eb)'};border-radius:10px;margin-bottom:8px;">
+                <div style="width:40px;height:40px;border-radius:10px;background:${c.thumbnail};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${c.icon}</div>
+                <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:${isDark ? '#e0f5cc' : 'var(--text-primary)'};">${c.title}</div><div style="font-size:11px;color:${isDark ? '#8ab57a' : 'var(--gray-500)'};"><span class="wi wi-star"></span> ${c.rating} · ${c.students.toLocaleString()} students</div></div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+      modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+    }
+  </script>
+</body>
+</html>

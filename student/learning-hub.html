@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Hub — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/student.css">
+  <link rel="icon" type="image/png" href="../assets/wiser-logo.png">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+
+  <!-- Main Navigation -->
+  <nav class="stu-navbar">
+    <a href="../index.html" class="stu-navbar-logo">
+      <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark">
+    </a>
+    <div class="stu-navbar-center">
+      <a href="../index.html">Home</a>
+      <a href="explore.html">Courses</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="schools.html">Schools</a>
+      <a href="learning-hub.html" style="color:var(--primary-600);">Learning Hub</a>
+      <a href="shop.html">Marketplace</a>
+    </div>
+    <div class="stu-navbar-right">
+      <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+      <button class="stu-search-btn" onclick="document.querySelector('.stu-search-overlay').classList.toggle('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="stu-notif-badge">3</span>
+      </button>
+      <button class="stu-cart-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="stu-cart-badge">4</span>
+      </button>
+      <a href="explore.html" class="stu-enroll-btn">Enroll Now</a>
+      <button class="stu-mobile-toggle" onclick="document.querySelector('.stu-mobile-menu').classList.toggle('active');document.querySelector('.stu-mobile-overlay').classList.toggle('active')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="stu-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.stu-mobile-menu').classList.remove('active')"></div>
+  <div class="stu-mobile-menu">
+    <a href="../index.html">Home</a>
+    <a href="explore.html">Courses</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="schools.html">Schools</a>
+    <a href="learning-hub.html" style="color:var(--primary-600);font-weight:600;">Learning Hub</a>
+    <a href="shop.html">Marketplace</a>
+    <a href="settings.html">Settings</a>
+  </div>
+
+  <!-- Search Overlay -->
+  <div class="stu-search-overlay">
+    <div class="stu-search-overlay-inner">
+      <input type="text" placeholder="Search your analytics...">
+      <button onclick="document.querySelector('.stu-search-overlay').classList.remove('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header">
+      <h3>Notifications</h3>
+      <button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.textContent='All Read ✓'">Mark all read</button>
+      <button onclick="document.querySelector('.stu-notif-panel').classList.remove('active');document.querySelector('.stu-notif-backdrop').classList.remove('active')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="stu-notif-list" id="notifContainer"></div>
+  </div>
+  <div class="stu-notif-backdrop" onclick="document.querySelector('.stu-notif-panel').classList.remove('active');this.classList.remove('active')"></div>
+
+  <!-- Profile Banner -->
+  <div class="stu-banner">
+    <img src="../assets/Cover-Photo/2.png" alt="" class="stu-banner-img">
+    <div class="stu-banner-content">
+      <div class="stu-banner-avatar" style="background: var(--gradient-primary)"><img src="../assets/Teacher-Student/3.png" alt="Jordan Rivera"></div>
+      <div class="stu-banner-info">
+        <h1 class="stu-banner-name">Jordan Rivera</h1>
+        <div class="stu-banner-meta">
+          <span><span class="wi wi-book"></span> 5 Courses Enrolled</span>
+          <span><span class="wi wi-trophy"></span> 4 Certificates</span>
+        </div>
+      </div>
+      <div class="stu-banner-actions">
+        <a href="../auth/register.html?role=teacher" class="stu-become-instructor-btn">Become an Instructor →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body Layout -->
+  <div class="stu-body">
+    <!-- Sidebar -->
+    <aside class="stu-sidebar">
+      <div class="stu-sidebar-greeting">Welcome, Jordan Rivera</div>
+      <ul class="stu-sidebar-nav">
+        <li><a href="dashboard.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard</a></li>
+        <li><a href="my-profile.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          My Profile</a></li>
+        <li><a href="enrolled-courses.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Enrolled Courses</a></li>
+        <li><a href="shop.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Marketplace</a></li>
+        <li><a href="wishlist.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Wishlist</a></li>
+        <li><a href="reviews.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Reviews</a></li>
+        <li><a href="quiz-attempts.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          My Quiz Attempts</a></li>
+        <li><a href="order-history.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Order History</a></li>
+      </ul>
+      <div class="stu-sidebar-divider"></div>
+      <div class="stu-sidebar-section-label">User</div>
+      <ul class="stu-sidebar-nav">
+        <li><a href="settings.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings</a></li>
+        <li><a href="../auth/login.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="stu-main">
+      <h2 class="stu-main-title">Learning Hub <span class="wi wi-chart"></span></h2>
+      <p style="color: var(--gray-500); font-size: 14px; margin-top: -16px; margin-bottom: 20px;">Track your progress, identify weak areas, and optimize your learning</p>
+
+      <!-- Stats Grid -->
+      <div class="stu-stats-grid">
+        <div class="stu-stat-card">
+          <div class="stu-stat-icon" style="background: linear-gradient(135deg, #f2fbe8, #e0f5cc); color: #3d8b1c;"><span class="wi wi-book"></span></div>
+          <div class="stu-stat-value" id="lhStatCourses">12</div>
+          <div class="stu-stat-label">Courses Active</div>
+        </div>
+        <div class="stu-stat-card">
+          <div class="stu-stat-icon" style="background: linear-gradient(135deg, #f2fbe8, #e0f5cc); color: #5ab82e;"><span class="wi wi-check"></span></div>
+          <div class="stu-stat-value" id="lhStatQuiz">87%</div>
+          <div class="stu-stat-label">Avg. Quiz Score</div>
+        </div>
+        <div class="stu-stat-card">
+          <div class="stu-stat-icon" style="background: linear-gradient(135deg, #e0f5cc, #c2eb9e); color: #9fe870;"><span class="wi wi-stopwatch"></span></div>
+          <div class="stu-stat-value" id="lhStatStudy">48h</div>
+          <div class="stu-stat-label">Total Study Time</div>
+        </div>
+        <div class="stu-stat-card">
+          <div class="stu-stat-icon" style="background: linear-gradient(135deg, #f2fbe8, #e0f5cc); color: #2d6914;"><span class="wi wi-trophy"></span></div>
+          <div class="stu-stat-value" id="lhStatCerts">5</div>
+          <div class="stu-stat-label">Certificates</div>
+        </div>
+      </div>
+
+      <!-- Study Hours & Quiz Results -->
+      <div class="stu-hub-grid">
+        <div class="stu-hub-section">
+          <h3 class="stu-hub-title"><span class="wi wi-trending"></span> Weekly Study Hours</h3>
+          <div class="stu-study-chart" id="studyChartLg"></div>
+        </div>
+        <div class="stu-hub-section">
+          <h3 class="stu-hub-title"><span class="wi wi-edit"></span> Recent Quiz Results</h3>
+          <div id="quizResultsContainer"></div>
+        </div>
+      </div>
+
+      <!-- Weak Topics & Goals -->
+      <div class="stu-hub-grid">
+        <div class="stu-hub-section">
+          <h3 class="stu-hub-title"><span class="wi wi-alert"></span> Topics to Review</h3>
+          <p style="font-size:13px;color:var(--gray-400);margin-bottom:12px;">AI-identified areas that need more practice</p>
+          <div id="weakTopicsContainer"></div>
+        </div>
+        <div class="stu-hub-section">
+          <h3 class="stu-hub-title"><span class="wi wi-target"></span> Learning Goals</h3>
+          <p style="font-size:13px;color:var(--gray-400);margin-bottom:12px;">Track your weekly and monthly goals</p>
+          <div id="goalsContainer"></div>
+        </div>
+      </div>
+
+      <!-- Course Progress -->
+      <div class="stu-hub-section" style="margin-top:24px;">
+        <h3 class="stu-hub-title"><span class="wi wi-book"></span> Course Progress</h3>
+        <div class="stu-table-wrapper">
+          <table class="stu-table" id="courseProgressContainer"></table>
+        </div>
+      </div>
+
+      <!-- Upcoming Tests & Exams -->
+      <div class="stu-hub-section" style="margin-top:24px;">
+        <h3 class="stu-hub-title"><span class="wi wi-edit"></span> Upcoming Tests & Exams</h3>
+        <p style="font-size:13px;color:var(--gray-400);margin-bottom:12px;">Prepare for your scheduled assessments</p>
+        <div class="stu-hub-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));" id="upcomingTestsContainer"></div>
+      </div>
+
+      <!-- Revision Reminders -->
+      <div class="stu-hub-section" style="margin-top:24px;">
+        <h3 class="stu-hub-title"><span class="wi wi-wrench"></span> Revision Reminders</h3>
+        <p style="font-size:13px;color:var(--gray-400);margin-bottom:12px;">Spaced repetition — review before you forget</p>
+        <div id="revisionRemindersContainer"></div>
+      </div>
+
+      <!-- Suggested Next Course -->
+      <div class="stu-hub-section" style="margin-top:24px;">
+        <h3 class="stu-hub-title"><span class="wi wi-rocket"></span> Suggested Next Course</h3>
+        <p style="font-size:13px;color:var(--gray-400);margin-bottom:12px;">AI-powered recommendations based on your learning path</p>
+        <div class="stu-hub-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));" id="suggestedCoursesContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="stu-footer">
+    <div class="stu-footer-content">
+      <div class="stu-footer-brand">
+        <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark">
+        <p>We're always in search for talented and motivated people. Don't be shy introduce yourself!</p>
+        <div class="stu-footer-socials">
+          <a href="#">f</a><a href="#">𝕏</a><a href="#"><span class="wi wi-video"></span></a><a href="#">in</a>
+        </div>
+        <button class="stu-footer-contact-btn">Contact With Us →</button>
+      </div>
+      <div class="stu-footer-col"><h4>Useful Links</h4><ul><li><a href="explore.html">Marketplace</a></li><li><a href="#">Kindergarten</a></li><li><a href="#">University</a></li><li><a href="#">GYM Coaching</a></li><li><a href="#">FAQ</a></li><li><a href="#">About Us</a></li><li><a href="#">Privacy policy</a></li></ul></div>
+      <div class="stu-footer-col"><h4>Our Company</h4><ul><li><a href="#">Contact Us</a></li><li><a href="../auth/register.html?role=teacher">Become Teacher</a></li><li><a href="#">Blog</a></li><li><a href="#">Instructor</a></li><li><a href="#">Events</a></li><li><a href="explore.html">Course</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="stu-footer-col"><h4>Get in Touch</h4><ul><li><a href="#">Phone: (406) 555-0120</a></li><li><a href="#">E-mail: admin@wiser.com</a></li></ul><h4 style="margin-top:16px;color:var(--primary-600);">Newsletter</h4><p style="font-size:12px;color:var(--gray-500);margin-bottom:8px;">2000+ Our students are subscribe Around the World.</p><div class="stu-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button><span class="wi wi-mail"></span></button></div><button class="stu-footer-submit-btn">Submit Now</button></div>
+    </div>
+    <div class="stu-footer-bottom">
+      <span>Copyright © 2026 <span class="highlight">Wiser</span>. All Rights Reserved</span>
+      <div><a href="#">Terms of service</a><a href="#">Privacy policy</a><a href="#">Subscription</a><a href="../auth/login.html">Login & Register</a></div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    let allCourses = [];
+    let allQuizResults = [];
+    let allUpcomingTests = [];
+    let allRevisionReminders = [];
+    let allRecommendedCourses = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Auth guard — server-side role verification
+      const __authProfile = await WiserAuth.requireAuth(['student', 'admin']);
+      if (!__authProfile) return;
+
+      try {
+        const { user, profile, displayName, firstName, enrolledCourses } = await StudentPage.init();
+        const [courses, quizResults, studentProfile, notifications, studyData, weakTopics, learningGoals, upcomingTests, revisionReminders, recommendedCourses] = await Promise.all([
+          WiserData.getCourses(),
+          WiserData.getQuizResults(),
+          WiserData.getStudentProfile(),
+          WiserData.getNotifications(),
+          WiserData.getStudyHoursWeekly(),
+          WiserData.getWeakTopics(),
+          WiserData.getLearningGoals(),
+          WiserData.getUpcomingTests(),
+          WiserData.getRevisionReminders(),
+          WiserData.getRecommendedCourses()
+        ]);
+        allCourses = courses || [];
+        allQuizResults = quizResults || [];
+        allUpcomingTests = upcomingTests || [];
+        allRevisionReminders = revisionReminders || [];
+        allRecommendedCourses = recommendedCourses || [];
+        const enrolled = enrolledCourses || allCourses.filter(c => c.enrolled);
+        const prof = studentProfile || {};
+        const studentNotifs = (notifications || []).filter(n => n.role === 'student' || !n.role);
+        const study = studyData || [];
+        const weak = weakTopics || [];
+        const goals = learningGoals || [];
+
+        // Stats
+        document.getElementById('lhStatCourses').textContent = enrolled.length;
+        const avgScore = allQuizResults.length ? Math.round(allQuizResults.reduce((s,q) => s + q.score, 0) / allQuizResults.length) : 0;
+        document.getElementById('lhStatQuiz').textContent = avgScore + '%';
+        document.getElementById('lhStatStudy').textContent = (prof.hoursLearned || prof.hours_learned || 0) + 'h';
+        document.getElementById('lhStatCerts').textContent = prof.coursesCompleted || prof.courses_completed || 0;
+
+        // Notifications
+        const notifContainer = document.getElementById('notifContainer');
+        if (notifContainer) {
+          notifContainer.innerHTML = studentNotifs.map(n => `
+            <div class="stu-notif-item ${n.is_read === false ? 'unread' : ''}" onclick="this.classList.remove('unread')">
+              <div class="stu-notif-icon">${n.icon || '<span class="wi wi-bell"></span>'}</div>
+              <div class="stu-notif-content">
+                <div class="stu-notif-title">${n.title}</div>
+                <div class="stu-notif-text">${n.message}</div>
+                <div class="stu-notif-time">${n.time || ''}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        // Study chart
+        const chartLg = document.getElementById('studyChartLg');
+        if (chartLg && study.length) {
+          const maxH = Math.max(...study.map(d => d.hours), 1);
+          chartLg.innerHTML = `<div class="stu-chart-bars">${study.map(d => `
+            <div class="stu-chart-col">
+              <div class="stu-chart-bar" style="height: ${(d.hours / maxH) * 100}%;">
+                <span class="stu-chart-val">${d.hours}h</span>
+              </div>
+              <span class="stu-chart-label">${d.day}</span>
+            </div>
+          `).join('')}</div>`;
+        }
+
+        // Quiz results
+        const quizContainer = document.getElementById('quizResultsContainer');
+        if (quizContainer) {
+          quizContainer.innerHTML = allQuizResults.map(q => `
+            <div class="stu-quiz-result-item">
+              <div class="stu-quiz-result-info">
+                <h4>${q.title || q.quiz}</h4>
+                <span style="font-size:12px;color:var(--gray-400);">${q.date}</span>
+              </div>
+              <div class="stu-quiz-result-score ${q.score >= 80 ? 'good' : q.score >= 60 ? 'mid' : 'low'}">${q.score}%</div>
+            </div>
+          `).join('');
+        }
+
+        // Weak topics
+        const weakContainer = document.getElementById('weakTopicsContainer');
+        if (weakContainer) {
+          weakContainer.innerHTML = weak.map(t => `
+            <div class="stu-weak-topic">
+              <div class="stu-weak-topic-icon">${t.icon || '<span class="wi wi-pin"></span>'}</div>
+              <div class="stu-weak-topic-info">
+                <h4>${t.topic}</h4>
+                <span style="font-size:12px;color:var(--gray-400);">${t.suggestion || t.course || ''}</span>
+              </div>
+              <div class="stu-weak-topic-bar">
+                <div class="stu-progress-bar-sm">
+                  <div class="stu-progress-fill-sm" style="width: ${t.score}%; background: ${t.score >= 70 ? 'var(--accent)' : t.score >= 50 ? '#9fe870' : '#EF4444'}"></div>
+                </div>
+                <span style="font-size:11px;font-weight:600;color:${t.score >= 70 ? 'var(--accent)' : t.score >= 50 ? '#9fe870' : '#EF4444'}">${t.score}%</span>
+              </div>
+              <button class="stu-practice-btn" onclick="startPractice('${t.topic}', ${t.score})">Practice</button>
+            </div>
+          `).join('');
+        }
+
+        // Learning goals
+        const goalsContainer = document.getElementById('goalsContainer');
+        if (goalsContainer) {
+          goalsContainer.innerHTML = goals.map(g => `
+            <div class="stu-goal-item">
+              <div class="stu-goal-check ${g.completed ? 'checked' : ''}">
+                ${g.completed ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+              </div>
+              <div class="stu-goal-info ${g.completed ? 'done' : ''}">
+                <h4>${g.text || g.title}</h4>
+                <div class="stu-goal-progress">
+                  <div class="stu-progress-bar-sm">
+                    <div class="stu-progress-fill-sm" style="width: ${g.progress || (g.completed ? 100 : 0)}%"></div>
+                  </div>
+                  <span style="font-size:11px;color:var(--gray-400);">${g.progress || (g.completed ? 100 : 0)}%</span>
+                </div>
+              </div>
+              <span class="stu-goal-badge ${g.completed ? 'done' : ''}">${g.deadline || (g.completed ? 'Done' : 'In Progress')}</span>
+            </div>
+          `).join('');
+        }
+
+        // Course progress table
+        const courseProgressContainer = document.getElementById('courseProgressContainer');
+        if (courseProgressContainer) {
+          courseProgressContainer.innerHTML = `
+            <thead>
+              <tr><th>Course</th><th>Progress</th><th>Last Active</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              ${enrolled.map(c => `
+                <tr onclick="window.location.href='course-player.html'" style="cursor:pointer;">
+                  <td>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                      <div style="width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;background:${c.thumbnail || ''};flex-shrink:0;position:relative;overflow:hidden;"><img src="${c.thumbnailImg || c.thumbnail_url || ''}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" onerror="this.style.display='none'"></div>
+                      <div>
+                        <div style="font-weight:600;font-size:14px;">${c.title}</div>
+                        <div style="font-size:12px;color:var(--gray-400);">${c.instructor || c.instructor_name || ''}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="stu-progress-bar-sm" style="width:100px;">
+                        <div class="stu-progress-fill-sm" style="width:${c.progress || 0}%"></div>
+                      </div>
+                      <span style="font-size:13px;font-weight:600;">${c.progress || 0}%</span>
+                    </div>
+                  </td>
+                  <td style="font-size:13px;color:var(--gray-400);">${c.lastActive || c.last_active || '2 days ago'}</td>
+                  <td><span class="stu-status ${(c.progress||0) === 100 ? 'stu-status-success' : (c.progress||0) > 0 ? 'stu-status-processing' : 'stu-status-on-hold'}">${(c.progress||0) === 100 ? 'Completed' : (c.progress||0) > 0 ? 'In Progress' : 'Not Started'}</span></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          `;
+        }
+
+        // Upcoming Tests & Exams
+        renderUpcomingTests();
+
+        // Revision Reminders
+        renderRevisionReminders();
+
+        // Suggested Next Course
+        renderSuggestedCourses();
+      } catch(err) {
+        console.error('Learning hub init error:', err);
+      }
+    });
+
+    function renderUpcomingTests() {
+      const container = document.getElementById('upcomingTestsContainer');
+      if (!container) return;
+      container.innerHTML = allUpcomingTests.map(t => {
+        const diffColor = t.difficulty === 'Advanced' ? '#EF4444' : t.difficulty === 'Intermediate' ? '#9fe870' : '#16A34A';
+        const diffBg = t.difficulty === 'Advanced' ? '#FEF2F2' : t.difficulty === 'Intermediate' ? '#f2fbe8' : '#F0FDF4';
+        return `
+          <div style="background:white;border:1px solid var(--border-light);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;background:var(--gray-50);">${t.icon}</div>
+              <div style="flex:1;">
+                <h4 style="font-size:15px;font-weight:600;margin:0;">${t.title}</h4>
+                <span style="font-size:12px;color:var(--gray-400);">${t.course}</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <span style="font-size:12px;background:var(--gray-50);padding:4px 10px;border-radius:6px;color:var(--gray-600);"><span class="wi wi-calendar"></span> ${t.date}</span>
+              <span style="font-size:12px;background:var(--gray-50);padding:4px 10px;border-radius:6px;color:var(--gray-600);"><span class="wi wi-bell"></span> ${t.time}</span>
+              <span style="font-size:12px;background:var(--gray-50);padding:4px 10px;border-radius:6px;color:var(--gray-600);"><span class="wi wi-help"></span> ${t.questions} questions</span>
+              <span style="font-size:12px;background:var(--gray-50);padding:4px 10px;border-radius:6px;color:var(--gray-600);"><span class="wi wi-stopwatch"></span> ${t.duration}</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+              <span style="font-size:12px;font-weight:600;color:${diffColor};background:${diffBg};padding:4px 10px;border-radius:6px;">${t.difficulty}</span>
+              <button onclick="alert('Reminder set for ${t.title} on ${t.date}!')" style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"><span class="wi wi-bell"></span> Set Reminder</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderRevisionReminders() {
+      const container = document.getElementById('revisionRemindersContainer');
+      if (!container) return;
+      container.innerHTML = allRevisionReminders.map(r => {
+        const urgencyColor = r.urgency === 'high' ? '#EF4444' : r.urgency === 'medium' ? '#9fe870' : '#16A34A';
+        const urgencyBg = r.urgency === 'high' ? '#FEF2F2' : r.urgency === 'medium' ? '#f2fbe8' : '#F0FDF4';
+        const urgencyLabel = r.urgency.charAt(0).toUpperCase() + r.urgency.slice(1);
+        return `
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border-light);border-radius:10px;margin-bottom:8px;background:white;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)'" onmouseout="this.style.boxShadow='none'">
+            <div style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--gray-50);flex-shrink:0;">${r.icon}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                <h4 style="font-size:14px;font-weight:600;margin:0;">${r.topic}</h4>
+                <span style="font-size:11px;font-weight:600;color:${urgencyColor};background:${urgencyBg};padding:2px 8px;border-radius:4px;">${urgencyLabel}</span>
+              </div>
+              <span style="font-size:12px;color:var(--gray-400);">${r.course} · Last studied ${r.lastStudied}</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+                <div class="stu-progress-bar-sm" style="width:120px;height:6px;">
+                  <div class="stu-progress-fill-sm" style="width:${r.retention}%;background:${urgencyColor};"></div>
+                </div>
+                <span style="font-size:12px;font-weight:600;color:${urgencyColor};">${r.retention}% retention</span>
+              </div>
+            </div>
+            <button onclick="alert('Opening review session for ${r.topic}...')" style="background:${urgencyColor};color:white;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.2s;flex-shrink:0;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Review Now</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSuggestedCourses() {
+      const container = document.getElementById('suggestedCoursesContainer');
+      if (!container) return;
+      const courses = allRecommendedCourses.slice(0, 2);
+      container.innerHTML = courses.map(c => `
+        <div style="background:white;border:1px solid var(--border-light);border-radius:12px;overflow:hidden;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+          <div style="height:100px;background:${c.thumbnail};display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;overflow:hidden;"><img src="${c.thumbnailImg}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;"></div>
+          <div style="padding:16px 20px;">
+            <h4 style="font-size:15px;font-weight:600;margin:0 0 4px 0;">${c.title}</h4>
+            <span style="font-size:13px;color:var(--gray-400);">${c.instructor}</span>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+              <span style="font-size:13px;color:#9fe870;">★</span>
+              <span style="font-size:13px;font-weight:600;">${c.rating}</span>
+              <span style="font-size:12px;color:var(--gray-400);">(${c.reviews.toLocaleString()} reviews)</span>
+              <span style="font-size:12px;color:var(--gray-400);margin-left:4px;">· ${c.students.toLocaleString()} students</span>
+            </div>
+            <div style="margin-top:8px;background:#F0F9FF;color:#0369A1;font-size:12px;padding:4px 10px;border-radius:6px;display:inline-block;"><span class="wi wi-bulb"></span> ${c.reason}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;">
+              <div>
+                <span style="font-size:18px;font-weight:700;color:#3d8b1c;">$${c.price}</span>
+                <span style="font-size:13px;color:var(--gray-400);text-decoration:line-through;margin-left:6px;">$${c.originalPrice}</span>
+              </div>
+              <button onclick="window.location.href='explore.html'" style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">View Course</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function startPractice(topic, score) {
+      let modal = document.getElementById('practiceModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'practiceModal';
+        modal.className = 'modal-backdrop';
+        modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
+        document.body.appendChild(modal);
+      }
+      const questions = [
+        { q: 'Which of the following best describes ' + topic + '?', opts: ['A fundamental concept in this field', 'An advanced optimization technique', 'A data preprocessing method', 'A deployment strategy'], correct: 0 },
+        { q: 'What is a common challenge in ' + topic + '?', opts: ['Overfitting', 'Underfitting', 'Both A and B', 'Neither'], correct: 2 },
+        { q: 'Which tool is commonly used for ' + topic + '?', opts: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'All of the above'], correct: 3 }
+      ];
+      let currentQ = 0, correctCount = 0;
+
+      function renderQuestion() {
+        const q = questions[currentQ];
+        modal.innerHTML = `
+          <div class="modal" style="max-width:500px;padding:32px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+              <h3 style="font-size:18px;">Practice: ${topic}</h3>
+              <span style="font-size:13px;color:var(--gray-400);">Q${currentQ + 1}/${questions.length}</span>
+            </div>
+            <div style="background:var(--gray-50);padding:16px;border-radius:10px;margin-bottom:20px;">
+              <p style="font-size:15px;font-weight:500;">${q.q}</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${q.opts.map((o, i) => `
+                <button onclick="checkPracticeAnswer(${i}, ${q.correct})" style="padding:12px 16px;border:1px solid var(--border-light);border-radius:8px;background:white;text-align:left;font-size:14px;cursor:pointer;transition:all 0.2s;">
+                  <strong style="color:#3d8b1c;margin-right:8px;">${String.fromCharCode(65 + i)}.</strong> ${o}
+                </button>
+              `).join('')}
+            </div>
+            <button onclick="document.getElementById('practiceModal').classList.remove('active')" style="margin-top:16px;background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:13px;">Cancel</button>
+          </div>
+        `;
+        modal.classList.add('active');
+      }
+
+      window.checkPracticeAnswer = function(selected, correct) {
+        const btns = modal.querySelectorAll('.modal div[style*="flex-direction"] button');
+        btns.forEach((b, i) => {
+          b.disabled = true;
+          if (i === correct) b.style.background = '#DCFCE7';
+          if (i === selected && selected !== correct) b.style.background = '#FEE2E2';
+        });
+        if (selected === correct) correctCount++;
+        setTimeout(() => {
+          currentQ++;
+          if (currentQ < questions.length) {
+            renderQuestion();
+          } else {
+            const pct = Math.round((correctCount / questions.length) * 100);
+            modal.innerHTML = `
+              <div class="modal" style="max-width:400px;padding:32px;text-align:center;">
+                <div style="font-size:48px;margin-bottom:12px;">${pct >= 70 ? '<span class="wi wi-gift"></span>' : '<span class="wi wi-zap"></span>'}</div>
+                <h3 style="font-size:20px;margin-bottom:8px;">Practice Complete!</h3>
+                <p style="font-size:15px;color:var(--gray-500);margin-bottom:16px;">You scored <strong style="color:#3d8b1c;">${correctCount}/${questions.length}</strong> (${pct}%)</p>
+                <div style="background:var(--gray-50);padding:12px;border-radius:8px;margin-bottom:20px;">
+                  <div class="stu-progress-bar-sm"><div class="stu-progress-fill-sm" style="width:${pct}%;background:${pct >= 70 ? '#16A34A' : '#9fe870'}"></div></div>
+                </div>
+                <button class="btn btn-primary" onclick="document.getElementById('practiceModal').classList.remove('active')">Done</button>
+              </div>
+            `;
+          }
+        }, 1200);
+      };
+
+      renderQuestion();
+    }
+  </script>
+</body>
+</html>

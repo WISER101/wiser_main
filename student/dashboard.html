@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/student.css">
+  <link rel="icon" type="image/png" href="../assets/wiser-logo.png">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+  <!-- Main Navigation -->
+  <nav class="stu-navbar">
+    <a href="../index.html" class="stu-navbar-logo">
+      <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark">
+    </a>
+    <div class="stu-navbar-center">
+      <a href="../index.html">Home</a>
+      <a href="explore.html">Courses</a>
+      <a href="dashboard.html" style="color:var(--primary-600);">Dashboard</a>
+      <a href="schools.html">Schools</a>
+      <a href="learning-hub.html">Learning Hub</a>
+      <a href="shop.html">Marketplace</a>
+    </div>
+    <div class="stu-navbar-right">
+      <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+      <button class="stu-search-btn" onclick="document.querySelector('.stu-search-overlay').classList.toggle('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="stu-notif-badge">3</span>
+      </button>
+      <button class="stu-cart-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="stu-cart-badge">4</span>
+      </button>
+      <a href="explore.html" class="stu-enroll-btn">Enroll Now</a>
+      <button class="stu-mobile-toggle" onclick="document.querySelector('.stu-mobile-menu').classList.toggle('active');document.querySelector('.stu-mobile-overlay').classList.toggle('active')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="stu-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.stu-mobile-menu').classList.remove('active')"></div>
+  <div class="stu-mobile-menu">
+    <a href="../index.html">Home</a>
+    <a href="explore.html">Courses</a>
+    <a href="dashboard.html" style="color:var(--primary-600);font-weight:600;">Dashboard</a>
+    <a href="schools.html">Schools</a>
+    <a href="learning-hub.html">Learning Hub</a>
+    <a href="shop.html">Marketplace</a>
+    <a href="settings.html">Settings</a>
+  </div>
+
+  <!-- Search Overlay -->
+  <div class="stu-search-overlay">
+    <div class="stu-search-overlay-inner">
+      <input type="text" placeholder="Search courses, schools...">
+      <button onclick="document.querySelector('.stu-search-overlay').classList.remove('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header">
+      <h3>Notifications</h3>
+      <button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.textContent='All Read ✓'">Mark all read</button>
+      <button onclick="document.querySelector('.stu-notif-panel').classList.remove('active');document.querySelector('.stu-notif-backdrop').classList.remove('active')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="stu-notif-list" id="notifContainer"></div>
+  </div>
+  <div class="stu-notif-backdrop" onclick="document.querySelector('.stu-notif-panel').classList.remove('active');this.classList.remove('active')"></div>
+
+  <!-- Profile Banner -->
+  <div class="stu-banner">
+    <img src="../assets/Cover-Photo/2.png" alt="" class="stu-banner-img">
+    <div class="stu-banner-content">
+      <div class="stu-banner-avatar" style="background: var(--gradient-primary)"><img src="../assets/Teacher-Student/3.png" alt="Jordan Rivera"></div>
+      <div class="stu-banner-info">
+        <h1 class="stu-banner-name">Jordan Rivera</h1>
+        <div class="stu-banner-meta">
+          <span><span class="wi wi-book"></span> 5 Courses Enrolled</span>
+          <span><span class="wi wi-trophy"></span> 4 Certificates</span>
+        </div>
+      </div>
+      <div class="stu-banner-actions">
+        <a href="../auth/register.html?role=teacher" class="stu-become-instructor-btn">Become an Instructor →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body Layout -->
+  <div class="stu-body">
+    <!-- Sidebar -->
+    <aside class="stu-sidebar">
+      <div class="stu-sidebar-greeting">Welcome, Jordan Rivera</div>
+      <ul class="stu-sidebar-nav">
+        <li><a href="dashboard.html" class="active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard</a></li>
+        <li><a href="my-profile.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          My Profile</a></li>
+        <li><a href="enrolled-courses.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Enrolled Courses</a></li>
+        <li><a href="shop.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Marketplace</a></li>
+        <li><a href="wishlist.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Wishlist</a></li>
+        <li><a href="reviews.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Reviews</a></li>
+        <li><a href="quiz-attempts.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          My Quiz Attempts</a></li>
+        <li><a href="order-history.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Order History</a></li>
+      </ul>
+      <div class="stu-sidebar-divider"></div>
+      <div class="stu-sidebar-section-label">User</div>
+      <ul class="stu-sidebar-nav">
+        <li><a href="settings.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings</a></li>
+        <li><a href="../auth/login.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="stu-main">
+      <!-- Welcome Greeting -->
+      <h2 class="stu-main-title">Welcome back, Jordan! <span class="wi wi-user"></span></h2>
+      <p style="color: var(--gray-500); font-size: 14px; margin-top: -16px; margin-bottom: 20px;">Here's what's happening with your learning today</p>
+
+      <!-- Streak Counter Widget -->
+      <div class="stu-streak-widget" id="streakWidget"></div>
+
+      <!-- Stats Grid -->
+      <div class="stu-stats-grid">
+        <div class="stu-stat-card">
+          <div class="stu-stat-icon" style="background: linear-gradient(135deg, #f2fbe8, #e0f5cc); color: #3d8b1c;"><span class="wi wi-book"></span></div>
+          <div class="stu-stat-value" id="statEnrolled">12</div>
+          <div class="stu-stat-label">Courses Enrolled</div>
+        </div>
+        <div class="stu-stat-card">
+          <div class="stu-stat-icon" style="background: linear-gradient(135deg, #f2fbe8, #e0f5cc); color: #5ab82e;"><span class="wi wi-check"></span></div>
+          <div class="stu-stat-value" id="statCompleted">5</div>
+          <div class="stu-stat-label">Completed</div>
+        </div>
+        <div class="stu-stat-card">
+          <div class="stu-stat-icon" style="background: linear-gradient(135deg, #e0f5cc, #c2eb9e); color: #9fe870;"><span class="wi wi-stopwatch"></span></div>
+          <div class="stu-stat-value" id="statStudyTime">48h</div>
+          <div class="stu-stat-label">Study Time</div>
+        </div>
+        <div class="stu-stat-card">
+          <div class="stu-stat-icon" style="background: linear-gradient(135deg, #f2fbe8, #e0f5cc); color: #2d6914;"><span class="wi wi-trophy"></span></div>
+          <div class="stu-stat-value" id="statXP">1,240</div>
+          <div class="stu-stat-label">XP Earned</div>
+        </div>
+      </div>
+
+      <!-- Weekly Progress Chart -->
+      <div class="stu-progress-chart">
+        <div class="stu-progress-chart-title"><span class="wi wi-trending"></span> Weekly Study Hours</div>
+        <div class="stu-study-chart" id="weeklyChart"></div>
+      </div>
+
+      <!-- Recommended for You -->
+      <div style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 16px; font-weight: 600;"><span class="wi wi-zap"></span> Recommended for You</h3>
+          <a href="explore.html" style="font-size: 13px; color: var(--primary-600); text-decoration: none; font-weight: 500;">View All →</a>
+        </div>
+        <div class="stu-recommended-grid" id="recommendedContainer"></div>
+      </div>
+
+      <!-- Continue Learning -->
+      <div style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 16px; font-weight: 600;">Continue Learning</h3>
+          <a href="enrolled-courses.html" style="font-size: 13px; color: var(--primary-600); text-decoration: none; font-weight: 500;">View All →</a>
+        </div>
+        <div id="continueCoursesContainer" class="stu-courses-grid"></div>
+      </div>
+
+      <!-- Daily Tasks -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 16px; font-weight: 600;">Daily Tasks</h3>
+          <span style="background: var(--primary-50); color: var(--primary-600); padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">+XP</span>
+        </div>
+        <div id="dailyTasksContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="stu-footer">
+    <div class="stu-footer-content">
+      <div class="stu-footer-brand">
+        <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark">
+        <p>We're always in search for talented and motivated people. Don't be shy introduce yourself!</p>
+        <div class="stu-footer-socials">
+          <a href="#">f</a><a href="#">𝕏</a><a href="#"><span class="wi wi-video"></span></a><a href="#">in</a>
+        </div>
+        <button class="stu-footer-contact-btn">Contact With Us →</button>
+      </div>
+      <div class="stu-footer-col"><h4>Useful Links</h4><ul><li><a href="explore.html">Marketplace</a></li><li><a href="#">Kindergarten</a></li><li><a href="#">University</a></li><li><a href="#">GYM Coaching</a></li><li><a href="#">FAQ</a></li><li><a href="#">About Us</a></li><li><a href="#">Privacy policy</a></li></ul></div>
+      <div class="stu-footer-col"><h4>Our Company</h4><ul><li><a href="#">Contact Us</a></li><li><a href="../auth/register.html?role=teacher">Become Teacher</a></li><li><a href="#">Blog</a></li><li><a href="#">Instructor</a></li><li><a href="#">Events</a></li><li><a href="explore.html">Course</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="stu-footer-col"><h4>Get in Touch</h4><ul><li><a href="#">Phone: (406) 555-0120</a></li><li><a href="#">E-mail: admin@wiser.com</a></li></ul><h4 style="margin-top:16px;color:var(--primary-600);">Newsletter</h4><p style="font-size:12px;color:var(--gray-500);margin-bottom:8px;">2000+ Our students are subscribe Around the World.</p><div class="stu-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button><span class="wi wi-mail"></span></button></div><button class="stu-footer-submit-btn">Submit Now</button></div>
+    </div>
+    <div class="stu-footer-bottom">
+      <span>Copyright © 2026 <span class="highlight">Wiser</span>. All Rights Reserved</span>
+      <div><a href="#">Terms of service</a><a href="#">Privacy policy</a><a href="#">Subscription</a><a href="../auth/login.html">Login & Register</a></div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Auth guard — server-side role verification
+      const __authProfile = await WiserAuth.requireAuth(['student', 'admin']);
+      if (!__authProfile) return;
+
+      // ---- Auth guard: redirect if not logged in ----
+      const user = await WiserAuth.getUser();
+      if (!user) { window.location.href = '../auth/login.html'; return; }
+
+      // ---- Load all dashboard data in parallel ----
+      const [profileRaw, enrolledRaw, notificationsRaw, streakRaw, studyRaw, recommendedRaw, dailyRaw] = await Promise.all([
+        WiserData.getStudentProfile().catch(() => null),
+        WiserData.getEnrolledCourses().catch(() => []),
+        WiserData.getNotifications().catch(() => []),
+        WiserData.getStreak().catch(() => ({ current: 0, best: 0, lastStudied: 'Never' })),
+        WiserData.getStudyHoursWeekly().catch(() => []),
+        WiserData.getRecommendedCourses().catch(() => []),
+        WiserData.getDailyTasks().catch(() => [])
+      ]);
+
+      // Ensure no nulls — _load returns null on failure
+      const profile = profileRaw || {};
+      const enrolledCourses = enrolledRaw || [];
+      const notifications = notificationsRaw || [];
+      const streak = streakRaw || { current: 0, best: 0, lastStudied: 'Never' };
+      const studyData = studyRaw || [];
+      const recommendedCourses = recommendedRaw || [];
+      const dailyTasks = dailyRaw || [];
+
+      // ---- Dynamic user info ----
+      const displayName = profile?.name || user.user_metadata?.first_name || 'Student';
+      const firstName = displayName.split(' ')[0];
+      const bannerName = document.querySelector('.stu-banner-name');
+      const sidebarGreeting = document.querySelector('.stu-sidebar-greeting');
+      const mainTitle = document.querySelector('.stu-main-title');
+      if (bannerName) bannerName.textContent = displayName;
+      if (sidebarGreeting) sidebarGreeting.textContent = 'Welcome, ' + displayName;
+      if (mainTitle) mainTitle.textContent = 'Welcome back, ' + firstName + '! <span class="wi wi-user"></span>';
+
+      // Update banner meta
+      const bannerMeta = document.querySelector('.stu-banner-meta');
+      if (bannerMeta) {
+        bannerMeta.innerHTML = `<span><span class="wi wi-book"></span> ${enrolledCourses.length} Courses Enrolled</span><span><span class="wi wi-trophy"></span> ${profile?.coursesCompleted || 0} Certificates</span>`;
+      }
+
+      // ---- Dynamic stats ----
+      document.getElementById('statEnrolled').textContent = enrolledCourses.length;
+      document.getElementById('statCompleted').textContent = profile?.coursesCompleted || 0;
+      document.getElementById('statStudyTime').textContent = (profile?.hoursLearned || 0) + 'h';
+      document.getElementById('statXP').textContent = (profile?.xpTotal || 0).toLocaleString();
+
+      // ---- Notifications ----
+      const notifList = Array.isArray(notifications) ? notifications : [];
+      document.getElementById('notifContainer').innerHTML = notifList.length ? notifList.map(n => `
+        <div class="stu-notif-item ${n.is_read ? '' : 'unread'}" onclick="this.classList.remove('unread')">
+          <div class="stu-notif-icon">${n.icon || '<span class="wi wi-bell"></span>'}</div>
+          <div class="stu-notif-content">
+            <div class="stu-notif-title">${WiserSanitize.e(n.title)}</div>
+            <div class="stu-notif-text">${WiserSanitize.e(n.message || n.body || '')}</div>
+            <div class="stu-notif-time">${n.time || ''}</div>
+          </div>
+        </div>
+      `).join('') : '<p style="text-align:center;color:var(--gray-400);padding:20px;">No notifications yet</p>';
+
+      // Update notification badge count
+      const unreadCount = notifList.filter(n => !n.is_read).length;
+      const badge = document.querySelector('.stu-notif-badge');
+      if (badge) { badge.textContent = unreadCount; badge.style.display = unreadCount ? '' : 'none'; }
+
+      // ---- Streak Widget ----
+      const dayLabels = ['M','T','W','T','F','S','S'];
+      // Build week history from studyData if available
+      const weekHistory = studyData.map(d => d.hours > 0);
+      document.getElementById('streakWidget').innerHTML = `
+        <div class="stu-streak-fire"><span class="wi wi-flame"></span></div>
+        <div class="stu-streak-info">
+          <div class="stu-streak-count">${streak.current}-day streak!</div>
+          <div class="stu-streak-label">Last studied: ${streak.lastStudied}</div>
+          <div class="stu-streak-days">
+            ${weekHistory.length ? weekHistory.map((active, i) => `
+              <div class="stu-streak-day ${active ? 'active' : 'inactive'}">${dayLabels[i] || ''}</div>
+            `).join('') : dayLabels.map(d => `<div class="stu-streak-day inactive">${d}</div>`).join('')}
+          </div>
+        </div>
+        <div class="stu-streak-best">Best: <strong>${streak.best} days</strong></div>
+      `;
+
+      // ---- Weekly Progress Chart ----
+      const chartData = studyData.length ? studyData : [{ day: 'Mon', hours: 0 }, { day: 'Tue', hours: 0 }, { day: 'Wed', hours: 0 }, { day: 'Thu', hours: 0 }, { day: 'Fri', hours: 0 }, { day: 'Sat', hours: 0 }, { day: 'Sun', hours: 0 }];
+      const maxH = Math.max(...chartData.map(d => d.hours), 1);
+      document.getElementById('weeklyChart').innerHTML = `<div class="stu-chart-bars">${chartData.map(d => `
+        <div class="stu-chart-col">
+          <div class="stu-chart-bar" style="height: ${(d.hours / maxH) * 100}%;">
+            <span class="stu-chart-val">${d.hours}h</span>
+          </div>
+          <span class="stu-chart-label">${d.day}</span>
+        </div>
+      `).join('')}</div>`;
+
+      // ---- Recommended Courses ----
+      const recList = Array.isArray(recommendedCourses) ? recommendedCourses : [];
+      document.getElementById('recommendedContainer').innerHTML = recList.length ? recList.map(c => `
+        <div class="stu-rec-card" onclick="window.location.href='explore.html'">
+          <div class="stu-rec-thumb" style="background: ${c.thumbnail || 'var(--gradient-primary)'};position:relative;overflow:hidden;">
+            <img src="${c.thumbnail_url || c.thumbnailImg || ''}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;" onerror="this.style.display='none'">
+          </div>
+          <div class="stu-rec-body">
+            <div class="stu-rec-reason"><span class="wi wi-zap"></span> ${WiserSanitize.e(c.reason || 'Recommended')}</div>
+            <div class="stu-rec-title">${WiserSanitize.e(c.title)}</div>
+            <div class="stu-rec-meta">
+              <span><span class="wi wi-star"></span> ${c.rating || c.avg_rating || 0}</span>
+              <span><span class="wi wi-users"></span> ${Utils.formatNumber(c.students || c.enrollment_count || 0)}</span>
+              <span>${c.level || c.difficulty_level || ''}</span>
+            </div>
+          </div>
+        </div>
+      `).join('') : '<p style="text-align:center;color:var(--gray-400);padding:20px;grid-column:1/-1;">No recommendations yet — start enrolling in courses!</p>';
+
+      // ---- Continue Learning ----
+      const inProgress = enrolledCourses.filter(c => c.progress > 0 && c.progress < 100);
+      document.getElementById('continueCoursesContainer').innerHTML = inProgress.length ? inProgress.slice(0, 3).map(c => `
+        <div class="stu-course-card" onclick="window.location.href='course-player.html'">
+          <div class="stu-course-card-img">
+            <div class="thumb-bg" style="background: ${c.thumbnail || 'var(--gradient-primary)'};position:relative;overflow:hidden;"><img src="${c.thumbnail_url || c.thumbnailImg || ''}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:inherit;" onerror="this.style.display='none'"></div>
+          </div>
+          <div class="stu-course-card-body">
+            <div class="stu-course-card-rating">
+              <span class="stars">${renderStars(c.rating || c.avg_rating || 0)}</span>
+              <span class="count">(${c.reviews || c.review_count || 0} Reviews)</span>
+            </div>
+            <div class="stu-course-card-title">${WiserSanitize.e(c.title)}</div>
+            <div class="stu-course-card-meta">
+              <span><span class="wi wi-book"></span> ${c.lessons || c.lesson_count || 0} Lessons</span>
+              <span><span class="wi wi-users"></span> ${Utils.formatNumber(c.students || c.enrollment_count || 0)} Students</span>
+            </div>
+            <div class="stu-course-card-progress">
+              <span>COMPLETE</span>
+              <span>${c.progress}%</span>
+            </div>
+            <div class="stu-course-card-progress-bar"><div class="fill" style="width: ${c.progress}%"></div></div>
+          </div>
+        </div>
+      `).join('') : '<p style="text-align:center;color:var(--gray-400);padding:20px;">No courses in progress — <a href="explore.html" style="color:var(--primary-600);">explore courses</a></p>';
+
+      // ---- Daily Tasks ----
+      const taskIcons = { lesson: '<span class="wi wi-book"></span>', quiz: '<span class="wi wi-edit"></span>', video: '<span class="wi wi-video"></span>', review: '<span class="wi wi-book"></span>', practice: '<span class="wi wi-zap"></span>' };
+      const tasks = Array.isArray(dailyTasks) ? dailyTasks : [];
+      document.getElementById('dailyTasksContainer').innerHTML = tasks.length ? tasks.map(task => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-100);${task.completed?'opacity:0.5;':''}">
+          <div style="width:24px;height:24px;border-radius:50%;border:2px solid ${task.completed?'var(--primary-600)':'var(--gray-300)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${task.completed?'var(--primary-600)':'transparent'};color:#fff;font-size:12px;">${task.completed?'✓':''}</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:500;${task.completed?'text-decoration:line-through;':''}"> ${taskIcons[task.type]||'<span class="wi wi-clipboard"></span>'} ${WiserSanitize.e(task.title)}</div>
+            <div style="font-size:12px;color:var(--gray-400);">${WiserSanitize.e(task.description || '')}</div>
+          </div>
+          <span style="font-size:12px;font-weight:600;color:var(--primary-600);">+${task.xp || 0} XP</span>
+        </div>
+      `).join('') : '<p style="text-align:center;color:var(--gray-400);padding:20px;">No tasks for today — check back tomorrow!</p>';
+    });
+  </script>
+</body>
+</html>

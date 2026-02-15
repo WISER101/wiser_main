@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schools — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/student.css">
+  <link rel="icon" type="image/png" href="../assets/wiser-logo.png">
+  <style>
+    .school-trending-badge{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#ef4444,#5ab82e);color:#fff;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;z-index:2;box-shadow:0 2px 8px rgba(239,68,68,0.3)}
+    .school-compare-check{position:absolute;top:10px;right:10px;z-index:2;cursor:pointer}
+    .school-compare-check input{display:none}
+    .school-compare-checkmark{display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:rgba(255,255,255,0.85);border-radius:50%;font-size:16px;transition:all .2s;border:2px solid transparent}
+    .school-compare-check input:checked+.school-compare-checkmark{background:#3d8b1c;border-color:#3d8b1c;box-shadow:0 2px 8px rgba(61,139,28,0.4)}
+    .compare-fab{position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#3d8b1c,#2d6914);color:#fff;border:none;padding:14px 28px;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 6px 24px rgba(61,139,28,0.4);display:none;transition:all .3s;animation:fabPulse 2s infinite}
+    .compare-fab:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(61,139,28,0.5)}
+    .compare-fab.visible{display:flex;align-items:center;gap:8px}
+    @keyframes fabPulse{0%,100%{box-shadow:0 6px 24px rgba(61,139,28,0.4)}50%{box-shadow:0 6px 32px rgba(61,139,28,0.6)}}
+    .school-detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:none;justify-content:center;align-items:flex-start;overflow-y:auto;padding:32px 16px;backdrop-filter:blur(4px)}
+    .school-detail-overlay.active{display:flex}
+    .school-detail-modal{background:var(--bg-primary, #fff);border-radius:16px;width:100%;max-width:800px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.3);animation:modalSlideUp .3s ease}
+    @keyframes modalSlideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .school-detail-banner{padding:40px 32px;color:#fff;position:relative;overflow:hidden}
+    .school-detail-banner::after{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:rgba(255,255,255,0.08);border-radius:50%}
+    .school-detail-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.2);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:20px;z-index:2;transition:background .2s}
+    .school-detail-close:hover{background:rgba(255,255,255,0.3)}
+    .school-detail-stats-bar{display:flex;gap:24px;flex-wrap:wrap;margin-top:16px;font-size:13px;opacity:0.9}
+    .school-detail-tabs{display:flex;border-bottom:2px solid var(--gray-100);padding:0 32px;background:var(--gray-50)}
+    .school-detail-tab{padding:14px 20px;font-size:14px;font-weight:600;color:var(--gray-500);border:none;background:none;cursor:pointer;position:relative;transition:color .2s}
+    .school-detail-tab:hover{color:var(--gray-700)}
+    .school-detail-tab.active{color:#3d8b1c}
+    .school-detail-tab.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:#3d8b1c;border-radius:3px 3px 0 0}
+    .school-detail-content{padding:24px 32px;min-height:300px}
+    .teacher-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+    .teacher-card{background:var(--gray-50);border-radius:12px;padding:20px;text-align:center;transition:transform .2s,box-shadow .2s}
+    .teacher-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+    .teacher-card-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:20px;overflow:hidden}
+    .teacher-card-avatar img{width:100%;height:100%;object-fit:cover}
+    .teacher-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+    .teacher-card p{font-size:12px;color:var(--gray-500);margin-bottom:8px}
+    .teacher-card-stats{display:flex;gap:12px;justify-content:center;font-size:12px;color:var(--gray-500)}
+    .review-card{background:var(--gray-50);border-radius:12px;padding:16px;margin-bottom:12px}
+    .review-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .review-card-student{font-weight:600;font-size:14px}
+    .review-card-time{font-size:12px;color:var(--gray-400)}
+    .review-card-stars{color:#9fe870;font-size:14px;margin-bottom:8px}
+    .review-card-text{font-size:13px;color:var(--gray-600);line-height:1.6}
+    .free-lesson-card{display:flex;align-items:center;gap:16px;padding:14px;background:var(--gray-50);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+    .free-lesson-card:hover{background:var(--gray-100);transform:translateX(4px)}
+    .free-lesson-play{width:44px;height:44px;background:linear-gradient(135deg,#3d8b1c,#2d6914);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;flex-shrink:0}
+    .free-lesson-info{flex:1}
+    .free-lesson-title{font-size:14px;font-weight:600;margin-bottom:2px}
+    .free-lesson-meta{font-size:12px;color:var(--gray-500)}
+    .course-card-mini{background:var(--gray-50);border-radius:12px;padding:16px;transition:transform .2s,box-shadow .2s}
+    .course-card-mini:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+    .course-card-mini-thumb{height:80px;border-radius:8px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:32px}
+    .course-card-mini h4{font-size:13px;font-weight:600;margin-bottom:4px;line-height:1.4}
+    .course-card-mini p{font-size:12px;color:var(--gray-500)}
+    .compare-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;display:none;justify-content:center;align-items:flex-start;overflow-y:auto;padding:32px 16px;backdrop-filter:blur(4px)}
+    .compare-overlay.active{display:flex}
+    .compare-modal{background:var(--bg-primary, #fff);border-radius:16px;width:100%;max-width:900px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.3);animation:modalSlideUp .3s ease}
+    .compare-header{background:linear-gradient(135deg,#3d8b1c,#2d6914);padding:24px 32px;color:#fff;display:flex;justify-content:space-between;align-items:center}
+    .compare-grid{display:grid;padding:24px;gap:2px}
+    .compare-row{display:contents}
+    .compare-cell{padding:12px 16px;font-size:14px;text-align:center;border-bottom:1px solid var(--gray-100)}
+    .compare-cell.label{text-align:left;font-weight:600;background:var(--gray-50);color:var(--gray-700)}
+    .compare-cell.header{font-weight:700;font-size:15px;background:var(--gray-50);padding:16px;border-bottom:2px solid var(--gray-200)}
+    @media(max-width:640px){
+      .school-detail-tabs{overflow-x:auto;padding:0 16px}
+      .school-detail-tab{padding:12px 14px;font-size:13px;white-space:nowrap}
+      .school-detail-content{padding:16px}
+      .school-detail-banner{padding:24px 16px}
+      .teacher-card-grid{grid-template-columns:1fr}
+    }
+  </style>
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+
+  <!-- Main Navigation -->
+  <nav class="stu-navbar">
+    <a href="../index.html" class="stu-navbar-logo">
+      <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark">
+    </a>
+    <div class="stu-navbar-center">
+      <a href="../index.html">Home</a>
+      <a href="explore.html">Courses</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="schools.html" style="color:var(--primary-600);">Schools</a>
+      <a href="learning-hub.html">Learning Hub</a>
+      <a href="shop.html">Marketplace</a>
+    </div>
+    <div class="stu-navbar-right">
+      <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+      <button class="stu-search-btn" onclick="document.querySelector('.stu-search-overlay').classList.toggle('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="stu-notif-badge">3</span>
+      </button>
+      <button class="stu-cart-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="stu-cart-badge">4</span>
+      </button>
+      <a href="explore.html" class="stu-enroll-btn">Enroll Now</a>
+      <button class="stu-mobile-toggle" onclick="document.querySelector('.stu-mobile-menu').classList.toggle('active');document.querySelector('.stu-mobile-overlay').classList.toggle('active')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="stu-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.stu-mobile-menu').classList.remove('active')"></div>
+  <div class="stu-mobile-menu">
+    <a href="../index.html">Home</a>
+    <a href="explore.html">Courses</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="schools.html" style="color:var(--primary-600);font-weight:600;">Schools</a>
+    <a href="learning-hub.html">Learning Hub</a>
+    <a href="shop.html">Marketplace</a>
+    <a href="settings.html">Settings</a>
+  </div>
+
+  <!-- Search Overlay -->
+  <div class="stu-search-overlay">
+    <div class="stu-search-overlay-inner">
+      <input type="text" id="globalSearch" placeholder="Search schools...">
+      <button onclick="document.querySelector('.stu-search-overlay').classList.remove('active')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header">
+      <h3>Notifications</h3>
+      <button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.textContent='All Read ✓'">Mark all read</button>
+      <button onclick="document.querySelector('.stu-notif-panel').classList.remove('active');document.querySelector('.stu-notif-backdrop').classList.remove('active')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="stu-notif-list" id="notifContainer"></div>
+  </div>
+  <div class="stu-notif-backdrop" onclick="document.querySelector('.stu-notif-panel').classList.remove('active');this.classList.remove('active')"></div>
+
+  <!-- Profile Banner -->
+  <div class="stu-banner">
+    <img src="../assets/Cover-Photo/2.png" alt="" class="stu-banner-img">
+    <div class="stu-banner-content">
+      <div class="stu-banner-avatar" style="background: var(--gradient-primary)"><img src="../assets/Teacher-Student/3.png" alt="Jordan Rivera"></div>
+      <div class="stu-banner-info">
+        <h1 class="stu-banner-name">Jordan Rivera</h1>
+        <div class="stu-banner-meta">
+          <span><span class="wi wi-book"></span> 5 Courses Enrolled</span>
+          <span><span class="wi wi-trophy"></span> 4 Certificates</span>
+        </div>
+      </div>
+      <div class="stu-banner-actions">
+        <a href="../auth/register.html?role=teacher" class="stu-become-instructor-btn">Become an Instructor →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body Layout -->
+  <div class="stu-body">
+    <!-- Sidebar -->
+    <aside class="stu-sidebar">
+      <div class="stu-sidebar-greeting">Welcome, Jordan Rivera</div>
+      <ul class="stu-sidebar-nav">
+        <li><a href="dashboard.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard</a></li>
+        <li><a href="my-profile.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          My Profile</a></li>
+        <li><a href="enrolled-courses.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Enrolled Courses</a></li>
+        <li><a href="shop.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Marketplace</a></li>
+        <li><a href="wishlist.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Wishlist</a></li>
+        <li><a href="reviews.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Reviews</a></li>
+        <li><a href="quiz-attempts.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          My Quiz Attempts</a></li>
+        <li><a href="order-history.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Order History</a></li>
+      </ul>
+      <div class="stu-sidebar-divider"></div>
+      <div class="stu-sidebar-section-label">User</div>
+      <ul class="stu-sidebar-nav">
+        <li><a href="settings.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings</a></li>
+        <li><a href="../auth/login.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="stu-main">
+      <h2 class="stu-main-title">Schools & Marketplace</h2>
+      <p style="color: var(--gray-500); font-size: 14px; margin-top: -16px; margin-bottom: 20px;">Discover curated learning schools and course bundles</p>
+
+      <!-- Category Pills -->
+      <div class="stu-category-pills">
+        <button class="stu-pill active" onclick="filterSchools(this, 'All')">All Schools</button>
+        <button class="stu-pill" onclick="filterSchools(this, 'Technology')">Technology</button>
+        <button class="stu-pill" onclick="filterSchools(this, 'Design')">Design</button>
+        <button class="stu-pill" onclick="filterSchools(this, 'Business')">Business</button>
+        <button class="stu-pill" onclick="filterSchools(this, 'Creative')">Creative</button>
+      </div>
+
+      <!-- Featured School -->
+      <div class="stu-featured-school">
+        <div class="stu-featured-school-banner" style="background: var(--gradient-primary); border-radius: 12px; padding: 32px; color: #fff; margin-bottom: 24px; position:relative; overflow:hidden;">
+          <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
+          <div style="position:absolute;bottom:-60px;right:60px;width:160px;height:160px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>
+          <div style="position:relative;z-index:1;">
+            <span style="background:rgba(255,255,255,0.2);color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;"><span class="wi wi-star"></span> Featured School</span>
+            <h2 style="font-size:22px;font-weight:700;margin:12px 0 8px;">AI & Machine Learning Academy</h2>
+            <p style="font-size:14px;opacity:0.9;max-width:600px;line-height:1.6;margin-bottom:16px;">Master the future of technology with our comprehensive AI curriculum. From beginner to advanced — taught by industry experts from Google, Meta, and OpenAI.</p>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:13px;margin-bottom:20px;">
+              <span><span class="wi wi-teacher"></span> 12 Expert Instructors</span>
+              <span><span class="wi wi-book"></span> 45 Courses</span>
+              <span><span class="wi wi-users"></span> 15K+ Students</span>
+              <span><span class="wi wi-star"></span> 4.9 Rating</span>
+            </div>
+            <button style="background:#fff;color:#3d8b1c;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;" onclick="showSchoolDetail({name:'AI & Machine Learning Academy',teachers:12,courses:45,students:15000,rating:4.9,price:'Free',description:'Master the future of technology with our comprehensive AI curriculum.',tags:['AI','Machine Learning','Deep Learning','NLP']})">Explore School →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schools Grid -->
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+          <h3 style="font-size:16px;font-weight:600;">All Schools</h3>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <label style="font-size:13px;color:var(--gray-500);font-weight:500;">Sort by:</label>
+            <select onchange="handleSort(this.value)" style="padding:6px 12px;border:1px solid var(--gray-200);border-radius:8px;font-size:13px;background:white;color:var(--gray-700);cursor:pointer;">
+              <option value="default">Default</option>
+              <option value="trending"><span class="wi wi-flame"></span> Trending</option>
+              <option value="rating"><span class="wi wi-star"></span> Rating</option>
+              <option value="students"><span class="wi wi-users"></span> Most Students</option>
+              <option value="courses"><span class="wi wi-book"></span> Most Courses</option>
+            </select>
+            <span style="font-size:13px;color:var(--gray-400);" id="schoolCount"></span>
+          </div>
+        </div>
+        <div class="stu-schools-grid" id="schoolsContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare FAB -->
+  <button class="compare-fab" id="compareFab" onclick="showCompareModal()"><span class="wi wi-scale"></span> Compare (0)</button>
+
+  <!-- School Detail Overlay -->
+  <div class="school-detail-overlay" id="schoolDetailOverlay" onclick="if(event.target===this)this.classList.remove('active')"></div>
+
+  <!-- Compare Overlay -->
+  <div class="compare-overlay" id="compareOverlay" onclick="if(event.target===this)this.classList.remove('active')"></div>
+
+  <!-- Footer -->
+  <footer class="stu-footer">
+    <div class="stu-footer-content">
+      <div class="stu-footer-brand">
+        <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark">
+        <p>We're always in search for talented and motivated people. Don't be shy introduce yourself!</p>
+        <div class="stu-footer-socials">
+          <a href="#">f</a><a href="#">𝕏</a><a href="#"><span class="wi wi-video"></span></a><a href="#">in</a>
+        </div>
+        <button class="stu-footer-contact-btn">Contact With Us →</button>
+      </div>
+      <div class="stu-footer-col"><h4>Useful Links</h4><ul><li><a href="explore.html">Marketplace</a></li><li><a href="#">Kindergarten</a></li><li><a href="#">University</a></li><li><a href="#">GYM Coaching</a></li><li><a href="#">FAQ</a></li><li><a href="#">About Us</a></li><li><a href="#">Privacy policy</a></li></ul></div>
+      <div class="stu-footer-col"><h4>Our Company</h4><ul><li><a href="#">Contact Us</a></li><li><a href="../auth/register.html?role=teacher">Become Teacher</a></li><li><a href="#">Blog</a></li><li><a href="#">Instructor</a></li><li><a href="#">Events</a></li><li><a href="explore.html">Course</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="stu-footer-col"><h4>Get in Touch</h4><ul><li><a href="#">Phone: (406) 555-0120</a></li><li><a href="#">E-mail: admin@wiser.com</a></li></ul><h4 style="margin-top:16px;color:var(--primary-600);">Newsletter</h4><p style="font-size:12px;color:var(--gray-500);margin-bottom:8px;">2000+ Our students are subscribe Around the World.</p><div class="stu-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button><span class="wi wi-mail"></span></button></div><button class="stu-footer-submit-btn">Submit Now</button></div>
+    </div>
+    <div class="stu-footer-bottom">
+      <span>Copyright © 2026 <span class="highlight">Wiser</span>. All Rights Reserved</span>
+      <div><a href="#">Terms of service</a><a href="#">Privacy policy</a><a href="#">Subscription</a><a href="../auth/login.html">Login & Register</a></div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    let selectedSchools = [];
+    let currentSort = 'default';
+    let allSchools = [];
+    let allCourses = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Auth guard — server-side role verification
+      const __authProfile = await WiserAuth.requireAuth(['student', 'admin']);
+      if (!__authProfile) return;
+
+      try {
+        const { user, profile, displayName, firstName } = await StudentPage.init();
+        const [schools, courses, notifications] = await Promise.all([
+          WiserData.getSchools(),
+          WiserData.getCourses(),
+          WiserData.getNotifications()
+        ]);
+        allSchools = schools || [];
+        allCourses = courses || [];
+        const studentNotifs = (notifications || []).filter(n => n.role === 'student' || !n.role);
+
+        // Notifications
+        const notifContainer = document.getElementById('notifContainer');
+        if (notifContainer) {
+          notifContainer.innerHTML = studentNotifs.map(n => `
+            <div class="stu-notif-item ${n.is_read === false ? 'unread' : ''}" onclick="this.classList.remove('unread')">
+              <div class="stu-notif-icon">${n.icon || '<span class="wi wi-bell"></span>'}</div>
+              <div class="stu-notif-content">
+                <div class="stu-notif-title">${n.title}</div>
+                <div class="stu-notif-text">${n.message}</div>
+                <div class="stu-notif-time">${n.time || ''}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+        renderSchools(allSchools);
+      } catch(err) {
+        console.error('Schools page init error:', err);
+      }
+    });
+
+    function sortSchools(schools, sortBy) {
+      const sorted = [...schools];
+      switch(sortBy) {
+        case 'trending': return sorted.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+        case 'rating': return sorted.sort((a, b) => b.rating - a.rating);
+        case 'students': return sorted.sort((a, b) => b.students - a.students);
+        case 'courses': return sorted.sort((a, b) => b.courses - a.courses);
+        default: return sorted;
+      }
+    }
+
+    function handleSort(val) {
+      currentSort = val;
+      const activeTag = document.querySelector('.stu-pill.active')?.textContent?.trim();
+      let schools = allSchools;
+      if (activeTag && activeTag !== 'All Schools') {
+        schools = schools.filter(s => s.tags.some(t => t.toLowerCase().includes(activeTag.toLowerCase())));
+      }
+      renderSchools(sortSchools(schools, val));
+    }
+
+    function renderSchools(schools) {
+      document.getElementById('schoolCount').textContent = schools.length + ' schools';
+      document.getElementById('schoolsContainer').innerHTML = schools.map(s => `
+        <div class="stu-school-card" style="position:relative;">
+          <div class="stu-school-banner" style="background: ${s.banner}; position:relative;overflow:hidden;">
+            <img src="${s.bannerImg}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
+            <div class="stu-school-logo" style="background: ${s.logo};position:relative;overflow:hidden;"><img src="${s.logoImg}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></div>
+            ${s.featured ? '<span class="school-trending-badge"><span class="wi wi-flame"></span> Trending</span>' : ''}
+            <label class="school-compare-check" title="Add to compare" onclick="event.stopPropagation()">
+              <input type="checkbox" onchange="toggleCompare(${s.id}, this.checked)" ${selectedSchools.includes(s.id) ? 'checked' : ''}>
+              <span class="school-compare-checkmark"><span class="wi wi-scale"></span></span>
+            </label>
+          </div>
+          <div class="stu-school-body">
+            <h3 class="stu-school-name">${s.name}</h3>
+            <p class="stu-school-desc">${s.description}</p>
+            <div class="stu-school-tags">
+              ${s.tags.map(t => '<span class="stu-school-tag">' + t + '</span>').join('')}
+            </div>
+            <div class="stu-school-stats">
+              <span><span class="wi wi-teacher"></span> ${s.teachers} Teachers</span>
+              <span><span class="wi wi-book"></span> ${s.courses} Courses</span>
+              <span><span class="wi wi-users"></span> ${Utils.formatNumber(s.students)}</span>
+              <span><span class="wi wi-star"></span> ${s.rating}</span>
+            </div>
+            <div class="stu-school-footer">
+              <span class="stu-school-price">${s.price}</span>
+              <button class="stu-school-btn" onclick="showSchoolDetail(${s.id})">View School →</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterSchools(btn, tag) {
+      document.querySelectorAll('.stu-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      let schools;
+      if (tag === 'All') {
+        schools = allSchools;
+      } else {
+        schools = allSchools.filter(s => s.tags.some(t => t.toLowerCase().includes(tag.toLowerCase())));
+      }
+      renderSchools(sortSchools(schools, currentSort));
+    }
+
+    // ---- Compare Feature ----
+    function toggleCompare(schoolId, checked) {
+      if (checked) {
+        if (selectedSchools.length >= 3) {
+          alert('You can compare up to 3 schools at a time.');
+          renderSchools(sortSchools(getCurrentFilteredSchools(), currentSort));
+          return;
+        }
+        if (!selectedSchools.includes(schoolId)) selectedSchools.push(schoolId);
+      } else {
+        selectedSchools = selectedSchools.filter(id => id !== schoolId);
+      }
+      updateCompareFab();
+    }
+
+    function getCurrentFilteredSchools() {
+      const activeTag = document.querySelector('.stu-pill.active')?.textContent?.trim();
+      if (!activeTag || activeTag === 'All Schools') return allSchools;
+      return allSchools.filter(s => s.tags.some(t => t.toLowerCase().includes(activeTag.toLowerCase())));
+    }
+
+    function updateCompareFab() {
+      const fab = document.getElementById('compareFab');
+      if (selectedSchools.length >= 2) {
+        fab.classList.add('visible');
+        fab.innerHTML = '<span class="wi wi-scale"></span> Compare (' + selectedSchools.length + ')';
+      } else {
+        fab.classList.remove('visible');
+      }
+    }
+
+    function showCompareModal() {
+      const schools = selectedSchools.map(id => allSchools.find(s => s.id === id)).filter(Boolean);
+      if (schools.length < 2) return;
+      const overlay = document.getElementById('compareOverlay');
+      overlay.innerHTML = `
+        <div class="compare-modal">
+          <div class="compare-header">
+            <h2 style="font-size:20px;font-weight:700;"><span class="wi wi-scale"></span> Compare Schools</h2>
+            <button onclick="document.getElementById('compareOverlay').classList.remove('active')" style="background:rgba(255,255,255,0.2);border:none;color:white;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:20px;">&times;</button>
+          </div>
+          <div class="compare-grid" style="grid-template-columns:160px repeat(${schools.length},1fr);">
+            <div class="compare-row">
+              <div class="compare-cell label" style="border-bottom:2px solid var(--gray-200);"></div>
+              ${schools.map(s => '<div class="compare-cell header"><div style="width:48px;height:48px;border-radius:12px;background:' + s.logo + ';display:flex;align-items:center;justify-content:center;color:white;font-weight:700;margin:0 auto 8px;">' + s.initial + '</div>' + s.name + '</div>').join('')}
+            </div>
+            <div class="compare-row"><div class="compare-cell label"><span class="wi wi-star"></span> Rating</div>${schools.map(s => '<div class="compare-cell"><span style="font-size:18px;font-weight:700;color:#9fe870;">' + s.rating + '</span></div>').join('')}</div>
+            <div class="compare-row"><div class="compare-cell label"><span class="wi wi-teacher"></span> Teachers</div>${schools.map(s => '<div class="compare-cell"><span style="font-size:18px;font-weight:700;">' + s.teachers + '</span></div>').join('')}</div>
+            <div class="compare-row"><div class="compare-cell label"><span class="wi wi-book"></span> Courses</div>${schools.map(s => '<div class="compare-cell"><span style="font-size:18px;font-weight:700;">' + s.courses + '</span></div>').join('')}</div>
+            <div class="compare-row"><div class="compare-cell label"><span class="wi wi-users"></span> Students</div>${schools.map(s => '<div class="compare-cell"><span style="font-size:18px;font-weight:700;">' + Utils.formatNumber(s.students) + '</span></div>').join('')}</div>
+            <div class="compare-row"><div class="compare-cell label"><span class="wi wi-edit"></span> Reviews</div>${schools.map(s => '<div class="compare-cell"><span style="font-size:18px;font-weight:700;">' + Utils.formatNumber(s.reviews) + '</span></div>').join('')}</div>
+            <div class="compare-row"><div class="compare-cell label"><span class="wi wi-dollar"></span> Price</div>${schools.map(s => '<div class="compare-cell"><span style="font-weight:600;color:#3d8b1c;">' + s.price + '</span></div>').join('')}</div>
+            <div class="compare-row"><div class="compare-cell label"><span class="wi wi-tag"></span> Tags</div>${schools.map(s => '<div class="compare-cell"><div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">' + s.tags.map(t => '<span style="background:var(--gray-100);padding:2px 8px;border-radius:12px;font-size:11px;">' + t + '</span>').join('') + '</div></div>').join('')}</div>
+            <div class="compare-row"><div class="compare-cell label"><span class="wi wi-flame"></span> Trending</div>${schools.map(s => '<div class="compare-cell">' + (s.featured ? '<span class="wi wi-check"></span> Yes' : '—') + '</div>').join('')}</div>
+            <div class="compare-row"><div class="compare-cell label"></div>${schools.map(s => "<div class='compare-cell'><button class='stu-school-btn' style='width:100%;' onclick=\"document.getElementById('compareOverlay').classList.remove('active');showSchoolDetail(" + s.id + ")\">View →</button></div>").join('')}</div>
+          </div>
+        </div>
+      `;
+      overlay.classList.add('active');
+    }
+
+    // ---- School Detail Modal ----
+    function getSchoolDetailData(school) {
+      const ts = allSchools.find(t => t.id === school.id);
+      if (ts) return ts;
+      const sampleReviews = [
+        { student: "Alex M.", rating: 5, text: "Absolutely love this school. Well-structured content and amazing instructors.", time: "2 days ago" },
+        { student: "Jessica L.", rating: 5, text: "Best investment in my education. The community is incredibly supportive.", time: "1 week ago" },
+        { student: "Ryan T.", rating: 4, text: "Great content and delivery. Would recommend to anyone looking to learn.", time: "2 weeks ago" },
+        { student: "Maria S.", rating: 5, text: "Transformed my career. The practical projects really prepared me.", time: "3 weeks ago" }
+      ];
+      const names = ["Dr. Sarah Chen","Alex Thompson","Maria Garcia","David Kim"];
+      const roles = ["Lead Instructor","Senior Instructor","Course Creator","Teaching Assistant"];
+      const avatars = ["SC","AT","MG","DK"];
+      const bgs = ["linear-gradient(135deg,#3d8b1c,#2d6914)","linear-gradient(135deg,#a18cd1,#fbc2eb)","linear-gradient(135deg,#4facfe,#00f2fe)","linear-gradient(135deg,#a1c4fd,#c2e9fb)"];
+      const sampleTeachers = [];
+      for (let i = 0; i < Math.min(school.teachers || 4, 4); i++) {
+        sampleTeachers.push({ name: names[i], role: roles[i], avatar: avatars[i], avatarBg: bgs[i], courses: Math.max(1,Math.floor((school.courses||10)/(school.teachers||4))), students: Math.floor((school.students||1000)/(school.teachers||4)) });
+      }
+      return {
+        about: (school.description||'') + ' Our school brings together ' + (school.teachers||0) + ' expert instructors offering ' + (school.courses||0) + ' comprehensive courses to over ' + Utils.formatNumber(school.students||0) + ' students worldwide.',
+        teachers: sampleTeachers,
+        reviews: sampleReviews,
+        freeLessons: [
+          { title: "Introduction & Getting Started", duration: "15:00", type: "video", courseTitle: (school.tags?school.tags[0]:'Course') + " Fundamentals" },
+          { title: "Core Concepts Overview", duration: "22:30", type: "video", courseTitle: (school.tags?school.tags[0]:'Course') + " Masterclass" }
+        ],
+        courseIds: []
+      };
+    }
+
+    function showSchoolDetail(schoolInput) {
+      let school;
+      if (typeof schoolInput === 'number') {
+        school = allSchools.find(s => s.id === schoolInput);
+        if (!school) return;
+      } else {
+        school = typeof schoolInput === 'string' ? JSON.parse(schoolInput) : schoolInput;
+        if (!school.id) school.id = 0;
+      }
+      const detail = getSchoolDetailData(school);
+      const relatedCourses = allCourses.filter(c =>
+        school.tags && school.tags.some(tag =>
+          c.category.toLowerCase().includes(tag.toLowerCase()) ||
+          tag.toLowerCase().includes(c.category.toLowerCase().split(' ')[0])
+        )
+      ).slice(0, 6);
+      const overlay = document.getElementById('schoolDetailOverlay');
+      overlay.innerHTML = `
+        <div class="school-detail-modal">
+          <div class="school-detail-banner" style="background:${school.banner || 'linear-gradient(135deg,#667eea,#764ba2)'};position:relative;overflow:hidden;">
+            ${school.bannerImg ? '<img src="' + school.bannerImg + '" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:0.3;">' : ''}
+            <button class="school-detail-close" onclick="document.getElementById('schoolDetailOverlay').classList.remove('active')">&times;</button>
+            <div style="position:relative;z-index:1;">
+              ${school.featured ? '<span class="school-trending-badge" style="position:static;display:inline-block;margin-bottom:12px;"><span class="wi wi-flame"></span> Trending</span>' : ''}
+              <h2 style="font-size:24px;font-weight:800;margin-bottom:8px;">${school.name}</h2>
+              <p style="opacity:0.9;font-size:14px;line-height:1.6;max-width:600px;">${school.description||''}</p>
+              <div class="school-detail-stats-bar">
+                <span><span class="wi wi-teacher"></span> ${school.teachers} Teachers</span>
+                <span><span class="wi wi-book"></span> ${school.courses} Courses</span>
+                <span><span class="wi wi-users"></span> ${typeof school.students==='number' ? Utils.formatNumber(school.students) : school.students} Students</span>
+                <span><span class="wi wi-star"></span> ${school.rating} (${typeof school.reviews==='number' ? Utils.formatNumber(school.reviews) : '0'} reviews)</span>
+                <span><span class="wi wi-dollar"></span> ${school.price||'Free'}</span>
+              </div>
+            </div>
+          </div>
+          <div class="school-detail-tabs" id="schoolTabs">
+            <button class="school-detail-tab active" onclick="switchSchoolTab(this,'about')">About</button>
+            <button class="school-detail-tab" onclick="switchSchoolTab(this,'teachers')">Teachers</button>
+            <button class="school-detail-tab" onclick="switchSchoolTab(this,'courses')">Courses</button>
+            <button class="school-detail-tab" onclick="switchSchoolTab(this,'reviews')">Reviews</button>
+            <button class="school-detail-tab" onclick="switchSchoolTab(this,'freelessons')">Free Lessons</button>
+          </div>
+          <div class="school-detail-content" id="schoolTabContent">
+            ${renderAboutTab(school, detail)}
+          </div>
+          <div style="padding:16px 32px 24px;border-top:1px solid var(--gray-100);display:flex;gap:12px;">
+            <button class="btn btn-primary" style="flex:1;" onclick="window.location.href='explore.html'">Browse All Courses</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('schoolDetailOverlay').classList.remove('active')">Close</button>
+          </div>
+        </div>
+      `;
+      overlay._school = school;
+      overlay._detail = detail;
+      overlay._relatedCourses = relatedCourses;
+      overlay.classList.add('active');
+    }
+
+    function switchSchoolTab(tabBtn, tabName) {
+      document.querySelectorAll('.school-detail-tab').forEach(t => t.classList.remove('active'));
+      tabBtn.classList.add('active');
+      const overlay = document.getElementById('schoolDetailOverlay');
+      const content = document.getElementById('schoolTabContent');
+      switch(tabName) {
+        case 'about': content.innerHTML = renderAboutTab(overlay._school, overlay._detail); break;
+        case 'teachers': content.innerHTML = renderTeachersTab(overlay._detail); break;
+        case 'courses': content.innerHTML = renderCoursesTab(overlay._relatedCourses); break;
+        case 'reviews': content.innerHTML = renderReviewsTab(overlay._school, overlay._detail); break;
+        case 'freelessons': content.innerHTML = renderFreeLessonsTab(overlay._detail); break;
+      }
+    }
+
+    function renderAboutTab(school, detail) {
+      return `
+        <div style="margin-bottom:24px;">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">About ${school.name}</h3>
+          <p style="font-size:14px;color:var(--gray-600);line-height:1.8;">${detail.about || school.description}</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:24px;">
+          <div style="text-align:center;padding:16px;background:var(--gray-50);border-radius:12px;">
+            <div style="font-size:24px;font-weight:800;color:#3d8b1c;">${school.teachers}</div>
+            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">Teachers</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--gray-50);border-radius:12px;">
+            <div style="font-size:24px;font-weight:800;color:#3d8b1c;">${school.courses}</div>
+            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">Courses</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--gray-50);border-radius:12px;">
+            <div style="font-size:24px;font-weight:800;color:#3d8b1c;">${typeof school.students==='number' ? Utils.formatNumber(school.students) : school.students}</div>
+            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">Students</div>
+          </div>
+          <div style="text-align:center;padding:16px;background:var(--gray-50);border-radius:12px;">
+            <div style="font-size:24px;font-weight:800;color:#9fe870;"><span class="wi wi-star"></span> ${school.rating}</div>
+            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">Rating</div>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-size:14px;font-weight:600;margin-bottom:8px;">Topics Covered</h4>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            ${(school.tags||[]).map(t => '<span style="background:var(--gray-100);padding:6px 14px;border-radius:20px;font-size:13px;color:var(--gray-600);">' + t + '</span>').join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTeachersTab(detail) {
+      if (!detail.teachers || !detail.teachers.length) {
+        return '<div style="text-align:center;padding:40px;color:var(--gray-400);"><p style="font-size:48px;margin-bottom:12px;"><span class="wi wi-teacher"></span></p><p>Teacher info coming soon.</p></div>';
+      }
+      return '<div class="teacher-card-grid">' + detail.teachers.map(t => '<div class="teacher-card"><div class="teacher-card-avatar" style="background:' + (t.avatarBg||'var(--gradient-primary)') + '">' + (t.profileImage ? '<img src="' + t.profileImage + '" alt="' + t.name + '">' : (t.avatar||t.name.charAt(0))) + '</div><h4>' + t.name + '</h4><p>' + t.role + '</p><div class="teacher-card-stats"><span><span class="wi wi-book"></span> ' + t.courses + ' courses</span><span><span class="wi wi-users"></span> ' + Utils.formatNumber(t.students) + '</span></div></div>').join('') + '</div>';
+    }
+
+    function renderCoursesTab(courses) {
+      if (!courses || !courses.length) {
+        return '<div style="text-align:center;padding:40px;color:var(--gray-400);"><p style="font-size:48px;margin-bottom:12px;"><span class="wi wi-book"></span></p><p>No matching courses found.</p></div>';
+      }
+      return '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">' + courses.map(c => '<div class="course-card-mini"><div class="course-card-mini-thumb" style="background:' + c.thumbnail + ';">' + c.icon + '</div><h4>' + c.title + '</h4><p>' + c.instructor + ' · <span class="wi wi-star"></span> ' + c.rating + '</p><p style="font-weight:600;color:#3d8b1c;margin-top:4px;">$' + c.price + '</p></div>').join('') + '</div>';
+    }
+
+    function renderReviewsTab(school, detail) {
+      const reviews = detail.reviews || [];
+      const ratingNum = school.rating || 0;
+      const reviewCount = typeof school.reviews === 'number' ? school.reviews : reviews.length;
+      let html = '<div style="display:flex;align-items:center;gap:20px;margin-bottom:24px;padding:20px;background:var(--gray-50);border-radius:12px;">';
+      html += '<div style="text-align:center;"><div style="font-size:40px;font-weight:800;color:#9fe870;">' + ratingNum + '</div>';
+      html += '<div style="color:#9fe870;font-size:16px;">' + '★'.repeat(Math.round(ratingNum)) + '☆'.repeat(5 - Math.round(ratingNum)) + '</div>';
+      html += '<div style="font-size:13px;color:var(--gray-500);margin-top:4px;">' + Utils.formatNumber(reviewCount) + ' reviews</div></div>';
+      html += '<div style="flex:1;">';
+      [5,4,3,2,1].forEach(function(star) {
+        const pct = star===5?68:star===4?22:star===3?7:star===2?2:1;
+        html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="font-size:12px;width:16px;text-align:right;">' + star + '★</span><div style="flex:1;height:8px;background:var(--gray-200);border-radius:4px;overflow:hidden;"><div style="height:100%;background:#9fe870;border-radius:4px;width:' + pct + '%;"></div></div><span style="font-size:12px;color:var(--gray-400);width:32px;">' + pct + '%</span></div>';
+      });
+      html += '</div></div>';
+      if (!reviews.length) {
+        html += '<p style="text-align:center;color:var(--gray-400);padding:20px;">No detailed reviews yet.</p>';
+      } else {
+        reviews.forEach(function(r) {
+          html += '<div class="review-card"><div class="review-card-header"><span class="review-card-student">' + r.student + '</span><span class="review-card-time">' + r.time + '</span></div><div class="review-card-stars">' + '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating) + '</div><div class="review-card-text">' + r.text + '</div></div>';
+        });
+      }
+      return html;
+    }
+
+    function renderFreeLessonsTab(detail) {
+      const lessons = detail.freeLessons || [];
+      if (!lessons.length) {
+        return '<div style="text-align:center;padding:40px;color:var(--gray-400);"><p style="font-size:48px;margin-bottom:12px;"><span class="wi wi-clapperboard"></span></p><p>No free lessons available yet.</p></div>';
+      }
+      let html = '<h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Free Lesson Previews</h3>';
+      html += '<p style="font-size:13px;color:var(--gray-500);margin-bottom:16px;">Watch these lessons for free to preview the teaching style.</p>';
+      lessons.forEach(function(l) {
+        html += '<div class="free-lesson-card"><div class="free-lesson-play"><span class="wi wi-video"></span></div><div class="free-lesson-info"><div class="free-lesson-title">' + l.title + '</div><div class="free-lesson-meta"><span class="wi wi-link"></span> ' + l.courseTitle + ' · <span class="wi wi-stopwatch"></span> ' + l.duration + ' · <span class="wi wi-clapperboard"></span> ' + l.type + '</div></div></div>';
+      });
+      return html;
+    }
+  </script>
+</body>
+</html>

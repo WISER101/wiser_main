@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users — Admin — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar admin-sidebar">
+      <div class="sidebar-logo">
+        <a href="dashboard.html">
+          <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-icon logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-icon logo-dark">
+        </a>
+        <span class="admin-badge">Admin</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Overview</div>
+        <a href="dashboard.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a>
+        <a href="users.html" class="sidebar-link active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Users</a>
+        <div class="sidebar-nav-label">Content</div>
+        <a href="courses.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Courses</a>
+        <a href="reports.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Reports</a>
+        <div class="sidebar-nav-label">Finance</div>
+        <a href="revenue.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Revenue</a>
+        <div class="sidebar-nav-label">System</div>
+        <a href="settings.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09"/></svg> Settings</a>
+      </nav>
+      <div class="sidebar-user">
+        <div class="avatar avatar-sm" style="background: linear-gradient(135deg, #DC2626, #5ab82e)">A</div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name">Admin</span>
+          <span class="sidebar-user-role">Super Admin</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" onclick="document.body.classList.remove('sidebar-open')"></div>
+
+    <main class="main-content">
+      <header class="top-header">
+        <button class="sidebar-toggle" onclick="document.body.classList.toggle('sidebar-open')">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <h2 class="page-title">User Management</h2>
+        <div style="flex:1"></div>
+        <div class="header-actions">
+          <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" style="background:none;border:none;cursor:pointer;padding:6px;"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+          <button class="icon-btn" onclick="WiserAuth.logout()" title="Logout">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- User Stats Row -->
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card compact">
+            <div class="admin-stat-info">
+              <div class="admin-stat-value">52,847</div>
+              <div class="admin-stat-label">Total Users</div>
+            </div>
+          </div>
+          <div class="admin-stat-card compact">
+            <div class="admin-stat-info">
+              <div class="admin-stat-value">48,210</div>
+              <div class="admin-stat-label">Students</div>
+            </div>
+          </div>
+          <div class="admin-stat-card compact">
+            <div class="admin-stat-info">
+              <div class="admin-stat-value">4,584</div>
+              <div class="admin-stat-label">Teachers</div>
+            </div>
+          </div>
+          <div class="admin-stat-card compact">
+            <div class="admin-stat-info">
+              <div class="admin-stat-value">53</div>
+              <div class="admin-stat-label">Admins</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters & Search -->
+        <div class="card">
+          <div class="admin-toolbar">
+            <div class="admin-search-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" placeholder="Search users by name or email..." id="userSearch" oninput="filterUsers()">
+            </div>
+            <div class="admin-filters">
+              <select class="form-select form-select-sm" id="roleFilter" onchange="filterUsers()">
+                <option value="all">All Roles</option>
+                <option value="student">Students</option>
+                <option value="teacher">Teachers</option>
+                <option value="admin">Admins</option>
+              </select>
+              <select class="form-select form-select-sm" id="statusFilter" onchange="filterUsers()">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="suspended">Suspended</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div class="admin-table-wrap">
+            <table class="data-table" id="usersTable">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody"></tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="admin-pagination">
+            <span class="admin-pagination-info">Showing 1-20 of 52,847 users</span>
+            <div class="admin-pagination-btns">
+              <button class="btn btn-ghost btn-sm" disabled>&laquo; Prev</button>
+              <button class="btn btn-primary btn-sm">1</button>
+              <button class="btn btn-ghost btn-sm">2</button>
+              <button class="btn btn-ghost btn-sm">3</button>
+              <span class="admin-pagination-dots">...</span>
+              <button class="btn btn-ghost btn-sm">2643</button>
+              <button class="btn btn-ghost btn-sm">Next &raquo;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="admin-toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/admin.js"></script>
+  <script>
+    // Generate user data for the table
+    const sampleUsers = [
+      { id: 1, name: 'Jordan Rivera', email: 'jordan@example.com', role: 'student', joined: '2026-01-15', status: 'active', avatar: 'JR', color: '#3d8b1c' },
+      { id: 2, name: 'Sarah Chen', email: 'sarah@example.com', role: 'teacher', joined: '2025-11-20', status: 'active', avatar: 'SC', color: '#2d6914' },
+      { id: 3, name: 'Marcus Johnson', email: 'marcus@example.com', role: 'student', joined: '2026-02-01', status: 'active', avatar: 'MJ', color: '#5ab82e' },
+      { id: 4, name: 'Emily Watson', email: 'emily@example.com', role: 'teacher', joined: '2025-09-10', status: 'active', avatar: 'EW', color: '#9fe870' },
+      { id: 5, name: 'Alex Kim', email: 'alex@example.com', role: 'student', joined: '2026-02-08', status: 'pending', avatar: 'AK', color: '#1e4a0d' },
+      { id: 6, name: 'David Park', email: 'david@example.com', role: 'student', joined: '2026-01-28', status: 'active', avatar: 'DP', color: '#5ab82e' },
+      { id: 7, name: 'Lisa Zhang', email: 'lisa@example.com', role: 'teacher', joined: '2025-12-05', status: 'active', avatar: 'LZ', color: '#14B8A6' },
+      { id: 8, name: 'Tom Brown', email: 'tom@example.com', role: 'student', joined: '2026-02-10', status: 'active', avatar: 'TB', color: '#9fe870' },
+      { id: 9, name: 'Nina Patel', email: 'nina@example.com', role: 'student', joined: '2026-01-05', status: 'suspended', avatar: 'NP', color: '#EF4444' },
+      { id: 10, name: 'Chris Lee', email: 'chris@example.com', role: 'admin', joined: '2025-06-15', status: 'active', avatar: 'CL', color: '#5ab82e' },
+      { id: 11, name: 'Mia Thompson', email: 'mia@example.com', role: 'student', joined: '2026-02-09', status: 'active', avatar: 'MT', color: '#06B6D4' },
+      { id: 12, name: 'Ryan Garcia', email: 'ryan@example.com', role: 'teacher', joined: '2025-10-22', status: 'active', avatar: 'RG', color: '#84CC16' },
+      { id: 13, name: 'Sophie Williams', email: 'sophie@example.com', role: 'student', joined: '2026-01-20', status: 'active', avatar: 'SW', color: '#A855F7' },
+      { id: 14, name: 'James Wilson', email: 'james@example.com', role: 'student', joined: '2026-02-03', status: 'pending', avatar: 'JW', color: '#3B82F6' },
+      { id: 15, name: 'Olivia Davis', email: 'olivia@example.com', role: 'teacher', joined: '2025-08-18', status: 'active', avatar: 'OD', color: '#F43F5E' },
+    ];
+
+    function renderUsers(users) {
+      const tbody = document.getElementById('usersTableBody');
+      tbody.innerHTML = users.map(u => `
+        <tr>
+          <td><input type="checkbox" class="user-check"></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="avatar avatar-sm" style="background:${u.color};font-size:11px;width:32px;height:32px;">${u.avatar}</div>
+              <span style="font-weight:500;">${u.name}</span>
+            </div>
+          </td>
+          <td style="color:var(--text-secondary)">${u.email}</td>
+          <td><span class="badge badge-${u.role === 'admin' ? 'warning' : u.role === 'teacher' ? 'accent' : 'primary'}">${u.role}</span></td>
+          <td style="color:var(--text-secondary)">${u.joined}</td>
+          <td><span class="admin-status-pill ${u.status}">${u.status}</span></td>
+          <td>
+            <div class="admin-row-actions">
+              <button class="admin-row-btn" title="Edit" onclick="editUser(${u.id})">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="admin-row-btn danger" title="${u.status === 'suspended' ? 'Reactivate' : 'Suspend'}" onclick="toggleUserStatus(${u.id})">
+                ${u.status === 'suspended' ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'}
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterUsers() {
+      const search = document.getElementById('userSearch').value.toLowerCase();
+      const role = document.getElementById('roleFilter').value;
+      const status = document.getElementById('statusFilter').value;
+      const filtered = sampleUsers.filter(u => {
+        const matchSearch = u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search);
+        const matchRole = role === 'all' || u.role === role;
+        const matchStatus = status === 'all' || u.status === status;
+        return matchSearch && matchRole && matchStatus;
+      });
+      renderUsers(filtered);
+    }
+
+    function toggleSelectAll() {
+      const checked = document.getElementById('selectAll').checked;
+      document.querySelectorAll('.user-check').forEach(c => c.checked = checked);
+    }
+
+    renderUsers(sampleUsers);
+  </script>
+
+  <!-- Edit User Modal -->
+  <div class="admin-modal-overlay" id="editUserModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3>Edit User</h3>
+        <button class="admin-modal-close" onclick="hideModal('editUserModal')">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <input type="hidden" id="editUserId">
+        <div class="admin-form-group" style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:block;">Full Name</label>
+          <input type="text" id="editUserName" style="width:100%;padding:8px 12px;border:1px solid var(--border-light);border-radius:8px;font-size:14px;">
+        </div>
+        <div class="admin-form-group" style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:block;">Email</label>
+          <input type="email" id="editUserEmail" style="width:100%;padding:8px 12px;border:1px solid var(--border-light);border-radius:8px;font-size:14px;">
+        </div>
+        <div class="admin-form-group" style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:block;">Role</label>
+          <select id="editUserRole" style="width:100%;padding:8px 12px;border:1px solid var(--border-light);border-radius:8px;font-size:14px;">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="admin-form-group" style="margin-bottom:12px;">
+          <label style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;display:block;">Status</label>
+          <select id="editUserStatus" style="width:100%;padding:8px 12px;border:1px solid var(--border-light);border-radius:8px;font-size:14px;">
+            <option value="active">Active</option>
+            <option value="suspended">Suspended</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-modal-footer" style="display:flex;justify-content:flex-end;gap:8px;padding:16px 24px;border-top:1px solid var(--border-light);">
+        <button class="btn btn-ghost" onclick="hideModal('editUserModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveUserEdit()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function editUser(id) {
+      const user = sampleUsers.find(u => u.id === id);
+      if (!user) return;
+      document.getElementById('editUserId').value = id;
+      document.getElementById('editUserName').value = user.name;
+      document.getElementById('editUserEmail').value = user.email;
+      document.getElementById('editUserRole').value = user.role;
+      document.getElementById('editUserStatus').value = user.status;
+      showModal('editUserModal');
+    }
+
+    function saveUserEdit() {
+      const id = parseInt(document.getElementById('editUserId').value);
+      const user = sampleUsers.find(u => u.id === id);
+      if (!user) return;
+      user.name = document.getElementById('editUserName').value;
+      user.email = document.getElementById('editUserEmail').value;
+      user.role = document.getElementById('editUserRole').value;
+      user.status = document.getElementById('editUserStatus').value;
+      user.avatar = user.name.split(' ').map(w => w[0]).join('');
+      hideModal('editUserModal');
+      filterUsers();
+      showToast(`User "${user.name}" updated successfully!`);
+    }
+
+    function toggleUserStatus(id) {
+      const user = sampleUsers.find(u => u.id === id);
+      if (!user) return;
+      if (user.status === 'suspended') {
+        user.status = 'active';
+        showToast(`User "${user.name}" reactivated!`);
+      } else {
+        user.status = 'suspended';
+        showToast(`User "${user.name}" suspended`, 'warning');
+      }
+      filterUsers();
+    }
+  </script>
+<script>if(typeof ThemeManager==='undefined'){var ThemeManager={toggle:function(){var c=document.documentElement.getAttribute('data-theme')||'light';var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('wiser_theme',n);document.querySelectorAll('.theme-toggle').forEach(function(b){var s=b.querySelector('.icon-sun');var m=b.querySelector('.icon-moon');if(s&&m){s.style.display=n==='dark'?'block':'none';m.style.display=n==='dark'?'none':'block'}});document.querySelectorAll('.logo-light').forEach(function(e){e.style.display=n==='dark'?'none':'block'});document.querySelectorAll('.logo-dark').forEach(function(e){e.style.display=n==='dark'?'block':'none'})}}}</script>
+</body>
+</html>

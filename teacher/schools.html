@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schools — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/teacher.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+<div class="teacher-page">
+
+  <!-- ========== TOP NAVBAR ========== -->
+  <nav class="teacher-topbar">
+    <div class="teacher-topbar-inner">
+      <a href="../index.html" class="teacher-topbar-logo"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"></a>
+      <div class="teacher-topbar-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="schools.html">Schools</a>
+        <a href="creator-hub.html">My Courses</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="community.html">Community</a>
+        <a href="payout.html">Payout</a>
+      </div>
+      <div class="teacher-topbar-actions">
+        <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" ><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')" ><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="stu-notif-badge">2</span></button>
+        <a href="course-builder.html" class="btn btn-primary btn-sm">Create a New Course &rarr;</a>
+        <button class="teacher-topbar-toggle" onclick="document.querySelector('.teacher-mobile-menu').classList.toggle('active');document.querySelector('.teacher-mobile-overlay').classList.toggle('active')" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Teacher Mobile Menu -->
+  <div class="teacher-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.teacher-mobile-menu').classList.remove('active')"></div>
+  <div class="teacher-mobile-menu">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="schools.html">Schools</a>
+    <a href="creator-hub.html">My Courses</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="community.html">Community</a>
+    <a href="payout.html">Payout</a>
+    <a href="settings.html">Settings</a>
+    <a href="course-builder.html">Create a New Course</a>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-backdrop" onclick="this.classList.remove('active');document.querySelector('.stu-notif-panel').classList.remove('active')"></div>
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header"><h3 style="font-size:16px;font-weight:700;">Notifications</h3><button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.style.display='none';document.querySelector('.stu-notif-badge').style.display='none';">Mark all read</button></div>
+    <div class="stu-notif-list" id="notifList"></div>
+  </div>
+
+  <!-- ========== COVER BANNER ========== -->
+  <div class="teacher-cover-banner">
+    <div class="teacher-cover-content">
+      <div class="teacher-cover-label">Bootcamp Instructor</div>
+      <h1 class="teacher-cover-name">Learn With Sarah</h1>
+    </div>
+  </div>
+
+  <!-- ========== PROFILE BAR ========== -->
+  <div class="teacher-profile-bar">
+    <div class="teacher-profile-avatar"><img src="../assets/Teacher-Student/1.png" alt="Sarah Chen"></div>
+    <div class="teacher-profile-info">
+      <div class="teacher-profile-info-name">Sarah Chen</div>
+      <div class="teacher-profile-rating"><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span> <span style="color: rgba(255,255,255,0.7); margin-left: 4px;">(35 Reviews)</span></div>
+    </div>
+    <div class="teacher-profile-cta">
+      <a href="course-builder.html" class="btn">Create a New Course &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ========== MAIN BODY ========== -->
+  <div class="teacher-body">
+
+    <!-- Left Sidebar Navigation -->
+    <aside class="teacher-sidebar-card">
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Welcome, Sarah Chen</div>
+        <a href="dashboard.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a href="schools.html" class="teacher-nav-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Schools
+        </a>
+        <a href="analytics.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Analytics
+        </a>
+        <a href="payout.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Payout
+        </a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Instructor</div>
+        <a href="creator-hub.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          My Courses
+        </a>
+        <a href="course-builder.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Course Builder
+        </a>
+        <a href="community.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Community
+        </a>
+        <a href="store-manager.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Store Manager
+        </a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">User</div>
+        <a href="settings.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </a>
+        <a href="../auth/login.html" class="teacher-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Right Content Area -->
+    <div class="teacher-content">
+      <h2 class="teacher-content-title">Schools</h2>
+
+      <!-- ===== MY SCHOOLS ===== -->
+      <div class="teacher-card" id="schoolsSection">
+        <div class="teacher-card-header">
+          <h3><span class="wi wi-building"></span> My Schools</h3>
+          <button class="btn btn-primary btn-sm" onclick="openSchoolModal()">+ Create School</button>
+        </div>
+        <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-4)">Organize your courses under schools. Drag courses between schools or use the assign menu.</p>
+        <div id="schoolsList"></div>
+        <div id="unassignedCourses" style="margin-top:var(--space-4)"></div>
+      </div>
+
+      <!-- School Create/Edit Modal -->
+      <div id="schoolModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+        <div style="background:var(--bg-primary, #fff);border-radius:var(--radius-xl);padding:var(--space-6);width:100%;max-width:520px;box-shadow:var(--shadow-xl);position:relative;max-height:90vh;overflow-y:auto">
+          <button onclick="closeSchoolModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-tertiary)">&times;</button>
+          <h3 id="schoolModalTitle" style="margin-bottom:var(--space-4)">Create School</h3>
+          <input type="hidden" id="schoolEditId">
+          <!-- School Logo -->
+          <div style="margin-bottom:var(--space-4);text-align:center">
+            <label style="font-size:var(--text-sm);font-weight:600;display:block;margin-bottom:8px;text-align:left">School Logo</label>
+            <div style="display:flex;align-items:center;gap:16px">
+              <div id="schoolLogoPreview" style="width:64px;height:64px;border-radius:var(--radius-lg);border:2px dashed var(--border-light);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:var(--bg-secondary)">
+                <span style="font-size:24px;color:var(--text-tertiary)"><span class="wi wi-building"></span></span>
+              </div>
+              <div style="flex:1;text-align:left">
+                <input type="file" id="schoolLogoInput" accept="image/*" style="display:none" onchange="previewSchoolLogo(this)">
+                <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('schoolLogoInput').click()" style="margin-bottom:4px"><span class="wi wi-video"></span> Upload Logo</button>
+                <button type="button" class="btn btn-ghost btn-sm" onclick="removeSchoolLogo()" style="margin-bottom:4px;color:var(--text-tertiary)">Remove</button>
+                <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin:0">Recommended: 200×200px, PNG or JPG</p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-bottom:var(--space-3)">
+            <label style="font-size:var(--text-sm);font-weight:600;display:block;margin-bottom:4px">School Name *</label>
+            <input type="text" id="schoolName" class="form-input" placeholder="e.g. Sarah's Web Academy" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+          </div>
+          <div style="margin-bottom:var(--space-3)">
+            <label style="font-size:var(--text-sm);font-weight:600;display:block;margin-bottom:4px">Description</label>
+            <textarea id="schoolDesc" class="form-input" rows="3" placeholder="What is this school about?" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm);resize:vertical"></textarea>
+          </div>
+          <div style="margin-bottom:var(--space-4)">
+            <label style="font-size:var(--text-sm);font-weight:600;display:block;margin-bottom:4px">Banner Color</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap" id="schoolColorPicker">
+              <button type="button" class="school-color-swatch" data-color="linear-gradient(135deg, #3d8b1c, #2d6914)" style="width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;background:linear-gradient(135deg, #3d8b1c, #2d6914)" onclick="selectSchoolColor(this)"></button>
+              <button type="button" class="school-color-swatch" data-color="linear-gradient(135deg, #9fe870, #5ab82e)" style="width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;background:linear-gradient(135deg, #9fe870, #5ab82e)" onclick="selectSchoolColor(this)"></button>
+              <button type="button" class="school-color-swatch" data-color="linear-gradient(135deg, #667eea, #764ba2)" style="width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;background:linear-gradient(135deg, #667eea, #764ba2)" onclick="selectSchoolColor(this)"></button>
+              <button type="button" class="school-color-swatch" data-color="linear-gradient(135deg, #4facfe, #00f2fe)" style="width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;background:linear-gradient(135deg, #4facfe, #00f2fe)" onclick="selectSchoolColor(this)"></button>
+              <button type="button" class="school-color-swatch" data-color="linear-gradient(135deg, #f093fb, #f5576c)" style="width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;background:linear-gradient(135deg, #f093fb, #f5576c)" onclick="selectSchoolColor(this)"></button>
+              <button type="button" class="school-color-swatch" data-color="linear-gradient(135deg, #0EA5E9, #06B6D4)" style="width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;background:linear-gradient(135deg, #0EA5E9, #06B6D4)" onclick="selectSchoolColor(this)"></button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-ghost btn-sm" onclick="closeSchoolModal()">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="saveSchool()">Save School</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hire Teacher Modal -->
+      <div id="hireTeacherModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+        <div style="background:var(--bg-primary, #fff);border-radius:var(--radius-xl);padding:var(--space-6);width:100%;max-width:600px;box-shadow:var(--shadow-xl);position:relative;max-height:85vh;overflow-y:auto">
+          <button onclick="closeHireModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-tertiary)">&times;</button>
+          <h3 style="margin-bottom:var(--space-2)">Hire a Teacher</h3>
+          <p id="hireSchoolLabel" style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-4)"></p>
+          <input type="hidden" id="hireSchoolId">
+          <!-- Search/Filter -->
+          <div style="margin-bottom:var(--space-4)">
+            <input type="text" id="hireSearchInput" class="form-input" placeholder="Search by name or speciality..." oninput="filterAvailableTeachers()" style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm)">
+          </div>
+          <div id="availableTeachersList" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+      </div>
+
+      <!-- Teacher Profile Modal -->
+      <div id="teacherProfileModal" style="display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+        <div style="background:var(--bg-primary, #fff);border-radius:var(--radius-xl);padding:var(--space-6);width:100%;max-width:480px;box-shadow:var(--shadow-xl);position:relative">
+          <button onclick="closeTeacherProfileModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-tertiary)">&times;</button>
+          <div id="teacherProfileContent"></div>
+        </div>
+      </div>
+
+      <!-- Assign Course to School Modal -->
+      <div id="assignModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+        <div style="background:var(--bg-primary, #fff);border-radius:var(--radius-xl);padding:var(--space-6);width:100%;max-width:420px;box-shadow:var(--shadow-xl);position:relative">
+          <button onclick="closeAssignModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-tertiary)">&times;</button>
+          <h3 style="margin-bottom:var(--space-2)">Assign Course to School</h3>
+          <p id="assignCourseName" style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-4)"></p>
+          <input type="hidden" id="assignCourseId">
+          <div id="assignSchoolOptions" style="display:flex;flex-direction:column;gap:8px;margin-bottom:var(--space-4)"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-ghost btn-sm" onclick="closeAssignModal()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apply to School Modal -->
+      <div id="applyModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+        <div style="background:var(--bg-primary, #fff);border-radius:var(--radius-xl);padding:var(--space-6);width:100%;max-width:480px;box-shadow:var(--shadow-xl);position:relative">
+          <button onclick="closeApplyModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-tertiary)">&times;</button>
+          <h3 style="margin-bottom:var(--space-2)">Apply to Join School</h3>
+          <p id="applySchoolName" style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-4)"></p>
+          <input type="hidden" id="applySchoolId">
+          <input type="hidden" id="applySchoolInitial">
+          <input type="hidden" id="applySchoolBanner">
+          <div style="margin-bottom:var(--space-4)">
+            <label style="font-size:var(--text-sm);font-weight:600;display:block;margin-bottom:4px">Application Message *</label>
+            <textarea id="applyMessage" class="form-input" rows="4" placeholder="Tell the school owner why you'd like to join and what courses you can contribute..." style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:var(--radius-md);font-size:var(--text-sm);resize:vertical"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-ghost btn-sm" onclick="closeApplyModal()">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="submitApplication()">Submit Application</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Share Course to Joined School Modal -->
+      <div id="shareCourseModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+        <div style="background:var(--bg-primary, #fff);border-radius:var(--radius-xl);padding:var(--space-6);width:100%;max-width:480px;box-shadow:var(--shadow-xl);position:relative">
+          <button onclick="closeShareCourseModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-tertiary)">&times;</button>
+          <h3 style="margin-bottom:var(--space-2)">Share Course to School</h3>
+          <p id="shareSchoolLabel" style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-4)"></p>
+          <input type="hidden" id="shareAppId">
+          <div id="shareCoursePicker" style="display:flex;flex-direction:column;gap:8px;margin-bottom:var(--space-4);max-height:300px;overflow-y:auto"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-ghost btn-sm" onclick="closeShareCourseModal()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== JOINED SCHOOLS (from other owners) ===== -->
+      <div class="teacher-card" id="joinedSchoolsSection">
+        <div class="teacher-card-header">
+          <h3><span class="wi wi-users"></span> Joined Schools</h3>
+          <span class="teacher-badge primary" id="joinedCount">0</span>
+        </div>
+        <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-4)">Schools you've applied to join. Share your courses once accepted.</p>
+        <div id="joinedSchoolsList"></div>
+      </div>
+
+      <!-- ===== BROWSE & JOIN OTHER SCHOOLS ===== -->
+      <div class="teacher-card" id="browseSchoolsSection">
+        <div class="teacher-card-header">
+          <h3><span class="wi wi-globe"></span> Browse Schools</h3>
+        </div>
+        <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-4)">Discover schools to join and share your courses with a wider audience.</p>
+        <div id="browseSchoolsList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4)"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="teacher-footer">
+    <div class="teacher-footer-inner">
+      <div class="teacher-footer-grid">
+        <div>
+          <div class="teacher-footer-brand"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"><span>Wiser</span></div>
+          <p class="teacher-footer-desc">We're always in search for talented and motivated people. Don't be shy, introduce yourself!</p>
+          <div class="teacher-footer-socials">
+            <a href="#" class="teacher-footer-social-icon">f</a>
+            <a href="#" class="teacher-footer-social-icon">t</a>
+            <a href="#" class="teacher-footer-social-icon">in</a>
+            <a href="#" class="teacher-footer-social-icon">ig</a>
+          </div>
+        </div>
+        <div>
+          <h4>Useful Links</h4>
+          <div class="teacher-footer-links"><a href="#">Marketplace</a><a href="#">Courses</a><a href="#">Community</a><a href="#">FAQ</a><a href="#">About Us</a><a href="#">Privacy Policy</a></div>
+        </div>
+        <div>
+          <h4>Our Company</h4>
+          <div class="teacher-footer-links"><a href="#">Contact Us</a><a href="schools.html">Invite Teachers</a><a href="#">Blog</a><a href="#">Events</a><a href="#">Careers</a></div>
+        </div>
+        <div>
+          <h4>Get in Touch</h4>
+          <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-2)">Phone: (406) 555-0120<br>Email: admin@wiser.com</p>
+          <p style="font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-2)">Newsletter</p>
+          <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-3)">2000+ students subscribe. Don't be shy!</p>
+          <div class="teacher-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button>Submit Now</button></div>
+        </div>
+      </div>
+      <div class="teacher-footer-bottom">
+        <span>Copyright &copy; 2026 <strong>Wiser</strong>. All Rights Reserved</span>
+        <div class="teacher-footer-bottom-links"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="../auth/login.html">Login &amp; Register</a></div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  /* ========== MODULE-LEVEL STATE ========== */
+  let selectedSchoolColor = 'linear-gradient(135deg, #3d8b1c, #2d6914)';
+  let selectedSchoolLogo = '';
+  let _teacherSchools = [];
+  let _teacherCourses = [];
+  let _availableTeachers = [];
+  let _allSchools = [];
+  let _schoolApplications = [];
+  let _currentProfile = null;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Auth guard — server-side role verification
+    const __authProfile = await WiserAuth.requireAuth(['teacher', 'admin']);
+    if (!__authProfile) return;
+
+    try {
+      const [schools, courses, teachers, allSchools, applications, profile] = await Promise.all([
+        WiserData.getTeacherSchools().catch(() => []),
+        WiserData.getTeacherCourses().catch(() => []),
+        WiserData.getAvailableTeachers().catch(() => []),
+        WiserData.getSchools().catch(() => []),
+        WiserData.getSchoolApplications().catch(() => []),
+        WiserAPI.profiles.getCurrent().catch(() => null)
+      ]);
+      _teacherSchools = schools;
+      _teacherCourses = courses;
+      _availableTeachers = teachers;
+      _allSchools = allSchools;
+      _schoolApplications = applications;
+      _currentProfile = profile;
+
+      // Update banner/sidebar with dynamic profile
+      const displayName = _currentProfile ? (_currentProfile.display_name || ((_currentProfile.first_name || '') + ' ' + (_currentProfile.last_name || '')).trim() || 'Teacher') : 'Teacher';
+      const firstName = _currentProfile ? (_currentProfile.first_name || displayName.split(' ')[0]) : 'Teacher';
+      const coverNameEl = document.querySelector('.teacher-cover-name');
+      if (coverNameEl) coverNameEl.textContent = 'Learn With ' + firstName;
+      const profileNameEl = document.querySelector('.teacher-profile-info-name');
+      if (profileNameEl) profileNameEl.textContent = displayName;
+      document.querySelectorAll('.teacher-sidebar-label').forEach(el => {
+        if (el.textContent.includes('Welcome')) el.textContent = 'Welcome, ' + displayName;
+      });
+      const schoolsAvatar = document.querySelector('.teacher-profile-avatar img');
+      if (schoolsAvatar && _currentProfile && _currentProfile.avatar_url) schoolsAvatar.src = _currentProfile.avatar_url;
+      const schoolsCoverBanner = document.querySelector('.teacher-cover-banner');
+      if (schoolsCoverBanner && _currentProfile && _currentProfile.cover_photo_url) { schoolsCoverBanner.style.backgroundImage = 'url(' + _currentProfile.cover_photo_url + ')'; schoolsCoverBanner.style.backgroundSize = 'cover'; }
+
+      renderSchools();
+      renderJoinedSchools();
+      renderBrowseSchools();
+    } catch (err) {
+      console.error('Failed to load schools page data:', err);
+    }
+  });
+
+  /* ========== HELPER: Logo/Avatar HTML ========== */
+  function schoolLogoHTML(school, size = 44) {
+    if (school.logo && !school.logo.startsWith('linear-gradient')) {
+      return `<img src="${school.logo}" alt="${school.name}" style="width:${size}px;height:${size}px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0">`;
+    }
+    const initials = school.initial || school.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    return `<div style="width:${size}px;height:${size}px;border-radius:var(--radius-md);background:${school.logo || 'rgba(255,255,255,.2)'};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:${Math.round(size * 0.36)}px;flex-shrink:0;backdrop-filter:blur(4px)">${initials}</div>`;
+  }
+
+  function teacherAvatarHTML(teacher, size = 36) {
+    const img = teacher.profileImage || teacher.avatar;
+    if (img && !img.startsWith('linear-gradient') && img.length > 2) {
+      return `<img src="${img}" alt="${teacher.name}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;flex-shrink:0">`;
+    }
+    const initials = teacher.avatar || teacher.initials || teacher.name.split(' ').map(w => w[0]).join('').toUpperCase();
+    const bg = teacher.avatarBg || 'linear-gradient(135deg, #3d8b1c, #2d6914)';
+    return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;color:#fff;font-size:${Math.round(size * 0.33)}px;font-weight:700;flex-shrink:0">${initials}</div>`;
+  }
+
+  /* ========== SCHOOLS MANAGEMENT ========== */
+
+  function renderSchools() {
+    const schools = _teacherSchools;
+    const courses = _teacherCourses;
+    const container = document.getElementById('schoolsList');
+
+    if (schools.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:var(--space-8);border:2px dashed var(--border-light);border-radius:var(--radius-lg)">
+          <div style="font-size:40px;margin-bottom:var(--space-2)"><span class="wi wi-building"></span></div>
+          <h4 style="margin-bottom:var(--space-1)">No schools yet</h4>
+          <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-3)">Create your first school to organize your courses.</p>
+          <button class="btn btn-primary btn-sm" onclick="openSchoolModal()">+ Create School</button>
+        </div>`;
+      renderUnassignedCourses();
+      return;
+    }
+
+    container.innerHTML = schools.map(school => {
+      const schoolCourses = courses.filter(c => school.courseIds.includes(c.id));
+      const totalStudents = schoolCourses.reduce((s, c) => s + c.students, 0);
+      const totalRevenue = schoolCourses.reduce((s, c) => s + c.revenue, 0);
+      const pendingApps = (school.pendingTeacherApps || []).filter(a => a.status === 'pending');
+      const pendingShares = (school.pendingCourseShares || []).filter(s => s.status === 'pending');
+      const teacherCount = (school.teachers || []).length;
+      const reviewCount = (school.reviews || []).length;
+      const freeCount = (school.freeLessons || []).length;
+
+      return `
+      <div class="school-card" style="border:1px solid var(--border-light);border-radius:var(--radius-lg);margin-bottom:var(--space-4);overflow:hidden">
+        <!-- School Header -->
+        <div style="background:${school.banner};padding:16px 20px;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:12px">
+            ${schoolLogoHTML(school, 48)}
+            <div>
+              <h4 style="color:#fff;margin:0;font-size:var(--text-base)">${school.name}</h4>
+              <span style="color:rgba(255,255,255,.8);font-size:var(--text-xs)">${school.description || ''}</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(4px)" onclick="viewSchoolProfile(${school.id})" title="View profile"><span class="wi wi-search"></span></button>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(4px)" onclick="openHireModal(${school.id})" title="Hire teachers"><span class="wi wi-teacher"></span> Hire</button>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(4px)" onclick="editSchool(${school.id})" title="Edit school"><span class="wi wi-pencil"></span> Edit</button>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(4px)" onclick="deleteSchool(${school.id})" title="Delete school"><span class="wi wi-trash"></span></button>
+          </div>
+        </div>
+
+        <!-- School Stats -->
+        <div style="display:flex;gap:var(--space-4);padding:12px 20px;background:var(--bg-secondary);border-bottom:1px solid var(--border-light);flex-wrap:wrap">
+          <div style="font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Courses</span> <strong>${schoolCourses.length}</strong></div>
+          <div style="font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Teachers</span> <strong>${teacherCount}</strong></div>
+          <div style="font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Students</span> <strong>${Utils.formatNumber(totalStudents)}</strong></div>
+          <div style="font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Reviews</span> <strong>${reviewCount}</strong></div>
+          <div style="font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Free Lessons</span> <strong>${freeCount}</strong></div>
+          <div style="font-size:var(--text-sm)"><span style="color:var(--text-tertiary)">Revenue</span> <strong>$${Utils.formatNumber(totalRevenue)}</strong></div>
+        </div>
+
+        <!-- Hired Teachers Preview -->
+        ${teacherCount > 0 ? `
+        <div style="padding:12px 20px;border-bottom:1px solid var(--border-light)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:var(--text-xs);color:var(--text-tertiary);font-weight:600"><span class="wi wi-teacher"></span> Teachers</span>
+          </div>
+          <div style="display:flex;gap:-6px;flex-wrap:wrap;gap:6px">
+            ${(school.teachers || []).map(t => `
+              <div style="display:flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;background:var(--bg-secondary);border-radius:999px;border:1px solid var(--border-light);cursor:pointer" onclick="viewTeacherProfile(${JSON.stringify(t).replace(/"/g, '&quot;')})">
+                ${teacherAvatarHTML(t, 26)}
+                <span style="font-size:var(--text-xs);font-weight:500">${t.name.split(' ')[0]}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>` : ''}
+
+        ${pendingApps.length > 0 ? `
+        <!-- Pending Teacher Applications -->
+        <div style="padding:12px 20px;background:var(--bg-secondary, #f2fbe8);border-bottom:1px solid #FDBA74">
+          <h5 style="font-size:var(--text-sm);color:var(--text-primary);margin-bottom:8px"><span class="wi wi-mail"></span> ${pendingApps.length} Pending Teacher Application${pendingApps.length > 1 ? 's' : ''}</h5>
+          ${pendingApps.map(app => `
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg-primary, #fff);border-radius:var(--radius-md);border:1px solid #FDBA74;margin-bottom:6px">
+              ${teacherAvatarHTML({name: app.teacherName, avatar: app.teacherInitial, avatarBg: app.teacherBg, profileImage: app.teacherImage}, 32)}
+              <div style="flex:1;min-width:0">
+                <strong style="font-size:var(--text-sm)">${app.teacherName}</strong>
+                <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${app.message}</p>
+              </div>
+              <div style="display:flex;gap:4px;flex-shrink:0">
+                <button class="btn btn-sm" style="background:#16A34A;color:#fff;border:none;font-size:var(--text-xs);padding:4px 10px" onclick="handleTeacherApp(${school.id}, ${app.id}, 'accepted')">✓ Accept</button>
+                <button class="btn btn-sm" style="background:#EF4444;color:#fff;border:none;font-size:var(--text-xs);padding:4px 10px" onclick="handleTeacherApp(${school.id}, ${app.id}, 'rejected')">✕ Reject</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>` : ''}
+
+        ${pendingShares.length > 0 ? `
+        <!-- Pending Course Shares -->
+        <div style="padding:12px 20px;background:var(--bg-secondary, #F0FDF4);border-bottom:1px solid #86EFAC">
+          <h5 style="font-size:var(--text-sm);color:var(--text-primary);margin-bottom:8px"><span class="wi wi-book"></span> ${pendingShares.length} Pending Course Share${pendingShares.length > 1 ? 's' : ''}</h5>
+          ${pendingShares.map(share => `
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg-primary, #fff);border-radius:var(--radius-md);border:1px solid #86EFAC;margin-bottom:6px">
+              <div style="flex:1;min-width:0">
+                <strong style="font-size:var(--text-sm)">${share.courseTitle}</strong>
+                <span style="font-size:var(--text-xs);color:var(--text-tertiary)"> by ${share.teacherName} · ${share.submittedAt}</span>
+              </div>
+              <div style="display:flex;gap:4px;flex-shrink:0">
+                <button class="btn btn-sm" style="background:#16A34A;color:#fff;border:none;font-size:var(--text-xs);padding:4px 10px" onclick="handleCourseShare(${school.id}, ${share.id}, 'approved')">✓ Approve</button>
+                <button class="btn btn-sm" style="background:#EF4444;color:#fff;border:none;font-size:var(--text-xs);padding:4px 10px" onclick="handleCourseShare(${school.id}, ${share.id}, 'rejected')">✕ Reject</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>` : ''}
+
+        <!-- School Courses -->
+        <div style="padding:16px 20px">
+          ${schoolCourses.length === 0 ? `
+            <div style="text-align:center;padding:var(--space-4);border:2px dashed var(--border-light);border-radius:var(--radius-md)">
+              <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin:0">No courses assigned yet. Use "Assign" on unassigned courses below.</p>
+            </div>
+          ` : `
+            <div style="display:flex;flex-direction:column;gap:8px">
+              ${schoolCourses.map(c => `
+                <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--bg-secondary);border-radius:var(--radius-md);border:1px solid var(--border-light)">
+                  <img src="${c.thumbnail}" alt="${c.title}" style="width:48px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;max-width:none">
+                  <div style="flex:1;min-width:0">
+                    <strong style="font-size:var(--text-sm);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.title}</strong>
+                    <span style="font-size:var(--text-xs);color:var(--text-tertiary)">${Utils.formatNumber(c.students)} students · ${c.status === 'published' ? '<span class="wi wi-check"></span> Published' : c.status === 'pending' ? '<span class="wi wi-alert"></span> Pending' : ' Draft'}</span>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" onclick="unassignCourse(${c.id}, ${school.id})" title="Remove from school" style="font-size:var(--text-xs);color:var(--text-tertiary);flex-shrink:0">✕ Remove</button>
+                </div>
+              `).join('')}
+            </div>
+          `}
+        </div>
+      </div>`;
+    }).join('');
+
+    renderUnassignedCourses();
+  }
+
+  function renderUnassignedCourses() {
+    const assignedIds = _teacherSchools.flatMap(s => s.courseIds);
+    const unassigned = _teacherCourses.filter(c => !assignedIds.includes(c.id));
+    const el = document.getElementById('unassignedCourses');
+
+    if (unassigned.length === 0) {
+      el.innerHTML = '';
+      return;
+    }
+
+    el.innerHTML = `
+      <div style="border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:16px 20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h4 style="font-size:var(--text-sm);color:var(--text-tertiary)"><span class="wi wi-package"></span> Unassigned Courses (${unassigned.length})</h4>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          ${unassigned.map(c => `
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--bg-tertiary);border-radius:var(--radius-md);border:1px dashed var(--border-light)">
+              <img src="${c.thumbnail}" alt="${c.title}" style="width:48px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;max-width:none">
+              <div style="flex:1;min-width:0">
+                <strong style="font-size:var(--text-sm);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.title}</strong>
+                <span style="font-size:var(--text-xs);color:var(--text-tertiary)">${c.status === 'published' ? '<span class="wi wi-check"></span> Published' : c.status === 'pending' ? '<span class="wi wi-alert"></span> Pending' : ' Draft'} · $${c.price}</span>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="openAssignModal(${c.id})" style="flex-shrink:0;font-size:var(--text-xs)">Assign →</button>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+
+  /* ========== SCHOOL LOGO ========== */
+  function previewSchoolLogo(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        selectedSchoolLogo = e.target.result;
+        document.getElementById('schoolLogoPreview').innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-lg)">`;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function removeSchoolLogo() {
+    selectedSchoolLogo = '';
+    document.getElementById('schoolLogoInput').value = '';
+    document.getElementById('schoolLogoPreview').innerHTML = '<span style="font-size:24px;color:var(--text-tertiary)"><span class="wi wi-building"></span></span>';
+  }
+
+  /* -- School Modal -- */
+  function openSchoolModal(schoolId) {
+    const modal = document.getElementById('schoolModal');
+    modal.style.display = 'flex';
+    document.getElementById('schoolEditId').value = '';
+    document.getElementById('schoolName').value = '';
+    document.getElementById('schoolDesc').value = '';
+    document.getElementById('schoolModalTitle').textContent = 'Create School';
+    selectedSchoolColor = 'linear-gradient(135deg, #3d8b1c, #2d6914)';
+    selectedSchoolLogo = '';
+    document.getElementById('schoolLogoInput').value = '';
+    document.getElementById('schoolLogoPreview').innerHTML = '<span style="font-size:24px;color:var(--text-tertiary)"><span class="wi wi-building"></span></span>';
+
+    // Reset color swatches
+    document.querySelectorAll('.school-color-swatch').forEach(s => s.style.borderColor = 'transparent');
+    document.querySelector('.school-color-swatch').style.borderColor = 'var(--primary-600)';
+
+    if (schoolId) {
+      const school = _teacherSchools.find(s => s.id === schoolId);
+      if (!school) return;
+      document.getElementById('schoolEditId').value = schoolId;
+      document.getElementById('schoolName').value = school.name;
+      document.getElementById('schoolDesc').value = school.description || '';
+      document.getElementById('schoolModalTitle').textContent = 'Edit School';
+      selectedSchoolColor = school.banner;
+
+      // Populate logo preview
+      if (school.logo && !school.logo.startsWith('linear-gradient')) {
+        selectedSchoolLogo = school.logo;
+        document.getElementById('schoolLogoPreview').innerHTML = `<img src="${school.logo}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-lg)">`;
+      }
+
+      // Highlight matching swatch
+      document.querySelectorAll('.school-color-swatch').forEach(s => {
+        s.style.borderColor = s.dataset.color === school.banner ? 'var(--primary-600)' : 'transparent';
+      });
+    }
+  }
+
+  function closeSchoolModal() {
+    document.getElementById('schoolModal').style.display = 'none';
+  }
+
+  function selectSchoolColor(el) {
+    document.querySelectorAll('.school-color-swatch').forEach(s => s.style.borderColor = 'transparent');
+    el.style.borderColor = 'var(--primary-600)';
+    selectedSchoolColor = el.dataset.color;
+  }
+
+  async function saveSchool() {
+    const name = document.getElementById('schoolName').value.trim();
+    const desc = document.getElementById('schoolDesc').value.trim();
+    const editId = document.getElementById('schoolEditId').value;
+
+    if (!name) {
+      Toast.show('Name required', 'Please enter a school name.', 'error', 2000);
+      return;
+    }
+
+    try {
+      if (editId) {
+        const updates = {
+          name,
+          description: desc,
+          banner_color: selectedSchoolColor
+        };
+        if (selectedSchoolLogo) updates.logo_url = selectedSchoolLogo;
+        await WiserAPI.schools.update(parseInt(editId), updates);
+        Toast.show('School updated!', `"${name}" has been saved.`, 'success', 2000);
+      } else {
+        const displayName = _currentProfile ? (_currentProfile.display_name || ((_currentProfile.first_name || '') + ' ' + (_currentProfile.last_name || '')).trim() || 'Teacher') : 'Teacher';
+        await WiserAPI.schools.create({
+          name,
+          description: desc,
+          banner_color: selectedSchoolColor,
+          logo_url: selectedSchoolLogo || '',
+          status: 'active'
+        });
+        Toast.show('School created!', `"${name}" is ready. Start assigning courses.`, 'success', 2000);
+      }
+
+      _teacherSchools = await WiserData.getTeacherSchools().catch(() => []);
+      closeSchoolModal();
+      renderSchools();
+    } catch (err) {
+      console.error('Error saving school:', err);
+      Toast.show('Error', 'Failed to save school. Please try again.', 'error', 2000);
+    }
+  }
+
+  function editSchool(id) {
+    openSchoolModal(id);
+  }
+
+  async function deleteSchool(id) {
+    const school = _teacherSchools.find(s => s.id === id);
+    if (!school) return;
+    if (!confirm(`Delete "${school.name}"?\n\nCourses will be unassigned but NOT deleted.`)) return;
+    try {
+      await WiserAPI.schools.delete(id);
+      _teacherSchools = await WiserData.getTeacherSchools().catch(() => []);
+      renderSchools();
+      Toast.show('School deleted', `"${school.name}" removed. Courses are now unassigned.`, 'success', 2000);
+    } catch (err) {
+      console.error('Error deleting school:', err);
+      Toast.show('Error', 'Failed to delete school. Please try again.', 'error', 2000);
+    }
+  }
+
+  /* ========== HIRE TEACHER ========== */
+
+  function openHireModal(schoolId) {
+    const school = _teacherSchools.find(s => s.id === schoolId);
+    if (!school) return;
+    document.getElementById('hireTeacherModal').style.display = 'flex';
+    document.getElementById('hireSchoolId').value = schoolId;
+    document.getElementById('hireSchoolLabel').textContent = `Browse available teachers to hire for "${school.name}"`;
+    document.getElementById('hireSearchInput').value = '';
+    renderAvailableTeachers(schoolId);
+  }
+
+  function closeHireModal() {
+    document.getElementById('hireTeacherModal').style.display = 'none';
+  }
+
+  function filterAvailableTeachers() {
+    const schoolId = parseInt(document.getElementById('hireSchoolId').value);
+    renderAvailableTeachers(schoolId);
+  }
+
+  function renderAvailableTeachers(schoolId) {
+    const school = _teacherSchools.find(s => s.id === schoolId);
+    if (!school) return;
+    const search = (document.getElementById('hireSearchInput')?.value || '').toLowerCase();
+    const hiredNames = (school.teachers || []).map(t => t.name);
+    const currentName = _currentProfile ? (_currentProfile.display_name || ((_currentProfile.first_name || '') + ' ' + (_currentProfile.last_name || '')).trim()) : '';
+    const teachers = (_availableTeachers || []).filter(t => {
+      if (hiredNames.includes(t.name)) return false;
+      if (currentName && t.name === currentName) return false;
+      if (search && !t.name.toLowerCase().includes(search) && !t.speciality.toLowerCase().includes(search)) return false;
+      return true;
+    });
+
+    const container = document.getElementById('availableTeachersList');
+    if (teachers.length === 0) {
+      container.innerHTML = `<p style="font-size:var(--text-sm);color:var(--text-tertiary);text-align:center;padding:var(--space-6)">No available teachers found${search ? ' matching your search' : ''}.</p>`;
+      return;
+    }
+
+    container.innerHTML = teachers.map(t => `
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border-light);border-radius:var(--radius-lg);background:var(--bg-primary, #fff);transition:all .15s" onmouseover="this.style.borderColor='var(--primary-400)'" onmouseout="this.style.borderColor='var(--border-light)'">
+        <img src="${t.avatar}" alt="${t.name}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;flex-shrink:0">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+            <strong style="font-size:var(--text-sm)">${t.name}</strong>
+            ${t.available ? '<span style="width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block" title="Available"></span>' : '<span style="width:8px;height:8px;border-radius:50%;background:#D1D5DB;display:inline-block" title="Unavailable"></span>'}
+          </div>
+          <div style="font-size:var(--text-xs);color:var(--primary-600);font-weight:500;margin-bottom:2px">${t.speciality}</div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary)"><span class="wi wi-star"></span> ${t.rating} · ${Utils.formatNumber(t.students)} students · ${t.courses} courses · $${t.hourlyRate}/hr</div>
+          <p style="font-size:var(--text-xs);color:var(--text-secondary);margin:4px 0 0;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden">${t.bio}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">
+          <button class="btn btn-primary btn-sm" onclick="hireTeacher(${schoolId}, ${t.id})" style="font-size:var(--text-xs)" ${!t.available ? 'disabled style="font-size:var(--text-xs);opacity:.5;cursor:not-allowed"' : ''}>
+            ${t.available ? '✓ Hire' : 'Unavailable'}
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="viewAvailableTeacherProfile(${t.id})" style="font-size:var(--text-xs)">View</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function hireTeacher(schoolId, teacherId) {
+    const school = _teacherSchools.find(s => s.id === schoolId);
+    const teacher = (_availableTeachers || []).find(t => t.id === teacherId);
+    if (!school || !teacher) return;
+    if (!teacher.available) {
+      Toast.show('Unavailable', `${teacher.name} is not available for hire right now.`, 'error', 2000);
+      return;
+    }
+
+    school.teachers = school.teachers || [];
+    school.teachers.push({
+      name: teacher.name,
+      role: teacher.speciality + ' Instructor',
+      avatar: teacher.initials,
+      avatarBg: 'linear-gradient(135deg, #3d8b1c, #2d6914)',
+      profileImage: teacher.avatar,
+      courses: teacher.courses,
+      students: teacher.students
+    });
+
+    Toast.show('Teacher hired!', `${teacher.name} has been added to "${school.name}".`, 'success', 2500);
+    renderAvailableTeachers(schoolId);
+    renderSchools();
+  }
+
+  function viewAvailableTeacherProfile(teacherId) {
+    const teacher = (_availableTeachers || []).find(t => t.id === teacherId);
+    if (!teacher) return;
+    document.getElementById('teacherProfileContent').innerHTML = `
+      <div style="text-align:center;margin-bottom:var(--space-4)">
+        <img src="${teacher.avatar}" alt="${teacher.name}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin-bottom:var(--space-3);border:3px solid var(--primary-100)">
+        <h3 style="margin:0 0 4px">${teacher.name}</h3>
+        <div style="font-size:var(--text-sm);color:var(--primary-600);font-weight:500;margin-bottom:4px">${teacher.speciality}</div>
+        <div style="display:flex;justify-content:center;gap:4px;align-items:center">
+          ${teacher.available ? '<span style="width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block"></span><span style="font-size:var(--text-xs);color:#16A34A">Available for hire</span>' : '<span style="width:8px;height:8px;border-radius:50%;background:#D1D5DB;display:inline-block"></span><span style="font-size:var(--text-xs);color:var(--text-tertiary)">Currently unavailable</span>'}
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3);margin-bottom:var(--space-4)">
+        <div style="text-align:center;padding:12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+          <div style="font-size:var(--text-lg);font-weight:700;color:var(--primary-600)"><span class="wi wi-star"></span> ${teacher.rating}</div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary)">Rating</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+          <div style="font-size:var(--text-lg);font-weight:700">${Utils.formatNumber(teacher.students)}</div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary)">Students</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+          <div style="font-size:var(--text-lg);font-weight:700">${teacher.courses}</div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary)">Courses</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+          <div style="font-size:var(--text-lg);font-weight:700">$${teacher.hourlyRate}</div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary)">Per Hour</div>
+        </div>
+      </div>
+      <div style="margin-bottom:var(--space-4)">
+        <h4 style="font-size:var(--text-sm);margin-bottom:4px">About</h4>
+        <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6">${teacher.bio}</p>
+      </div>
+    `;
+    document.getElementById('teacherProfileModal').style.display = 'flex';
+  }
+
+  function closeTeacherProfileModal() {
+    document.getElementById('teacherProfileModal').style.display = 'none';
+  }
+
+  function viewTeacherProfile(teacherData) {
+    const t = typeof teacherData === 'string' ? JSON.parse(teacherData) : teacherData;
+    document.getElementById('teacherProfileContent').innerHTML = `
+      <div style="text-align:center;margin-bottom:var(--space-4)">
+        ${t.profileImage ? `<img src="${t.profileImage}" alt="${t.name}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin-bottom:var(--space-3);border:3px solid var(--primary-100)">` : `<div style="width:80px;height:80px;border-radius:50%;background:${t.avatarBg || 'linear-gradient(135deg, #3d8b1c, #2d6914)'};display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:700;margin:0 auto var(--space-3)">${t.avatar || t.name.split(' ').map(w => w[0]).join('')}</div>`}
+        <h3 style="margin:0 0 4px">${t.name}</h3>
+        <div style="font-size:var(--text-sm);color:var(--primary-600);font-weight:500">${t.role || ''}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3)">
+        <div style="text-align:center;padding:12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+          <div style="font-size:var(--text-lg);font-weight:700">${t.courses || 0}</div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary)">Courses</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+          <div style="font-size:var(--text-lg);font-weight:700">${Utils.formatNumber(t.students || 0)}</div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary)">Students</div>
+        </div>
+      </div>
+    `;
+    document.getElementById('teacherProfileModal').style.display = 'flex';
+  }
+
+  /* -- Course Assignment -- */
+  function openAssignModal(courseId) {
+    const course = _teacherCourses.find(c => c.id === courseId);
+    if (!course) return;
+    const modal = document.getElementById('assignModal');
+    modal.style.display = 'flex';
+    document.getElementById('assignCourseId').value = courseId;
+    document.getElementById('assignCourseName').textContent = `Assign "${course.title}" to:`;
+
+    const schools = _teacherSchools;
+    document.getElementById('assignSchoolOptions').innerHTML = schools.length === 0
+      ? `<p style="font-size:var(--text-sm);color:var(--text-tertiary);text-align:center;padding:var(--space-4)">No schools yet. <a href="#" onclick="closeAssignModal();openSchoolModal();return false" style="color:var(--primary-600);font-weight:600">Create one first</a></p>`
+      : schools.map(s => {
+          const alreadyIn = s.courseIds.includes(courseId);
+          return `
+            <button style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--radius-md);border:1px solid ${alreadyIn ? 'var(--primary-400)' : 'var(--border-light)'};background:${alreadyIn ? 'var(--primary-50)' : '#fff'};cursor:pointer;text-align:left;width:100%;transition:all .15s" onclick="assignCourseToSchool(${courseId}, ${s.id})" ${alreadyIn ? 'disabled' : ''}>
+              ${schoolLogoHTML(s, 36)}
+              <div style="flex:1">
+                <strong style="font-size:var(--text-sm)">${s.name}</strong>
+                <div style="font-size:var(--text-xs);color:var(--text-tertiary)">${s.courseIds.length} courses</div>
+              </div>
+              ${alreadyIn ? '<span style="font-size:var(--text-xs);color:var(--primary-600);font-weight:600">✓ Assigned</span>' : '<span style="font-size:var(--text-xs);color:var(--text-tertiary)">Click to assign</span>'}
+            </button>`;
+        }).join('');
+  }
+
+  function closeAssignModal() {
+    document.getElementById('assignModal').style.display = 'none';
+  }
+
+  function assignCourseToSchool(courseId, schoolId) {
+    const school = _teacherSchools.find(s => s.id === schoolId);
+    if (!school) return;
+
+    // Remove from any other school first
+    _teacherSchools.forEach(s => {
+      s.courseIds = s.courseIds.filter(id => id !== courseId);
+    });
+
+    // Assign to target school
+    school.courseIds.push(courseId);
+    closeAssignModal();
+    renderSchools();
+
+    const course = _teacherCourses.find(c => c.id === courseId);
+    Toast.show('Course assigned!', `"${course?.title}" → ${school.name}`, 'success', 2000);
+  }
+
+  function unassignCourse(courseId, schoolId) {
+    const school = _teacherSchools.find(s => s.id === schoolId);
+    if (!school) return;
+    const course = _teacherCourses.find(c => c.id === courseId);
+    if (!confirm(`Remove "${course?.title}" from "${school.name}"?`)) return;
+    school.courseIds = school.courseIds.filter(id => id !== courseId);
+    renderSchools();
+    Toast.show('Course removed', `Moved to unassigned.`, 'info', 1500);
+  }
+
+  /* ========== TEACHER APPLICATION APPROVALS ========== */
+
+  function handleTeacherApp(schoolId, appId, decision) {
+    const school = _teacherSchools.find(s => s.id === schoolId);
+    if (!school) return;
+    const app = school.pendingTeacherApps.find(a => a.id === appId);
+    if (!app) return;
+    app.status = decision;
+    if (decision === 'accepted') {
+      school.teachers = school.teachers || [];
+      school.teachers.push({
+        name: app.teacherName, role: 'Contributor', avatar: app.teacherInitial,
+        avatarBg: app.teacherBg, profileImage: app.teacherImage || '', courses: 0, students: 0
+      });
+      Toast.show('Teacher accepted!', `${app.teacherName} joined "${school.name}".`, 'success', 2000);
+    } else {
+      Toast.show('Application rejected', `${app.teacherName}'s application was declined.`, 'info', 2000);
+    }
+    renderSchools();
+  }
+
+  function handleCourseShare(schoolId, shareId, decision) {
+    const school = _teacherSchools.find(s => s.id === schoolId);
+    if (!school) return;
+    const share = school.pendingCourseShares.find(s => s.id === shareId);
+    if (!share) return;
+    share.status = decision;
+    if (decision === 'approved') {
+      Toast.show('Course approved!', `"${share.courseTitle}" is now listed in "${school.name}".`, 'success', 2000);
+    } else {
+      Toast.show('Course rejected', `"${share.courseTitle}" was declined.`, 'info', 2000);
+    }
+    renderSchools();
+  }
+
+  /* ========== SCHOOL PROFILE VIEWER ========== */
+
+  function viewSchoolProfile(schoolId) {
+    const school = _teacherSchools.find(s => s.id === schoolId);
+    if (!school) return;
+    const courses = _teacherCourses.filter(c => school.courseIds.includes(c.id));
+    const teachers = school.teachers || [];
+    const reviews = school.reviews || [];
+    const freeLessons = school.freeLessons || [];
+
+    const profileHTML = `
+      <div style="display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center" id="schoolProfileModal">
+        <div style="background:var(--bg-primary, #fff);border-radius:var(--radius-xl);width:100%;max-width:640px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);position:relative">
+          <div style="background:${school.banner};padding:24px;border-radius:var(--radius-xl) var(--radius-xl) 0 0;position:relative">
+            <button onclick="document.getElementById('schoolProfileModal').remove()" style="position:absolute;top:12px;right:16px;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">&times;</button>
+            <div style="display:flex;align-items:center;gap:14px">
+              ${schoolLogoHTML(school, 56)}
+              <div>
+                <h3 style="color:#fff;margin:0">${school.name}</h3>
+                <span style="color:rgba(255,255,255,.8);font-size:var(--text-sm)">${school.description}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:24px">
+            <!-- About -->
+            <div style="margin-bottom:var(--space-5)">
+              <h4 style="margin-bottom:8px;display:flex;align-items:center;gap:6px"><span class="wi wi-book"></span> About</h4>
+              <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.7">${school.about || 'No description added yet.'}</p>
+            </div>
+
+            <!-- Teachers -->
+            <div style="margin-bottom:var(--space-5)">
+              <h4 style="margin-bottom:8px;display:flex;align-items:center;gap:6px"><span class="wi wi-teacher"></span> Teachers (${teachers.length})</h4>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                ${teachers.length === 0 ? '<p style="font-size:var(--text-sm);color:var(--text-tertiary)">No teachers yet.</p>' :
+                  teachers.map(t => `
+                    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-secondary);border-radius:var(--radius-md);cursor:pointer" onclick="viewTeacherProfile(${JSON.stringify(t).replace(/"/g, '&quot;')})">
+                      ${teacherAvatarHTML(t, 36)}
+                      <div style="flex:1"><strong style="font-size:var(--text-sm)">${t.name}</strong><br><span style="font-size:var(--text-xs);color:var(--text-tertiary)">${t.role} · ${t.courses} courses · ${Utils.formatNumber(t.students)} students</span></div>
+                    </div>
+                  `).join('')}
+              </div>
+            </div>
+
+            <!-- Courses -->
+            <div style="margin-bottom:var(--space-5)">
+              <h4 style="margin-bottom:8px;display:flex;align-items:center;gap:6px"><span class="wi wi-book"></span> Courses (${courses.length})</h4>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                ${courses.length === 0 ? '<p style="font-size:var(--text-sm);color:var(--text-tertiary)">No courses assigned yet.</p>' :
+                  courses.map(c => `
+                    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+                      <img src="${c.thumbnail}" alt="${c.title}" style="width:48px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;max-width:none">
+                      <div style="flex:1;min-width:0"><strong style="font-size:var(--text-sm);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.title}</strong><span style="font-size:var(--text-xs);color:var(--text-tertiary)">$${c.price} · ${Utils.formatNumber(c.students)} students · <span class="wi wi-star"></span> ${c.rating || 'N/A'}</span></div>
+                    </div>
+                  `).join('')}
+              </div>
+            </div>
+
+            <!-- Reviews -->
+            <div style="margin-bottom:var(--space-5)">
+              <h4 style="margin-bottom:8px;display:flex;align-items:center;gap:6px"><span class="wi wi-star"></span> Reviews (${reviews.length})</h4>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                ${reviews.length === 0 ? '<p style="font-size:var(--text-sm);color:var(--text-tertiary)">No reviews yet.</p>' :
+                  reviews.map(r => `
+                    <div style="padding:10px 12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+                      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                        <strong style="font-size:var(--text-sm)">${r.student}</strong>
+                        <span style="font-size:var(--text-xs);color:var(--text-tertiary)">${r.time}</span>
+                      </div>
+                      <div style="margin-bottom:4px">${'<span class="wi wi-star"></span>'.repeat(r.rating)}</div>
+                      <p style="font-size:var(--text-sm);color:var(--text-secondary);margin:0">${r.text}</p>
+                    </div>
+                  `).join('')}
+              </div>
+            </div>
+
+            <!-- Free Lessons -->
+            <div>
+              <h4 style="margin-bottom:8px;display:flex;align-items:center;gap:6px"><span class="wi wi-gift"></span> Free Lessons (${freeLessons.length})</h4>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                ${freeLessons.length === 0 ? '<p style="font-size:var(--text-sm);color:var(--text-tertiary)">No free lessons available.</p>' :
+                  freeLessons.map(l => `
+                    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-secondary);border-radius:var(--radius-md)">
+                      <div style="width:36px;height:36px;border-radius:var(--radius-sm);background:var(--primary-50);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0"><span class="wi wi-video"></span></div>
+                      <div style="flex:1"><strong style="font-size:var(--text-sm)">${l.title}</strong><br><span style="font-size:var(--text-xs);color:var(--text-tertiary)">${l.duration} · ${l.type} · from "${l.courseTitle}"</span></div>
+                    </div>
+                  `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    // Remove existing if any
+    const existing = document.getElementById('schoolProfileModal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', profileHTML);
+    document.getElementById('schoolProfileModal').style.display = 'flex';
+  }
+
+  /* ========== BROWSE & JOIN SCHOOLS ========== */
+
+  function renderBrowseSchools() {
+    const ownedIds = _teacherSchools.map(s => s.id);
+    const appliedIds = (_schoolApplications || []).map(a => a.schoolId);
+    const browsable = _allSchools.filter(s => !ownedIds.includes(s.id));
+    const container = document.getElementById('browseSchoolsList');
+
+    container.innerHTML = browsable.map(school => {
+      const application = (_schoolApplications || []).find(a => a.schoolId === school.id);
+      const statusLabel = application
+        ? application.status === 'accepted' ? '<span style="color:#16A34A;font-weight:600;font-size:var(--text-xs)">✓ Accepted</span>'
+          : application.status === 'pending' ? '<span style="color:#65a30d;font-weight:600;font-size:var(--text-xs)"><span class="wi wi-bell"></span> Pending</span>'
+          : '<span style="color:#EF4444;font-weight:600;font-size:var(--text-xs)">✕ Rejected</span>'
+        : '';
+
+      const logoEl = (school.logo && !school.logo.startsWith('linear-gradient'))
+        ? `<img src="${school.logo}" alt="${school.name}" style="width:40px;height:40px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0">`
+        : `<div style="width:40px;height:40px;border-radius:var(--radius-md);background:${school.logo || 'rgba(255,255,255,.2)'};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0">${school.initial}</div>`;
+
+      return `
+        <div class="school-card" style="border:1px solid var(--border-light);border-radius:var(--radius-lg);overflow:hidden">
+          <div style="background:${school.banner};padding:14px 16px;min-height:80px;display:flex;align-items:flex-end">
+            <div style="display:flex;align-items:center;gap:10px">
+              ${logoEl}
+              <div>
+                <h4 style="color:#fff;margin:0;font-size:var(--text-sm)">${school.name}</h4>
+                <span style="color:rgba(255,255,255,.8);font-size:var(--text-xs)"><span class="wi wi-star"></span> ${school.rating} · ${Utils.formatNumber(school.students)} students</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:14px 16px">
+            <p style="font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${school.description}</p>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+              ${(school.tags || []).map(t => `<span style="font-size:10px;padding:2px 8px;border-radius:999px;background:var(--bg-tertiary);color:var(--text-tertiary)">${t}</span>`).join('')}
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              ${statusLabel || ''}
+              ${application
+                ? (application.status === 'rejected'
+                    ? `<button class="btn btn-ghost btn-sm" onclick="reapplyToSchool(${school.id})" style="font-size:var(--text-xs)">Re-apply</button>`
+                    : '')
+                : `<button class="btn btn-primary btn-sm" onclick="openApplyModal(${school.id})" style="font-size:var(--text-xs)">Apply to Join →</button>`
+              }
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  /* ========== JOINED SCHOOLS ========== */
+
+  function renderJoinedSchools() {
+    const apps = _schoolApplications || [];
+    const container = document.getElementById('joinedSchoolsList');
+    document.getElementById('joinedCount').textContent = apps.length;
+
+    if (apps.length === 0) {
+      container.innerHTML = `<p style="font-size:var(--text-sm);color:var(--text-tertiary);text-align:center;padding:var(--space-4)">No applications yet. Browse schools below to apply.</p>`;
+      return;
+    }
+
+    container.innerHTML = apps.map(app => {
+      const statusColor = app.status === 'accepted' ? '#16A34A' : app.status === 'pending' ? '#65a30d' : '#EF4444';
+      const statusIcon = app.status === 'accepted' ? '✓' : app.status === 'pending' ? '<span class="wi wi-bell"></span>' : '✕';
+      const statusBg = app.status === 'accepted' ? 'var(--joined-accepted-bg, #F0FDF4)' : app.status === 'pending' ? 'var(--joined-pending-bg, #f2fbe8)' : 'var(--joined-rejected-bg, #FEF2F2)';
+      const shares = app.courseShares || [];
+
+      return `
+        <div style="border:1px solid var(--border-light);border-radius:var(--radius-lg);margin-bottom:var(--space-3);overflow:hidden">
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:${statusBg}">
+            <div style="width:40px;height:40px;border-radius:var(--radius-md);background:${app.schoolBanner};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0">${app.schoolInitial}</div>
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:var(--text-sm);color:var(--text-primary)">${app.schoolName}</strong>
+              <div style="font-size:var(--text-xs);color:var(--text-tertiary)">Applied ${app.appliedAt}</div>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;background:${statusColor}15;color:${statusColor};font-size:var(--text-xs);font-weight:600">${statusIcon} ${app.status.charAt(0).toUpperCase() + app.status.slice(1)}</span>
+          </div>
+
+          ${app.status === 'accepted' ? `
+          <div style="padding:12px 16px;border-top:1px solid var(--border-light)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span style="font-size:var(--text-xs);color:var(--text-tertiary);font-weight:600">Shared Courses</span>
+              <button class="btn btn-primary btn-sm" onclick="openShareCourseModal(${app.id})" style="font-size:var(--text-xs)">+ Share Course</button>
+            </div>
+            ${shares.length === 0
+              ? '<p style="font-size:var(--text-xs);color:var(--text-tertiary);margin:0">No courses shared yet. Click "Share Course" to submit one for approval.</p>'
+              : shares.map(cs => {
+                  const csColor = cs.status === 'approved' ? '#16A34A' : cs.status === 'pending' ? '#2d6914' : '#EF4444';
+                  const csIcon = cs.status === 'approved' ? '✓' : cs.status === 'pending' ? '<span class="wi wi-bell"></span>' : '✕';
+                  return `
+                    <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg-secondary);border-radius:var(--radius-md);margin-bottom:4px">
+                      <div style="flex:1;min-width:0">
+                        <strong style="font-size:var(--text-sm)">${cs.courseTitle}</strong>
+                        <span style="font-size:var(--text-xs);color:var(--text-tertiary)"> · ${cs.sharedAt}</span>
+                      </div>
+                      <span style="font-size:var(--text-xs);font-weight:600;color:${csColor}">${csIcon} ${cs.status.charAt(0).toUpperCase() + cs.status.slice(1)}</span>
+                    </div>`;
+                }).join('')}
+          </div>` : ''}
+
+          ${app.status === 'pending' ? `
+          <div style="padding:10px 16px;border-top:1px solid var(--border-light)">
+            <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin:0"><span class="wi wi-message"></span> "${app.message}"</p>
+          </div>` : ''}
+        </div>`;
+    }).join('');
+  }
+
+  /* ========== APPLY TO SCHOOL ========== */
+
+  function openApplyModal(schoolId) {
+    const school = _allSchools.find(s => s.id === schoolId);
+    if (!school) return;
+    document.getElementById('applyModal').style.display = 'flex';
+    document.getElementById('applySchoolId').value = schoolId;
+    document.getElementById('applySchoolName').textContent = `Applying to join "${school.name}"`;
+    document.getElementById('applySchoolInitial').value = school.initial;
+    document.getElementById('applySchoolBanner').value = school.banner;
+    document.getElementById('applyMessage').value = '';
+  }
+
+  function closeApplyModal() {
+    document.getElementById('applyModal').style.display = 'none';
+  }
+
+  async function submitApplication() {
+    const schoolId = parseInt(document.getElementById('applySchoolId').value);
+    const message = document.getElementById('applyMessage').value.trim();
+    if (!message) {
+      Toast.show('Message required', 'Please explain why you want to join.', 'error', 2000);
+      return;
+    }
+
+    try {
+      const school = _allSchools.find(s => s.id === schoolId);
+      await WiserAPI.schools.applyToJoin(schoolId, message);
+      _schoolApplications = await WiserData.getSchoolApplications().catch(() => []);
+
+      closeApplyModal();
+      renderJoinedSchools();
+      renderBrowseSchools();
+      Toast.show('Application sent!', `Your request to join "${school.name}" is pending approval.`, 'success', 2500);
+    } catch (err) {
+      console.error('Error submitting application:', err);
+      Toast.show('Error', 'Failed to submit application. Please try again.', 'error', 2000);
+    }
+  }
+
+  async function reapplyToSchool(schoolId) {
+    // Remove old rejected application handled server-side; just re-open
+    _schoolApplications = (_schoolApplications || []).filter(a => a.schoolId !== schoolId);
+    renderJoinedSchools();
+    renderBrowseSchools();
+    openApplyModal(schoolId);
+  }
+
+  /* ========== SHARE COURSE TO JOINED SCHOOL ========== */
+
+  function openShareCourseModal(appId) {
+    const app = (_schoolApplications || []).find(a => a.id === appId);
+    if (!app || app.status !== 'accepted') return;
+    document.getElementById('shareCourseModal').style.display = 'flex';
+    document.getElementById('shareAppId').value = appId;
+    document.getElementById('shareSchoolLabel').textContent = `Select a course to share with "${app.schoolName}". The school owner must approve it.`;
+
+    const alreadySharedIds = (app.courseShares || []).map(cs => cs.courseId);
+    const available = _teacherCourses.filter(c => c.status === 'published' && !alreadySharedIds.includes(c.id));
+
+    document.getElementById('shareCoursePicker').innerHTML = available.length === 0
+      ? '<p style="font-size:var(--text-sm);color:var(--text-tertiary);text-align:center;padding:var(--space-4)">No more published courses available to share.</p>'
+      : available.map(c => `
+          <button style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:var(--radius-md);border:1px solid var(--border-light);background:var(--bg-primary, #fff);cursor:pointer;text-align:left;width:100%;transition:all .15s" onclick="submitCourseShare(${appId}, ${c.id})" onmouseover="this.style.borderColor='var(--primary-400)'" onmouseout="this.style.borderColor='var(--border-light)'">
+            <img src="${c.thumbnail}" alt="${c.title}" style="width:48px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0;max-width:none">
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:var(--text-sm);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.title}</strong>
+              <span style="font-size:var(--text-xs);color:var(--text-tertiary)">$${c.price} · ${Utils.formatNumber(c.students)} students · <span class="wi wi-star"></span> ${c.rating}</span>
+            </div>
+          </button>
+        `).join('');
+  }
+
+  function closeShareCourseModal() {
+    document.getElementById('shareCourseModal').style.display = 'none';
+  }
+
+  async function submitCourseShare(appId, courseId) {
+    const app = (_schoolApplications || []).find(a => a.id === appId);
+    if (!app) return;
+    const course = _teacherCourses.find(c => c.id === courseId);
+    if (!course) return;
+
+    try {
+      await WiserAPI.schools.shareCourse(app.schoolId, courseId);
+      _schoolApplications = await WiserData.getSchoolApplications().catch(() => []);
+
+      closeShareCourseModal();
+      renderJoinedSchools();
+      Toast.show('Course submitted!', `"${course.title}" sent to "${app.schoolName}" for approval.`, 'success', 2500);
+    } catch (err) {
+      console.error('Error sharing course:', err);
+      Toast.show('Error', 'Failed to share course. Please try again.', 'error', 2000);
+    }
+  }
+</script>
+</body>
+</html>

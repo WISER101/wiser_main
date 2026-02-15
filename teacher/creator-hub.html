@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creator Hub — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/teacher.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+<div class="teacher-page">
+
+  <!-- ========== TOP NAVBAR ========== -->
+  <nav class="teacher-topbar">
+    <div class="teacher-topbar-inner">
+      <a href="../index.html" class="teacher-topbar-logo"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"></a>
+      <div class="teacher-topbar-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="schools.html">Schools</a>
+        <a href="creator-hub.html">My Courses</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="community.html">Community</a>
+        <a href="payout.html">Payout</a>
+      </div>
+      <div class="teacher-topbar-actions">
+        <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" ><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')" ><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="stu-notif-badge">2</span></button>
+        <a href="course-builder.html" class="btn btn-primary btn-sm">Create a New Course &rarr;</a>
+        <button class="teacher-topbar-toggle" onclick="document.querySelector('.teacher-mobile-menu').classList.toggle('active');document.querySelector('.teacher-mobile-overlay').classList.toggle('active')" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Teacher Mobile Menu -->
+  <div class="teacher-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.teacher-mobile-menu').classList.remove('active')"></div>
+  <div class="teacher-mobile-menu">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="schools.html">Schools</a>
+    <a href="creator-hub.html">My Courses</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="community.html">Community</a>
+    <a href="payout.html">Payout</a>
+    <a href="settings.html">Settings</a>
+    <a href="course-builder.html">Create a New Course</a>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-backdrop" onclick="this.classList.remove('active');document.querySelector('.stu-notif-panel').classList.remove('active')"></div>
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header"><h3 style="font-size:16px;font-weight:700;">Notifications</h3><button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.style.display='none';document.querySelector('.stu-notif-badge').style.display='none';">Mark all read</button></div>
+    <div class="stu-notif-list" id="notifList"></div>
+  </div>
+
+  <!-- ========== COVER BANNER ========== -->
+  <div class="teacher-cover-banner">
+    <div class="teacher-cover-content">
+      <div class="teacher-cover-label">Bootcamp Instructor</div>
+      <h1 class="teacher-cover-name">Learn With Sarah</h1>
+    </div>
+  </div>
+  <div class="teacher-profile-bar">
+    <div class="teacher-profile-avatar"><img src="../assets/Teacher-Student/1.png" alt="Sarah Chen"></div>
+    <div class="teacher-profile-info">
+      <div class="teacher-profile-info-name">Sarah Chen</div>
+      <div class="teacher-profile-rating"><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span> <span style="color:rgba(255,255,255,0.7);margin-left:4px">(35 Reviews)</span></div>
+    </div>
+    <div class="teacher-profile-cta"><a href="course-builder.html" class="btn">Create a New Course &rarr;</a></div>
+  </div>
+
+  <!-- ========== MAIN BODY ========== -->
+  <div class="teacher-body">
+
+    <!-- Left Sidebar Navigation -->
+    <aside class="teacher-sidebar-card">
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Welcome, Sarah Chen</div>
+        <a href="dashboard.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a>
+        <a href="schools.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Schools</a>
+        <a href="analytics.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Analytics</a>
+        <a href="payout.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Payout</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Instructor</div>
+        <a href="creator-hub.html" class="teacher-nav-link active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> My Courses</a>
+        <a href="course-builder.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Course Builder</a>
+        <a href="community.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Community</a>
+        <a href="store-manager.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Store Manager</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">User</div>
+        <a href="settings.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</a>
+        <a href="../auth/login.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Right Content Area -->
+    <div class="teacher-content">
+      <h2 class="teacher-content-title">My Courses</h2>
+
+      <!-- Tabs -->
+      <div class="teacher-tabs">
+        <button class="teacher-tab active" onclick="filterCourses('all', this)">All Courses</button>
+        <button class="teacher-tab" onclick="filterCourses('published', this)">Published</button>
+        <button class="teacher-tab" onclick="filterCourses('pending', this)">Pending</button>
+        <button class="teacher-tab" onclick="filterCourses('draft', this)">Draft</button>
+      </div>
+
+      <!-- Select All & Bulk Actions -->
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;font-weight:500;color:var(--text-secondary)">
+          <input type="checkbox" id="selectAllCourses" onchange="toggleSelectAll(this.checked)" style="width:16px;height:16px;accent-color:#9fe870;cursor:pointer"> Select All
+        </label>
+        <span id="selectedCount" style="font-size:13px;color:var(--text-tertiary);display:none">0 selected</span>
+      </div>
+
+      <!-- Bulk Actions Bar -->
+      <div id="bulkActionsBar" style="display:none;background:linear-gradient(135deg,#1e293b,#334155);border:1px solid rgba(159,232,112,0.3);border-radius:12px;padding:12px 20px;margin-bottom:16px;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 4px 12px rgba(0,0,0,0.3)">
+        <span style="font-size:14px;font-weight:600;color:#9fe870" id="bulkCountLabel">0 courses selected</span>
+        <div style="display:flex;gap:8px;margin-left:auto">
+          <button onclick="bulkAction('status')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(159,232,112,0.4);background:rgba(159,232,112,0.1);color:#9fe870;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(159,232,112,0.25)'" onmouseout="this.style.background='rgba(159,232,112,0.1)'"><span class="wi wi-edit"></span> Change Status</button>
+          <button onclick="bulkAction('archive')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(99,102,241,0.4);background:rgba(99,102,241,0.1);color:#818cf8;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(99,102,241,0.25)'" onmouseout="this.style.background='rgba(99,102,241,0.1)'"><span class="wi wi-package"></span> Archive Selected</button>
+          <button onclick="bulkAction('delete')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(239,68,68,0.4);background:rgba(239,68,68,0.1);color:#f87171;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(239,68,68,0.25)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'"><span class="wi wi-trash"></span> Delete Selected</button>
+        </div>
+      </div>
+
+      <!-- Courses Grid -->
+      <div class="teacher-courses-grid" id="creatorCoursesGrid"></div>
+
+      <!-- Content Stats -->
+      <div class="teacher-card" style="margin-top: var(--space-6);">
+        <div class="teacher-card-header"><h3>Content Overview</h3></div>
+        <div class="teacher-stats-row" id="contentOverviewStats" style="margin-bottom:0">
+        </div>
+      </div>
+
+      <!-- ========== STUDENT Q&A INBOX (Gap #14) ========== -->
+      <div class="teacher-card" style="margin-top: var(--space-6);">
+        <div class="teacher-card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <h3><span class="wi wi-mail"></span> Student Questions</h3>
+          <a href="course-builder.html" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:13px;font-weight:600;text-decoration:none;transition:opacity .2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'"><span class="wi wi-zap"></span> AI Helper</a>
+        </div>
+        <!-- Filter Tabs -->
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+          <button class="teacher-tab active" onclick="filterQuestions('all', this)" style="padding:6px 16px;border-radius:20px;border:1px solid rgba(159,232,112,0.3);background:rgba(159,232,112,0.15);color:#9fe870;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s">All</button>
+          <button class="teacher-tab" onclick="filterQuestions('unanswered', this)" style="padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:var(--text-secondary);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s">Unanswered</button>
+          <button class="teacher-tab" onclick="filterQuestions('answered', this)" style="padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:var(--text-secondary);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s">Answered</button>
+        </div>
+        <div id="studentQuestionsContainer"></div>
+      </div>
+
+      <!-- ========== PRIVATE LESSONS (Gap #3) ========== -->
+      <div class="teacher-card" style="margin-top: var(--space-6);">
+        <div class="teacher-card-header"><h3><span class="wi wi-grad"></span> Private Lessons</h3></div>
+        <div id="privateLessonsContainer" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="teacher-footer">
+    <div class="teacher-footer-inner">
+      <div class="teacher-footer-grid">
+        <div><div class="teacher-footer-brand"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"><span>Wiser</span></div><p class="teacher-footer-desc">We're always in search for talented and motivated people.</p><div class="teacher-footer-socials"><a href="#" class="teacher-footer-social-icon">f</a><a href="#" class="teacher-footer-social-icon">t</a><a href="#" class="teacher-footer-social-icon">in</a><a href="#" class="teacher-footer-social-icon">ig</a></div></div>
+        <div><h4>Useful Links</h4><div class="teacher-footer-links"><a href="#">Marketplace</a><a href="#">Courses</a><a href="#">Community</a><a href="#">FAQ</a><a href="#">About Us</a><a href="#">Privacy Policy</a></div></div>
+        <div><h4>Our Company</h4><div class="teacher-footer-links"><a href="#">Contact Us</a><a href="schools.html">Invite Teachers</a><a href="#">Blog</a><a href="#">Events</a><a href="#">Careers</a></div></div>
+        <div><h4>Get in Touch</h4><p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-2)">Phone: (406) 555-0120<br>Email: admin@wiser.com</p><p style="font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-2)">Newsletter</p><div class="teacher-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button>Submit Now</button></div></div>
+      </div>
+      <div class="teacher-footer-bottom"><span>Copyright &copy; 2026 <strong>Wiser</strong>. All Rights Reserved</span><div class="teacher-footer-bottom-links"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="../auth/login.html">Login &amp; Register</a></div></div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  // Module-level data variables
+  let _teacherCourses = [];
+  let _studentQuestions = [];
+  let _privateLessons = [];
+  let _curriculum = [];
+  let _profile = null;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Auth guard — server-side role verification
+    const __authProfile = await WiserAuth.requireAuth(['teacher', 'admin']);
+    if (!__authProfile) return;
+
+    try {
+      // Load profile and update dynamic UI elements
+      _profile = await WiserAPI.profiles.getCurrent().catch(() => null);
+      if (_profile) {
+        const fullName = _profile.display_name || ((_profile.first_name || '') + ' ' + (_profile.last_name || '')).trim() || 'Instructor';
+        const firstName = _profile.first_name || fullName.split(' ')[0] || 'Instructor';
+        const avatarUrl = _profile.avatar_url || '../assets/Teacher-Student/1.png';
+        const speciality = _profile.speciality || _profile.bio || 'Instructor';
+
+        // Update banner
+        const coverName = document.querySelector('.teacher-cover-name');
+        if (coverName) coverName.textContent = 'Learn With ' + firstName;
+        const coverLabel = document.querySelector('.teacher-cover-label');
+        if (coverLabel) coverLabel.textContent = speciality;
+
+        // Update profile bar
+        const profileAvatar = document.querySelector('.teacher-profile-avatar img');
+        if (profileAvatar) { profileAvatar.src = avatarUrl; profileAvatar.alt = fullName; }
+        const coverBanner = document.querySelector('.teacher-cover-banner');
+        if (coverBanner && _profile.cover_photo_url) { coverBanner.style.backgroundImage = 'url(' + _profile.cover_photo_url + ')'; coverBanner.style.backgroundSize = 'cover'; }
+        const profileName = document.querySelector('.teacher-profile-info-name');
+        if (profileName) profileName.textContent = fullName;
+
+        // Update sidebar welcome
+        const sidebarLabel = document.querySelector('.teacher-sidebar-label');
+        if (sidebarLabel && sidebarLabel.textContent.includes('Welcome')) sidebarLabel.textContent = 'Welcome, ' + fullName;
+      }
+
+      // Load data in parallel
+      [_teacherCourses, _studentQuestions, _privateLessons] = await Promise.all([
+        WiserData.getTeacherCourses().catch(() => []),
+        WiserData.getStudentQuestions().catch(() => []),
+        WiserData.getPrivateLessons().catch(() => [])
+      ]);
+
+      // Load curriculum for all courses in parallel
+      const curriculumResults = await Promise.all(
+        _teacherCourses.map(c => WiserData.getCurriculum(c.id).catch(() => []))
+      );
+      _curriculum = curriculumResults.flat();
+
+      renderCreatorCourses('all');
+      await renderContentStats();
+      renderStudentQuestions('all');
+      renderPrivateLessons();
+    } catch (err) {
+      console.error('Creator Hub init error:', err);
+    }
+  });
+
+  function renderCreatorCourses(filter) {
+    let courses = _teacherCourses.filter(c => !c.archived);
+    if (filter !== 'all') courses = courses.filter(c => c.status === filter);
+    document.getElementById('creatorCoursesGrid').innerHTML = courses.length === 0
+      ? '<p style="text-align:center;padding:var(--space-8);color:var(--text-tertiary)">No courses found in this category.</p>'
+      : courses.map(c => {
+        const statusClass = c.status === 'published' ? 'success' : c.status === 'pending' ? 'warning' : 'secondary';
+        const stars = c.rating ? '<span class="wi wi-star"></span>'.repeat(Math.round(c.rating)) : '';
+        return `
+      <div class="teacher-course-card-new">
+        <div class="teacher-course-thumb">
+          <input type="checkbox" class="course-select-cb" data-course-id="${c.id}" onchange="updateBulkSelection()" style="position:absolute;top:10px;left:10px;z-index:5;width:18px;height:18px;accent-color:#9fe870;cursor:pointer">
+          <img src="${c.thumbnail}" alt="${c.title}" style="position:absolute;top:0;left:0;width:100%;height:100%;max-width:none;object-fit:cover">
+          <span class="course-status-badge"><span class="teacher-badge ${statusClass}">${c.status}</span></span>
+        </div>
+        <div class="teacher-course-card-body">
+          <div class="course-rating">${stars} <span class="review-count">(${c.rating || 'No'} ${c.rating ? 'Rating' : 'ratings'})</span> <span style="margin-left:auto;cursor:pointer" onclick="toggleBookmark(this, '${c.id}')" title="Bookmark"><span class="wi wi-pin"></span></span></div>
+          <h4>${c.title}</h4>
+          <div class="teacher-course-meta-row">
+            <span><span class="wi wi-book"></span> ${c.lessons} Lessons</span>
+            <span><span class="wi wi-users"></span> ${Utils.formatNumber(c.students)} Students</span>
+          </div>
+          <div class="teacher-course-price-row">
+            <span class="teacher-course-price">$${c.price || 0} ${c.originalPrice ? '<span class="original-price">$' + c.originalPrice + '</span>' : ''}</span>
+            <a href="course-builder.html" class="teacher-action-btn edit"><span class="wi wi-pencil"></span> Edit</a>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function filterCourses(status, btn) {
+    btn.closest('.teacher-tabs').querySelectorAll('.teacher-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCreatorCourses(status);
+  }
+
+  async function toggleBookmark(el, courseId) {
+    const isActive = el.dataset.bookmarked === 'true';
+    el.dataset.bookmarked = isActive ? 'false' : 'true';
+    el.style.filter = isActive ? 'none' : 'hue-rotate(180deg) brightness(1.2)';
+    // Persist bookmark via Supabase wishlist API
+    if (courseId) {
+      try {
+        await WiserAPI.wishlist.toggle(courseId);
+      } catch (err) {
+        console.warn('Failed to toggle bookmark:', err);
+      }
+    }
+    Toast.show(isActive ? 'Bookmark removed' : 'Course bookmarked', '', isActive ? 'info' : 'success', 1500);
+  }
+
+  function toggleSelectAll(checked) {
+    document.querySelectorAll('.course-select-cb').forEach(cb => cb.checked = checked);
+    updateBulkSelection();
+  }
+
+  function updateBulkSelection() {
+    const checkboxes = document.querySelectorAll('.course-select-cb');
+    const checked = document.querySelectorAll('.course-select-cb:checked');
+    const count = checked.length;
+    const bar = document.getElementById('bulkActionsBar');
+    const countLabel = document.getElementById('bulkCountLabel');
+    const selectedCount = document.getElementById('selectedCount');
+    const selectAll = document.getElementById('selectAllCourses');
+
+    bar.style.display = count > 0 ? 'flex' : 'none';
+    countLabel.textContent = count + ' course' + (count !== 1 ? 's' : '') + ' selected';
+    selectedCount.style.display = count > 0 ? 'inline' : 'none';
+    selectedCount.textContent = count + ' selected';
+    selectAll.checked = checkboxes.length > 0 && count === checkboxes.length;
+    selectAll.indeterminate = count > 0 && count < checkboxes.length;
+  }
+
+  async function bulkAction(action) {
+    const selected = document.querySelectorAll('.course-select-cb:checked');
+    const count = selected.length;
+    if (count === 0) return;
+    const ids = Array.from(selected).map(cb => cb.dataset.courseId);
+    const activeTab = document.querySelector('.teacher-tab.active');
+    const filter = activeTab ? activeTab.textContent.toLowerCase().replace('all courses','all') : 'all';
+    if (action === 'delete') {
+      if (confirm('Delete ' + count + ' selected course(s)? This cannot be undone.')) {
+        try {
+          await Promise.all(ids.map(id => WiserAPI.courses.delete(id)));
+          WiserData.clearCache('teacherCourses');
+          _teacherCourses = await WiserData.getTeacherCourses().catch(() => []);
+          renderCreatorCourses(filter);
+          await renderContentStats();
+          updateBulkSelection();
+          Toast.show(count + ' course(s) deleted', '', 'success', 2000);
+        } catch (err) {
+          console.error('Bulk delete failed:', err);
+          Toast.show('Failed to delete some courses', '', 'error', 2500);
+        }
+      }
+    } else if (action === 'archive') {
+      try {
+        await Promise.all(ids.map(id => WiserAPI.courses.update(id, { archived: true })));
+        WiserData.clearCache('teacherCourses');
+        _teacherCourses = await WiserData.getTeacherCourses().catch(() => []);
+        renderCreatorCourses(filter);
+        updateBulkSelection();
+        Toast.show(count + ' course(s) archived', '', 'info', 2000);
+      } catch (err) {
+        console.error('Bulk archive failed:', err);
+        Toast.show('Failed to archive some courses', '', 'error', 2500);
+      }
+    } else if (action === 'status') {
+      const newStatus = prompt('Enter new status (published, pending, draft):');
+      if (newStatus && ['published','pending','draft'].includes(newStatus.trim().toLowerCase())) {
+        const statusVal = newStatus.trim().toLowerCase();
+        try {
+          await Promise.all(ids.map(id => WiserAPI.courses.update(id, { status: statusVal })));
+          WiserData.clearCache('teacherCourses');
+          _teacherCourses = await WiserData.getTeacherCourses().catch(() => []);
+          renderCreatorCourses(filter);
+          await renderContentStats();
+          updateBulkSelection();
+          Toast.show('Status changed to "' + statusVal + '" for ' + count + ' course(s)', '', 'success', 2000);
+        } catch (err) {
+          console.error('Bulk status change failed:', err);
+          Toast.show('Failed to update status for some courses', '', 'error', 2500);
+        }
+      } else if (newStatus !== null) {
+        Toast.show('Invalid status. Use: published, pending, or draft', '', 'error', 2500);
+      }
+    }
+  }
+
+  // ======== Student Q&A Inbox ========
+  function renderStudentQuestions(filter) {
+    let questions = _studentQuestions || [];
+    if (filter === 'unanswered') questions = questions.filter(q => !q.answered && !q.is_answered);
+    else if (filter === 'answered') questions = questions.filter(q => q.answered || q.is_answered);
+    const container = document.getElementById('studentQuestionsContainer');
+    if (!questions.length) {
+      container.innerHTML = '<p style="text-align:center;padding:var(--space-6);color:var(--text-tertiary)">No questions in this category.</p>';
+      return;
+    }
+    container.innerHTML = questions.map(q => {
+      const isAnswered = q.answered || q.is_answered;
+      const urgentBadge = q.urgent ? '<span style="display:inline-block;padding:2px 8px;border-radius:6px;background:rgba(239,68,68,0.15);color:#f87171;font-size:11px;font-weight:600;margin-left:8px"><span class="wi wi-alert"></span> Urgent</span>' : '';
+      const statusBadge = isAnswered
+        ? '<span style="display:inline-block;padding:2px 8px;border-radius:6px;background:rgba(34,197,94,0.15);color:#4ade80;font-size:11px;font-weight:600"><span class="wi wi-check"></span> Answered</span>'
+        : '<span style="display:inline-block;padding:2px 8px;border-radius:6px;background:rgba(159,232,112,0.15);color:#9fe870;font-size:11px;font-weight:600"><span class="wi wi-bell"></span> Pending</span>';
+      const studentName = q.student?.display_name || ((q.student?.first_name || '') + ' ' + (q.student?.last_name || '')).trim() || q.student || 'Student';
+      const studentInitials = q.studentAvatar || (q.student?.first_name?.[0] || '') + (q.student?.last_name?.[0] || '') || '?';
+      const courseName = q.course?.title || q.course || 'Unknown Course';
+      const questionText = q.question || q.question_text || '';
+      const timeText = q.time || (q.created_at ? new Date(q.created_at).toLocaleDateString() : '');
+      const replySection = !isAnswered ? `
+        <div id="replyBox-${q.id}" style="display:none;margin-top:12px">
+          <textarea id="replyText-${q.id}" placeholder="Type your reply..." style="width:100%;min-height:80px;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:var(--text-primary);font-size:13px;resize:vertical;font-family:inherit"></textarea>
+          <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
+            <button onclick="document.getElementById('replyBox-${q.id}').style.display='none'" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:var(--text-secondary);font-size:13px;cursor:pointer">Cancel</button>
+            <button onclick="submitReply(${q.id})" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#9fe870,#2d6914);color:#000;font-size:13px;font-weight:600;cursor:pointer">Send Reply</button>
+          </div>
+        </div>` : '';
+      return `
+      <div style="display:flex;gap:14px;padding:16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+        <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0">${studentInitials}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+            <span style="font-weight:600;font-size:14px;color:var(--text-primary)">${studentName}</span>
+            <span style="padding:2px 8px;border-radius:6px;background:rgba(99,102,241,0.15);color:#818cf8;font-size:11px;font-weight:500">${courseName}</span>
+            ${urgentBadge}
+            <span style="margin-left:auto;font-size:12px;color:var(--text-tertiary)">${timeText}</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-secondary);margin:6px 0 8px;line-height:1.5">${questionText}</p>
+          <div style="display:flex;align-items:center;gap:10px">
+            ${statusBadge}
+            ${!isAnswered ? '<button onclick="document.getElementById(\'replyBox-' + q.id + '\').style.display=\'block\'" style="padding:5px 14px;border-radius:8px;border:1px solid rgba(159,232,112,0.4);background:rgba(159,232,112,0.1);color:#9fe870;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.background=\'rgba(159,232,112,0.25)\'" onmouseout="this.style.background=\'rgba(159,232,112,0.1)\'"><span class="wi wi-message"></span> Reply</button>' : ''}
+          </div>
+          ${replySection}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function filterQuestions(filter, btn) {
+    btn.parentElement.querySelectorAll('.teacher-tab').forEach(b => {
+      b.style.background = 'rgba(255,255,255,0.05)';
+      b.style.color = 'var(--text-secondary)';
+      b.style.borderColor = 'rgba(255,255,255,0.1)';
+    });
+    btn.style.background = 'rgba(159,232,112,0.15)';
+    btn.style.color = '#9fe870';
+    btn.style.borderColor = 'rgba(159,232,112,0.3)';
+    renderStudentQuestions(filter);
+  }
+
+  async function submitReply(questionId) {
+    const text = document.getElementById('replyText-' + questionId).value.trim();
+    if (!text) { Toast.show('Please type a reply', '', 'error', 1500); return; }
+    try {
+      await WiserAPI.qna.answer(questionId, text);
+      // Re-fetch questions from API
+      _studentQuestions = await WiserData.getStudentQuestions().catch(() => []);
+      const q = _studentQuestions.find(q => q.id === questionId);
+      Toast.show('Reply sent to ' + (q?.student?.display_name || q?.student?.first_name || 'student'), '', 'success', 2000);
+    } catch (err) {
+      console.error('Failed to submit reply:', err);
+      Toast.show('Failed to send reply', '', 'error', 2000);
+    }
+    const activeFilter = document.querySelector('#studentQuestionsContainer')?.closest('.teacher-card')?.querySelector('.teacher-tab[style*="#9fe870"]');
+    const filter = activeFilter ? (activeFilter.textContent.trim().toLowerCase() === 'unanswered' ? 'unanswered' : activeFilter.textContent.trim().toLowerCase() === 'answered' ? 'answered' : 'all') : 'all';
+    renderStudentQuestions(filter);
+  }
+
+  // ======== Private Lessons ========
+  function renderPrivateLessons() {
+    const lessons = _privateLessons || [];
+    const container = document.getElementById('privateLessonsContainer');
+    if (!lessons.length) {
+      container.innerHTML = '<p style="text-align:center;padding:var(--space-6);color:var(--text-tertiary)">No upcoming private lessons.</p>';
+      return;
+    }
+    container.innerHTML = lessons.map(l => {
+      const studentName = l.student?.display_name || ((l.student?.first_name || '') + ' ' + (l.student?.last_name || '')).trim() || l.student || 'Student';
+      const studentInitials = l.studentAvatar || (l.student?.first_name?.[0] || '') + (l.student?.last_name?.[0] || '') || '?';
+      const statusColor = l.status === 'confirmed' ? { bg: 'rgba(34,197,94,0.15)', text: '#4ade80' } : { bg: 'rgba(159,232,112,0.15)', text: '#9fe870' };
+      const actionBtn = l.status === 'confirmed'
+        ? '<button style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:12px;font-weight:600;cursor:pointer"><span class="wi wi-video"></span> Join</button>'
+        : '<button onclick="confirmLesson(' + l.id + ')" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#9fe870,#2d6914);color:#000;font-size:12px;font-weight:600;cursor:pointer"><span class="wi wi-check"></span> Confirm</button>';
+      return `
+      <div style="border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);padding:20px;transition:all .25s;position:relative" onmouseover="this.style.borderColor='rgba(159,232,112,0.3)';this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(255,255,255,0.03)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#9fe870,#2d6914);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#000;flex-shrink:0">${studentInitials}</div>
+          <div>
+            <div style="font-weight:600;font-size:15px;color:var(--text-primary)">${studentName}</div>
+            <div style="font-size:12px;color:var(--text-tertiary)">${l.duration} session</div>
+          </div>
+          <span style="margin-left:auto;padding:4px 10px;border-radius:8px;background:${statusColor.bg};color:${statusColor.text};font-size:11px;font-weight:600;text-transform:capitalize">${l.status}</span>
+        </div>
+        <div style="font-weight:600;font-size:14px;color:var(--text-primary);margin-bottom:8px">${l.topic}</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px;font-size:13px;color:var(--text-secondary)">
+          <span><span class="wi wi-calendar"></span> ${l.date}</span>
+          <span><span class="wi wi-bell"></span> ${l.time}</span>
+          <span style="font-weight:700;color:#4ade80">$${l.price}</span>
+        </div>
+        <p style="font-size:12px;color:var(--text-tertiary);line-height:1.5;margin-bottom:14px"><span class="wi wi-edit"></span> ${l.notes}</p>
+        <div style="display:flex;gap:8px;align-items:center">
+          ${actionBtn}
+          <button onclick="cancelLesson(${l.id})" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(239,68,68,0.3);background:rgba(239,68,68,0.1);color:#f87171;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(239,68,68,0.2)'" onmouseout="this.style.background='rgba(239,68,68,0.1)'">Cancel</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  async function confirmLesson(id) {
+    try {
+      await WiserAPI.privateLessons.updateStatus(id, 'confirmed');
+      WiserData.clearCache('privateLessons');
+      _privateLessons = await WiserData.getPrivateLessons().catch(() => []);
+      const lesson = _privateLessons.find(l => l.id === id);
+      renderPrivateLessons();
+      Toast.show('Lesson with ' + (lesson?.student?.display_name || lesson?.student?.first_name || 'student') + ' confirmed!', '', 'success', 2000);
+    } catch (err) {
+      console.error('Failed to confirm lesson:', err);
+      Toast.show('Failed to confirm lesson', '', 'error', 2000);
+    }
+  }
+
+  async function cancelLesson(id) {
+    if (!confirm('Cancel this private lesson?')) return;
+    try {
+      await WiserAPI.privateLessons.updateStatus(id, 'cancelled');
+      WiserData.clearCache('privateLessons');
+      _privateLessons = await WiserData.getPrivateLessons().catch(() => []);
+      renderPrivateLessons();
+      Toast.show('Lesson cancelled', '', 'info', 2000);
+    } catch (err) {
+      console.error('Failed to cancel lesson:', err);
+      Toast.show('Failed to cancel lesson', '', 'error', 2000);
+    }
+  }
+
+  async function renderContentStats() {
+    const courses = _teacherCourses;
+    const totalLessons = courses.reduce((sum, c) => sum + (c.lessons || 0), 0);
+    // Compute from curriculum data loaded at init
+    const curriculum = _curriculum || [];
+    let videos = 0, quizzes = 0, assignments = 0, resources = 0;
+    curriculum.forEach(s => (s.lessons || []).forEach(l => {
+      if (l.type === 'video') videos++;
+      else if (l.type === 'quiz') quizzes++;
+      else if (l.type === 'assignment') assignments++;
+      else if (l.type === 'resource') resources++;
+    }));
+    document.getElementById('contentOverviewStats').innerHTML = `
+      <div class="teacher-stat-card"><span class="teacher-stat-value">${totalLessons}</span><span class="teacher-stat-label">Total Lessons</span></div>
+      <div class="teacher-stat-card"><span class="teacher-stat-value">${videos}</span><span class="teacher-stat-label">Videos</span></div>
+      <div class="teacher-stat-card"><span class="teacher-stat-value">${quizzes}</span><span class="teacher-stat-label">Quizzes</span></div>
+      <div class="teacher-stat-card"><span class="teacher-stat-value">${assignments}</span><span class="teacher-stat-label">Assignments</span></div>
+      <div class="teacher-stat-card"><span class="teacher-stat-value">${resources}</span><span class="teacher-stat-label">Resources</span></div>
+    `;
+  }
+</script>
+</body>
+</html>

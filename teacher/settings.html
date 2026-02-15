@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/teacher.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+<div class="teacher-page">
+
+  <!-- ========== TOP NAVBAR ========== -->
+  <nav class="teacher-topbar">
+    <div class="teacher-topbar-inner">
+      <a href="../index.html" class="teacher-topbar-logo"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"></a>
+      <div class="teacher-topbar-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="schools.html">Schools</a>
+        <a href="creator-hub.html">My Courses</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="community.html">Community</a>
+        <a href="payout.html">Payout</a>
+      </div>
+      <div class="teacher-topbar-actions">
+        <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" ><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')" ><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="stu-notif-badge">2</span></button>
+        <a href="course-builder.html" class="btn btn-primary btn-sm">Create a New Course &rarr;</a>
+        <button class="teacher-topbar-toggle" onclick="document.querySelector('.teacher-mobile-menu').classList.toggle('active');document.querySelector('.teacher-mobile-overlay').classList.toggle('active')" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Teacher Mobile Menu -->
+  <div class="teacher-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.teacher-mobile-menu').classList.remove('active')"></div>
+  <div class="teacher-mobile-menu">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="schools.html">Schools</a>
+    <a href="creator-hub.html">My Courses</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="community.html">Community</a>
+    <a href="payout.html">Payout</a>
+    <a href="settings.html">Settings</a>
+    <a href="course-builder.html">Create a New Course</a>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-backdrop" onclick="this.classList.remove('active');document.querySelector('.stu-notif-panel').classList.remove('active')"></div>
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header"><h3 style="font-size:16px;font-weight:700;">Notifications</h3><button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.style.display='none';document.querySelector('.stu-notif-badge').style.display='none';">Mark all read</button></div>
+    <div class="stu-notif-list" id="notifList"></div>
+  </div>
+
+  <!-- ========== COVER BANNER ========== -->
+  <div class="teacher-cover-banner">
+    <div class="teacher-cover-content">
+      <div class="teacher-cover-label">Bootcamp Instructor</div>
+      <h1 class="teacher-cover-name">Learn With Sarah</h1>
+    </div>
+  </div>
+  <div class="teacher-profile-bar">
+    <div class="teacher-profile-avatar"><img src="../assets/Teacher-Student/1.png" alt="Sarah Chen"></div>
+    <div class="teacher-profile-info"><div class="teacher-profile-info-name">Sarah Chen</div><div class="teacher-profile-rating"><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span> <span style="color:rgba(255,255,255,0.7);margin-left:4px">(35 Reviews)</span></div></div>
+    <div class="teacher-profile-cta"><a href="course-builder.html" class="btn">Create a New Course &rarr;</a></div>
+  </div>
+
+  <!-- ========== MAIN BODY ========== -->
+  <div class="teacher-body">
+    <!-- Left Sidebar Navigation -->
+    <aside class="teacher-sidebar-card">
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Welcome, Sarah Chen</div>
+        <a href="dashboard.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a>
+        <a href="schools.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Schools</a>
+        <a href="analytics.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Analytics</a>
+        <a href="payout.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Payout</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Instructor</div>
+        <a href="creator-hub.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> My Courses</a>
+        <a href="course-builder.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Course Builder</a>
+        <a href="community.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Community</a>
+        <a href="store-manager.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Store Manager</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">User</div>
+        <a href="settings.html" class="teacher-nav-link active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</a>
+        <a href="../auth/login.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Right Content Area -->
+    <div class="teacher-content">
+      <h2 class="teacher-content-title">Settings</h2>
+
+      <!-- Settings Tabs -->
+      <div class="teacher-tabs" id="settingsTabs">
+        <button class="teacher-tab active" onclick="switchSettingsTab('profile', this)">Profile</button>
+        <button class="teacher-tab" onclick="switchSettingsTab('account', this)">Account</button>
+        <button class="teacher-tab" onclick="switchSettingsTab('notifications', this)">Notifications</button>
+        <button class="teacher-tab" onclick="switchSettingsTab('privacy', this)">Privacy</button>
+      </div>
+
+      <!-- ====== PROFILE TAB ====== -->
+      <div id="tab-profile" class="settings-tab-panel">
+
+        <!-- Cover & Banner -->
+        <div class="teacher-card" style="margin-bottom:var(--space-5)">
+          <h3 style="margin-bottom:var(--space-5)">Cover & Banner</h3>
+          <!-- Cover Photo Preview -->
+          <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;margin-bottom:var(--space-5)">
+            <img id="coverPreview" src="../assets/Cover-Photo/1.png" alt="Cover Photo" style="width:100%;height:180px;object-fit:cover;max-width:none;display:block">
+            <div style="position:absolute;bottom:12px;right:12px;display:flex;gap:8px">
+              <label class="btn btn-primary btn-sm" style="cursor:pointer;margin:0">
+                <span class="wi wi-video"></span> Change Cover
+                <input type="file" id="coverInput" accept="image/*" style="display:none" onchange="previewCover(this)">
+              </label>
+              <button class="btn btn-ghost btn-sm" style="background:rgba(0,0,0,0.6);color:#fff;border:none" onclick="document.getElementById('coverPreview').src='../assets/Cover-Photo/1.png';Toast.show('Cover photo reset','','info',2000)">Reset</button>
+            </div>
+          </div>
+          <!-- Banner Text -->
+          <div class="form-group" style="margin-bottom:var(--space-4)">
+            <label class="form-label">Banner Subtitle</label>
+            <input type="text" id="bannerSubtitle" class="form-input" value="Bootcamp Instructor" placeholder="e.g. Senior Instructor, Course Creator...">
+          </div>
+          <div class="form-group" style="margin-bottom:var(--space-4)">
+            <label class="form-label">Banner Headline</label>
+            <input type="text" id="bannerHeadline" class="form-input" value="Learn With Sarah" placeholder="Your banner headline">
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:var(--space-4);border-top:1px solid var(--border-light)">
+            <button class="btn btn-ghost btn-sm" onclick="cancelBanner()">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="saveBanner()">Save Banner</button>
+          </div>
+        </div>
+
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-5)">Profile Information</h3>
+          <!-- Avatar Upload -->
+          <div style="display:flex;align-items:center;gap:var(--space-5);margin-bottom:var(--space-6)">
+            <div class="teacher-profile-avatar" id="avatarWrapper" style="width:90px;height:90px;font-size:var(--text-2xl);border:4px solid var(--primary-200)"><img id="avatarImg" src="../assets/Teacher-Student/1.png" alt="Sarah Chen"></div>
+            <div>
+              <h4 style="margin-bottom:4px">Sarah Chen</h4>
+              <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:12px">JPG or PNG. Max 5 MB.</p>
+              <div style="display:flex;gap:8px">
+                <label class="btn btn-primary btn-sm" style="cursor:pointer;margin:0">
+                  Upload Photo
+                  <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+                </label>
+                <button class="btn btn-ghost btn-sm" onclick="resetAvatar()">Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Form -->
+          <div class="teacher-settings-form">
+            <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4)">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" id="profileFirstName" class="form-input" value="Sarah">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" id="profileLastName" class="form-input" value="Chen">
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-4)">
+              <label class="form-label">Email</label>
+              <input type="email" id="profileEmail" class="form-input" value="sarah@wiser.com">
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-4)">
+              <label class="form-label">Bio</label>
+              <textarea id="profileBio" class="form-input" rows="4" style="resize:vertical">Senior Software Engineer turned educator. Teaching 18,000+ students web development, React, and Node.js.</textarea>
+            </div>
+            <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4)">
+              <div class="form-group">
+                <label class="form-label">Location</label>
+                <input type="text" id="profileLocation" class="form-input" value="New York, NY">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Speciality</label>
+                <select id="profileSpeciality" class="form-input">
+                  <option selected>Web Development</option>
+                  <option>Data Science</option>
+                  <option>Design</option>
+                  <option>Mobile Development</option>
+                  <option>Marketing</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-4)">
+              <label class="form-label">Website</label>
+              <input type="url" id="profileWebsite" class="form-input" value="https://sarahchen.dev" placeholder="https://yourwebsite.com">
+            </div>
+            <div class="form-group" style="margin-bottom:var(--space-4)">
+              <label class="form-label">Social Links</label>
+              <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+                <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:var(--text-sm);color:var(--text-tertiary)">Twitter</span><input type="text" class="form-input" value="@sarahcodes" style="flex:1"></div>
+                <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:var(--text-sm);color:var(--text-tertiary)">LinkedIn</span><input type="text" class="form-input" value="linkedin.com/in/sarahchen" style="flex:1"></div>
+                <div style="display:flex;align-items:center;gap:8px"><span style="width:80px;font-size:var(--text-sm);color:var(--text-tertiary)">GitHub</span><input type="text" class="form-input" value="github.com/sarahchen" style="flex:1"></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:var(--space-4);border-top:1px solid var(--border-light)">
+            <button class="btn btn-ghost btn-sm" onclick="cancelProfile()">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="saveProfile()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== ACCOUNT TAB ====== -->
+      <div id="tab-account" class="settings-tab-panel" style="display:none">
+        <!-- Change Password -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-5)">Change Password</h3>
+          <div class="teacher-settings-form">
+            <div class="form-group" style="margin-bottom:var(--space-4)">
+              <label class="form-label">Current Password</label>
+              <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password">
+            </div>
+            <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4)">
+              <div class="form-group">
+                <label class="form-label">New Password</label>
+                <input type="password" id="newPassword" class="form-input" placeholder="Enter new password">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password">
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="updatePassword()">Update Password</button>
+        </div>
+
+        <!-- Two-Factor Auth -->
+        <div class="teacher-card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <h3 style="margin-bottom:4px">Two-Factor Authentication</h3>
+              <p style="font-size:var(--text-sm);color:var(--text-tertiary)">Add an extra layer of security to your account.</p>
+            </div>
+            <label style="position:relative;display:inline-block;width:48px;height:26px;flex-shrink:0">
+              <input type="checkbox" id="toggle2fa" style="opacity:0;width:0;height:0" onchange="toggle2FA(this)">
+              <span class="toggle-slider" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border-light);border-radius:26px;transition:.3s"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Connected Accounts -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-5)">Connected Accounts</h3>
+          <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+            <div class="teacher-toggle-row">
+              <div style="display:flex;align-items:center;gap:12px"><span style="font-size:20px"><span class="wi wi-bell"></span></span><div><strong style="font-size:var(--text-sm)">Google</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">sarah.chen@gmail.com</p></div></div>
+              <span class="teacher-badge success">Connected</span>
+            </div>
+            <div class="teacher-toggle-row">
+              <div style="display:flex;align-items:center;gap:12px"><span style="font-size:20px"><span class="wi wi-target"></span></span><div><strong style="font-size:var(--text-sm)">GitHub</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">github.com/sarahchen</p></div></div>
+              <span class="teacher-badge success">Connected</span>
+            </div>
+            <div class="teacher-toggle-row">
+              <div style="display:flex;align-items:center;gap:12px"><span style="font-size:20px"><span class="wi wi-target"></span></span><div><strong style="font-size:var(--text-sm)">Slack</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Not connected</p></div></div>
+              <button class="btn btn-ghost btn-sm" onclick="connectSlack(this)">Connect</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="teacher-card" style="border-color:#FEE2E2">
+          <h3 style="color:#DC2626;margin-bottom:var(--space-4)">Danger Zone</h3>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Deactivate Account</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Temporarily disable your account. You can reactivate anytime.</p></div>
+            <button class="btn btn-ghost btn-sm" style="color:#DC2626" onclick="deactivateAccount()">Deactivate</button>
+          </div>
+          <div class="teacher-toggle-row" style="border-bottom:none">
+            <div><strong style="font-size:var(--text-sm)">Delete Account</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Permanently delete your account and all data. This cannot be undone.</p></div>
+            <button class="btn btn-sm" style="background:#DC2626;color:#fff;border:none" onclick="deleteAccount()">Delete Account</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== NOTIFICATIONS TAB ====== -->
+      <div id="tab-notifications" class="settings-tab-panel" style="display:none">
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-5)">Email Notifications</h3>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">New Enrollments</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Get notified when a student enrolls in your course.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">New Reviews</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Get notified when a student leaves a review.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Student Messages</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Get notified when a student sends you a message.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Payout Updates</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Get notified about payment processing and payouts.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Community Activity</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Get notified about replies and mentions in community.</p></div>
+            <input type="checkbox" style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row" style="border-bottom:none">
+            <div><strong style="font-size:var(--text-sm)">Marketing & Promotions</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Product updates, tips, and promotional content.</p></div>
+            <input type="checkbox" style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+        </div>
+
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-5)">Push Notifications</h3>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Browser Notifications</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Show desktop notifications in your browser.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row" style="border-bottom:none">
+            <div><strong style="font-size:var(--text-sm)">Mobile Push</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Send push notifications to your mobile device.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px">
+          <button class="btn btn-primary btn-sm" onclick="saveNotifications()">Save Preferences</button>
+        </div>
+      </div>
+
+      <!-- ====== PRIVACY TAB ====== -->
+      <div id="tab-privacy" class="settings-tab-panel" style="display:none">
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-5)">Profile Visibility</h3>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Show Profile Publicly</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Allow anyone to view your instructor profile.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Show Earnings</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Display revenue stats on your public profile.</p></div>
+            <input type="checkbox" style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Show Student Count</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Display total student count on your profile.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row" style="border-bottom:none">
+            <div><strong style="font-size:var(--text-sm)">Allow Direct Messages</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Let students send you direct messages.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+        </div>
+
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-5)">Data & Privacy</h3>
+          <div class="teacher-toggle-row">
+            <div><strong style="font-size:var(--text-sm)">Analytics Tracking</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Allow us to collect usage analytics to improve your experience.</p></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--primary-600);cursor:pointer">
+          </div>
+          <div class="teacher-toggle-row" style="border-bottom:none">
+            <div><strong style="font-size:var(--text-sm)">Download My Data</strong><p style="font-size:var(--text-xs);color:var(--text-tertiary)">Request a copy of all your personal data.</p></div>
+            <button class="btn btn-ghost btn-sm" onclick="exportUserData()">Request Export</button>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px">
+          <button class="btn btn-primary btn-sm" onclick="savePrivacy()">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="teacher-footer">
+    <div class="teacher-footer-inner">
+      <div class="teacher-footer-grid">
+        <div><div class="teacher-footer-brand"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"><span>Wiser</span></div><p class="teacher-footer-desc">We're always in search for talented and motivated people.</p><div class="teacher-footer-socials"><a href="#" class="teacher-footer-social-icon">f</a><a href="#" class="teacher-footer-social-icon">t</a><a href="#" class="teacher-footer-social-icon">in</a><a href="#" class="teacher-footer-social-icon">ig</a></div></div>
+        <div><h4>Useful Links</h4><div class="teacher-footer-links"><a href="#">Marketplace</a><a href="#">Courses</a><a href="#">Community</a><a href="#">FAQ</a><a href="#">About Us</a></div></div>
+        <div><h4>Our Company</h4><div class="teacher-footer-links"><a href="#">Contact Us</a><a href="schools.html">Invite Teachers</a><a href="#">Blog</a><a href="#">Events</a><a href="#">Careers</a></div></div>
+        <div><h4>Get in Touch</h4><p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-2)">Phone: (406) 555-0120<br>Email: admin@wiser.com</p><div class="teacher-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button>Submit Now</button></div></div>
+      </div>
+      <div class="teacher-footer-bottom"><span>Copyright &copy; 2026 <strong>Wiser</strong>. All Rights Reserved</span><div class="teacher-footer-bottom-links"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="../auth/login.html">Login &amp; Register</a></div></div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  // Auth guard — server-side role verification
+  (async () => { const __authProfile = await WiserAuth.requireAuth(['teacher', 'admin']); if (!__authProfile) return; })();
+
+  // Tab switching
+  function switchSettingsTab(tab, btn) {
+    document.querySelectorAll('.settings-tab-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.teacher-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).style.display = 'block';
+    btn.classList.add('active');
+  }
+
+  // 2FA toggle styling + thumb
+  document.addEventListener('DOMContentLoaded', () => {
+    // Add toggle thumb CSS dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+      .toggle-slider::before { content:''; position:absolute; height:20px; width:20px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+      input:checked + .toggle-slider { background:var(--primary-600) !important; }
+      input:checked + .toggle-slider::before { transform:translateX(22px); }
+    `;
+    document.head.appendChild(style);
+
+    // Load saved settings
+    loadSettings();
+  });
+
+  // Cover photo
+  function previewCover(input) {
+    if (input.files && input.files[0]) {
+      if (input.files[0].size > 10 * 1024 * 1024) { Toast.show('File too large', 'Max 10 MB', 'error', 2500); return; }
+      const reader = new FileReader();
+      reader.onload = (e) => { document.getElementById('coverPreview').src = e.target.result; };
+      reader.readAsDataURL(input.files[0]);
+      // Upload to Supabase Storage immediately
+      (async () => {
+        try {
+          const coverUrl = await WiserStorage.uploadCover(input.files[0]);
+          await WiserAPI.profiles.updateCurrent({ cover_photo_url: coverUrl });
+          WiserData.clearCache('teacherProfile');
+          Toast.show('Cover updated!', 'Cover photo saved to your profile', 'success', 2000);
+        } catch (err) { Toast.show('Upload failed', err.message, 'error'); }
+      })();
+    }
+  }
+
+  // Avatar
+  function previewAvatar(input) {
+    if (input.files && input.files[0]) {
+      if (input.files[0].size > 5 * 1024 * 1024) { Toast.show('File too large', 'Max 5 MB', 'error', 2500); return; }
+      const reader = new FileReader();
+      reader.onload = (e) => { document.getElementById('avatarImg').src = e.target.result; };
+      reader.readAsDataURL(input.files[0]);
+      // Upload to Supabase Storage
+      (async () => {
+        try {
+          const url = await WiserStorage.uploadAvatar(input.files[0]);
+          await WiserAPI.profiles.updateCurrent({ avatar_url: url });
+          WiserData.clearCache('teacherProfile');
+          Toast.show('Photo updated!', 'Avatar saved to your profile', 'success', 2000);
+        } catch (err) { Toast.show('Upload failed', err.message, 'error'); }
+      })();
+    }
+  }
+  function resetAvatar() {
+    document.getElementById('avatarImg').src = '../assets/Teacher-Student/1.png';
+    document.getElementById('avatarInput').value = '';
+    (async () => {
+      try { await WiserAPI.profiles.updateCurrent({ avatar_url: null }); WiserData.clearCache('teacherProfile'); } catch (e) {}
+    })();
+    Toast.show('Avatar reset', 'Default photo restored', 'info', 2000);
+  }
+
+  // Profile save/cancel
+  async function saveProfile() {
+    const data = {
+      first_name: document.getElementById('profileFirstName').value,
+      last_name: document.getElementById('profileLastName').value,
+      display_name: document.getElementById('profileFirstName').value + ' ' + document.getElementById('profileLastName').value,
+      bio: document.getElementById('profileBio').value,
+      location: document.getElementById('profileLocation').value,
+      speciality: document.getElementById('profileSpeciality').value,
+      website: document.getElementById('profileWebsite').value
+    };
+    // Collect social links
+    const socialTwitter = document.getElementById('socialTwitter');
+    const socialLinkedin = document.getElementById('socialLinkedin');
+    const socialGithub = document.getElementById('socialGithub');
+    if (socialTwitter) data.social_twitter = socialTwitter.value;
+    if (socialLinkedin) data.social_linkedin = socialLinkedin.value;
+    if (socialGithub) data.social_github = socialGithub.value;
+
+    try {
+      await WiserAPI.profiles.updateCurrent(data);
+      WiserData.clearCache('teacherProfile');
+      // Update wiser_user in localStorage for navbar sync
+      const raw = JSON.parse(localStorage.getItem('wiser_user') || '{}');
+      raw.name = data.display_name;
+      localStorage.setItem('wiser_user', JSON.stringify(raw));
+      // Update page banner dynamically
+      updateTeacherBanner(data);
+      Toast.show('Profile saved!', 'Your profile has been updated', 'success', 2000);
+    } catch (err) {
+      Toast.show('Save failed', err.message, 'error');
+    }
+  }
+  async function cancelProfile() {
+    await loadSettings();
+    Toast.show('Changes discarded', '', 'info', 2000);
+  }
+
+  // Banner save/cancel
+  async function saveBanner() {
+    const subtitle = document.getElementById('bannerSubtitle').value;
+    const headline = document.getElementById('bannerHeadline').value;
+    const coverInput = document.getElementById('coverInput');
+    try {
+      const updates = { occupation: subtitle };
+      if (coverInput && coverInput.files && coverInput.files[0]) {
+        const coverUrl = await WiserStorage.uploadCover(coverInput.files[0]);
+        updates.cover_photo_url = coverUrl;
+      }
+      await WiserAPI.profiles.updateCurrent(updates);
+      WiserData.clearCache('teacherProfile');
+      const bannerName = document.querySelector('.teacher-cover-name');
+      if (bannerName) bannerName.textContent = headline;
+      const bannerLabel = document.querySelector('.teacher-cover-label');
+      if (bannerLabel) bannerLabel.textContent = subtitle;
+      Toast.show('Banner updated!', 'Your cover and banner have been saved', 'success', 2000);
+    } catch (err) {
+      Toast.show('Save failed', err.message, 'error');
+    }
+  }
+  function cancelBanner() {
+    loadSettings();
+    Toast.show('Changes discarded', '', 'info', 2000);
+  }
+
+  // Password
+  async function updatePassword() {
+    const current = document.getElementById('currentPassword').value;
+    const newPwd = document.getElementById('newPassword').value;
+    const confirm = document.getElementById('confirmPassword').value;
+    if (!current) { Toast.show('Missing field', 'Enter current password', 'error', 2500); return; }
+    if (!newPwd || newPwd.length < 8) { Toast.show('Weak password', 'Must be at least 8 characters', 'error', 2500); return; }
+    if (newPwd !== confirm) { Toast.show('Mismatch', 'New passwords do not match', 'error', 2500); return; }
+    try {
+      await WiserAuth.updatePassword(newPwd);
+      document.getElementById('currentPassword').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
+      Toast.show('Password updated!', 'Your password has been changed', 'success', 2000);
+    } catch (err) {
+      Toast.show('Password update failed', err.message, 'error');
+    }
+  }
+
+  // 2FA
+  async function toggle2FA(checkbox) {
+    try {
+      await WiserAPI.profiles.updateCurrent({ two_factor_enabled: checkbox.checked });
+      Toast.show(checkbox.checked ? '2FA Enabled' : '2FA Disabled', checkbox.checked ? 'Extra security layer activated' : 'Two-factor authentication turned off', 'info', 2000);
+    } catch (err) {
+      checkbox.checked = !checkbox.checked;
+      Toast.show('Error', err.message, 'error');
+    }
+  }
+
+  // Slack
+  function connectSlack(btn) {
+    btn.textContent = 'Connecting...';
+    btn.disabled = true;
+    setTimeout(() => {
+      const row = btn.closest('.teacher-toggle-row');
+      btn.replaceWith(Object.assign(document.createElement('span'), { className: 'teacher-badge success', textContent: 'Connected' }));
+      row.querySelector('p').textContent = 'workspace.slack.com';
+      Toast.show('Slack connected!', 'Your Slack workspace is now linked', 'success', 2000);
+    }, 1500);
+  }
+
+  // Destructive actions
+  async function deactivateAccount() {
+    if (confirm('Are you sure you want to deactivate your account? You can reactivate anytime.')) {
+      try {
+        await WiserAPI.profiles.updateCurrent({ status: 'deactivated' });
+        await WiserAuth.logout();
+      } catch (err) {
+        Toast.show('Error', err.message, 'error');
+      }
+    }
+  }
+  async function deleteAccount() {
+    if (confirm('WARNING: This will permanently delete your account and all data. This cannot be undone.\n\nAre you absolutely sure?')) {
+      if (confirm('Final confirmation: Type OK to proceed with account deletion.')) {
+        try {
+          await WiserAuth.deleteAccount();
+        } catch (err) {
+          Toast.show('Error', err.message, 'error');
+        }
+      }
+    }
+  }
+
+  // Notification preferences
+  async function saveNotifications() {
+    const checks = document.querySelectorAll('#tab-notifications input[type="checkbox"]');
+    const prefs = {};
+    checks.forEach(c => { if (c.name) prefs[c.name] = c.checked; });
+    try {
+      await WiserAPI.notificationPreferences.update(prefs);
+      Toast.show('Notification preferences saved!', '', 'success', 2000);
+    } catch (err) {
+      Toast.show('Save failed', err.message, 'error');
+    }
+  }
+
+  // Privacy preferences
+  async function savePrivacy() {
+    const checks = document.querySelectorAll('#tab-privacy input[type="checkbox"]');
+    const prefs = {};
+    checks.forEach(c => { if (c.name) prefs[c.name] = c.checked; });
+    try {
+      await WiserAPI.privacyPreferences.update(prefs);
+      Toast.show('Privacy settings saved!', '', 'success', 2000);
+    } catch (err) {
+      Toast.show('Save failed', err.message, 'error');
+    }
+  }
+
+  // Export user data as JSON download
+  async function exportUserData() {
+    try {
+      const profile = await WiserAPI.profiles.getCurrent();
+      const courses = await WiserData.getTeacherCourses();
+      const analytics = await WiserData.getTeacherAnalytics();
+      const notifPrefs = await WiserAPI.notificationPreferences.get();
+      const privacyPrefs = await WiserAPI.privacyPreferences.get();
+      const exportData = {
+        profile,
+        courses,
+        analytics,
+        notificationPrefs: notifPrefs,
+        privacyPrefs: privacyPrefs,
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'wiser_data_export_' + new Date().toISOString().slice(0, 10) + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      Toast.show('Data exported!', 'Your data has been downloaded as a JSON file', 'success', 3000);
+    } catch (err) {
+      Toast.show('Export failed', err.message, 'error');
+    }
+  }
+
+  // Helper: update banner elements on page
+  function updateTeacherBanner(profile) {
+    const nameEl = document.querySelector('.teacher-cover-name');
+    const profileName = document.querySelector('.teacher-profile-info-name');
+    const sidebarGreeting = document.querySelector('.teacher-sidebar-label');
+    const displayName = profile.display_name || (profile.first_name + ' ' + profile.last_name);
+    if (nameEl) nameEl.textContent = 'Learn With ' + (profile.first_name || displayName);
+    if (profileName) profileName.textContent = displayName;
+    if (sidebarGreeting && sidebarGreeting.textContent.includes('Welcome')) sidebarGreeting.textContent = 'Welcome, ' + displayName;
+  }
+
+  // Load all settings from Supabase on page load
+  async function loadSettings() {
+    try {
+      const profile = await WiserAPI.profiles.getCurrent();
+      if (!profile) return;
+      // Profile fields
+      const fields = {
+        profileFirstName: profile.first_name || '',
+        profileLastName: profile.last_name || '',
+        profileEmail: profile.email || '',
+        profileBio: profile.bio || '',
+        profileLocation: profile.location || '',
+        profileSpeciality: profile.speciality || '',
+        profileWebsite: profile.website || ''
+      };
+      Object.entries(fields).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      });
+      // Social links
+      const socialFields = { socialTwitter: profile.social_twitter, socialLinkedin: profile.social_linkedin, socialGithub: profile.social_github };
+      Object.entries(socialFields).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el && val) el.value = val;
+      });
+      // Avatar
+      if (profile.avatar_url) {
+        const avatarImg = document.getElementById('avatarImg');
+        if (avatarImg) avatarImg.src = profile.avatar_url;
+        const profileAvatar = document.querySelector('.teacher-profile-avatar img');
+        if (profileAvatar) profileAvatar.src = profile.avatar_url;
+      }
+      // Cover photo
+      if (profile.cover_photo_url) {
+        const coverPreview = document.getElementById('coverPreview');
+        if (coverPreview) coverPreview.src = profile.cover_photo_url;
+        const coverBanner = document.querySelector('.teacher-cover-banner');
+        if (coverBanner) { coverBanner.style.backgroundImage = 'url(' + profile.cover_photo_url + ')'; coverBanner.style.backgroundSize = 'cover'; }
+      }
+      // Banner
+      const bannerSubtitle = document.getElementById('bannerSubtitle');
+      if (bannerSubtitle) bannerSubtitle.value = profile.occupation || '';
+      // Update page banner
+      updateTeacherBanner(profile);
+      // 2FA
+      const toggle2fa = document.getElementById('toggle2fa');
+      if (toggle2fa) toggle2fa.checked = profile.two_factor_enabled || false;
+      // Notification preferences
+      try {
+        const notifPrefs = await WiserAPI.notificationPreferences.get();
+        if (notifPrefs) {
+          Object.entries(notifPrefs).forEach(([key, val]) => {
+            if (typeof val === 'boolean') {
+              const el = document.querySelector(`#tab-notifications input[name="${key}"]`);
+              if (el) el.checked = val;
+            }
+          });
+        }
+      } catch (e) {}
+      // Privacy preferences
+      try {
+        const privacyPrefs = await WiserAPI.privacyPreferences.get();
+        if (privacyPrefs) {
+          Object.entries(privacyPrefs).forEach(([key, val]) => {
+            if (typeof val === 'boolean') {
+              const el = document.querySelector(`#tab-privacy input[name="${key}"]`);
+              if (el) el.checked = val;
+            }
+          });
+        }
+      } catch (e) {}
+    } catch (err) {
+      console.warn('Failed to load settings:', err);
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+# Environment variables
+.env
+.env.*
+.env.local
+.env.production
+
+# ==============================
+# Backend / Sensitive (not shared)
+# ==============================
+
+# Supabase (entire backend)
+supabase/
+*.sql
+
+# Backend JS modules
+js/supabase-config.js
+js/api.js
+js/data.js
+js/data.static.bak.js
+
+# Sensitive documentation
+SECURITY-AUDIT.md
+BUNNY-NET-SETUP.md
+
+# ==============================
+# General ignores
+# ==============================
+
+# Node
+node_modules/
+package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build output
+dist/
+build/

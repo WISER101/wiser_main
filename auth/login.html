@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/landing.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+  <style>
+    .auth-page { min-height: 100vh; display: flex; }
+    .auth-left { flex: 1; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; padding: 3rem; position: relative; overflow: hidden; }
+    .auth-left::before { content:''; position:absolute; width:400px; height:400px; border-radius:50%; background: rgba(255,255,255,0.08); top:-100px; right:-100px; }
+    .auth-left::after { content:''; position:absolute; width:300px; height:300px; border-radius:50%; background: rgba(255,255,255,0.05); bottom:-50px; left:-50px; }
+    .auth-left-content { color: white; max-width: 480px; position: relative; z-index: 1; }
+    .auth-left-content h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+    .auth-left-content p { font-size: 1.1rem; opacity: 0.9; line-height: 1.7; margin-bottom: 2rem; }
+    .auth-features { list-style: none; }
+    .auth-features li { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; font-size: 0.95rem; opacity: 0.9; }
+    .auth-features li span { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; }
+    .auth-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem; background: var(--bg-primary); }
+    .auth-form-container { width: 100%; max-width: 440px; }
+    .auth-logo { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; text-decoration: none; }
+    .auth-logo img { width: 48px; height: 48px; object-fit: contain; border-radius: 8px; }
+    .auth-form-container h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .auth-form-container .auth-subtitle { color: var(--text-secondary); margin-bottom: 2rem; }
+    .auth-form .form-group { margin-bottom: 1.25rem; }
+    .auth-form label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-primary); }
+    .auth-form input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--border-primary); border-radius: var(--radius-lg); font-size: 0.95rem; font-family: inherit; transition: var(--transition-fast); background: var(--bg-primary); }
+    .auth-form input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(61,139,28,0.1); }
+    .form-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .form-row label { margin-bottom: 0; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.875rem; }
+    .form-row a { color: var(--primary); font-size: 0.875rem; text-decoration: none; font-weight: 500; }
+    .form-row a:hover { text-decoration: underline; }
+    .auth-submit { width: 100%; padding: 0.875rem; font-size: 1rem; font-weight: 600; border: none; border-radius: var(--radius-lg); background: var(--gradient-primary); color: white; cursor: pointer; transition: var(--transition-fast); font-family: inherit; }
+    .auth-submit:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .auth-divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; color: var(--text-tertiary); font-size: 0.85rem; }
+    .auth-divider::before, .auth-divider::after { content:''; flex:1; height:1px; background: var(--border-primary); }
+    .social-login { display: flex; gap: 0.75rem; }
+    .social-btn { flex: 1; padding: 0.7rem; border: 1.5px solid var(--border-primary); border-radius: var(--radius-lg); background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 500; color: var(--text-primary); transition: var(--transition-fast); font-family: inherit; }
+    .social-btn:hover { border-color: var(--primary); background: var(--bg-secondary); }
+    .auth-footer { text-align: center; margin-top: 2rem; font-size: 0.9rem; color: var(--text-secondary); }
+    .auth-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+    .auth-footer a:hover { text-decoration: underline; }
+    .input-icon-wrapper { position: relative; }
+    .input-icon-wrapper input { padding-left: 2.75rem; }
+    .input-icon { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); }
+    .password-toggle { position: absolute; right: 0.875rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-tertiary); cursor: pointer; padding: 0; }
+    .form-error { color: var(--error); font-size: 0.8rem; margin-top: 0.25rem; display: none; }
+    .form-group.error input { border-color: var(--error); }
+    .form-group.error .form-error { display: block; }
+    @media (max-width: 1024px) { .auth-left { display: none; } .auth-right { padding: 2rem; } }
+    @media (max-width: 480px) { .auth-right { padding: 1.5rem; } .social-login { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" style="position:fixed;top:16px;right:16px;z-index:1000;background:var(--bg-secondary);border:1px solid var(--border-light);cursor:pointer;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.1)"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+  <div class="auth-page">
+    <div class="auth-left">
+      <div class="auth-left-content">
+        <h1>Welcome Back to Wiser</h1>
+        <p>Continue your learning journey. Track your streaks, earn certificates, and connect with a global community of learners.</p>
+        <ul class="auth-features">
+          <li><span><span class="wi wi-target"></span></span> AI-powered personalized learning paths</li>
+          <li><span><span class="wi wi-flame"></span></span> Maintain your learning streak</li>
+          <li><span><span class="wi wi-chart"></span></span> Advanced analytics & progress tracking</li>
+          <li><span><span class="wi wi-trophy"></span></span> Earn certificates & badges</li>
+          <li><span><span class="wi wi-users"></span></span> Join a community of 50K+ learners</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="auth-form-container">
+        <a href="../index.html" class="auth-logo">
+          <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark" style="display:none">
+        </a>
+
+        <h2>Log in to your account</h2>
+        <p class="auth-subtitle">Welcome back! Enter your credentials to continue.</p>
+
+        <form class="auth-form" id="loginForm" onsubmit="return handleLogin(event)">
+          <div class="form-group">
+            <label>Email Address</label>
+            <div class="input-icon-wrapper">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>
+              </span>
+              <input type="email" id="loginEmail" placeholder="you@example.com" required>
+            </div>
+            <div class="form-error">Please enter a valid email address</div>
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-icon-wrapper">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <input type="password" id="loginPassword" placeholder="Enter your password" required minlength="6">
+              <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div class="form-error">Password must be at least 6 characters</div>
+          </div>
+
+          <div class="form-row">
+            <label><input type="checkbox" checked> Remember me</label>
+            <a href="forgot-password.html">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="auth-submit">Log In</button>
+        </form>
+
+        <div class="auth-divider">Or continue with</div>
+
+        <div class="social-login">
+          <button class="social-btn" onclick="socialLogin('Google')">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Google
+          </button>
+          <button class="social-btn" onclick="socialLogin('GitHub')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </button>
+        </div>
+
+        <div class="auth-footer">
+          Don't have an account? <a href="register.html">Sign up free</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+      } else {
+        input.type = 'password';
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+      }
+    }
+
+    // Rate limiting for login attempts
+    const _loginAttempts = { count: 0, lastAttempt: 0, lockoutUntil: 0 };
+    function checkLoginRateLimit() {
+      const now = Date.now();
+      if (now < _loginAttempts.lockoutUntil) {
+        const secs = Math.ceil((_loginAttempts.lockoutUntil - now) / 1000);
+        throw new Error(`Too many login attempts. Please wait ${secs} seconds.`);
+      }
+      // Reset counter after 15 min window
+      if (now - _loginAttempts.lastAttempt > 15 * 60 * 1000) _loginAttempts.count = 0;
+      _loginAttempts.count++;
+      _loginAttempts.lastAttempt = now;
+      if (_loginAttempts.count > 5) {
+        _loginAttempts.lockoutUntil = now + 60 * 1000; // 1 min lockout
+        _loginAttempts.count = 0;
+        throw new Error('Too many login attempts. Please wait 60 seconds.');
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+
+      // Rate limit check
+      try { checkLoginRateLimit(); } catch (rlErr) {
+        const errorDiv = document.getElementById('loginError');
+        if (errorDiv) { errorDiv.style.display = 'flex'; errorDiv.textContent = rlErr.message; }
+        else {
+          const el = document.createElement('div');
+          el.id = 'loginError';
+          el.style.cssText = 'display:flex;align-items:center;gap:8px;padding:12px 16px;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;color:#DC2626;font-size:0.875rem;margin-bottom:16px;';
+          el.textContent = rlErr.message;
+          document.getElementById('loginForm').prepend(el);
+        }
+        return false;
+      }
+
+      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const password = document.getElementById('loginPassword').value;
+      let valid = true;
+
+      document.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
+
+      if (!email || !email.includes('@')) {
+        document.getElementById('loginEmail').closest('.form-group').classList.add('error');
+        valid = false;
+      }
+      if (!password || password.length < 1) {
+        document.getElementById('loginPassword').closest('.form-group').classList.add('error');
+        valid = false;
+      }
+
+      if (!valid) return false;
+
+      // Show loading
+      const btn = document.querySelector('.auth-submit');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span style="display:inline-flex;align-items:center;gap:8px;">Signing in...</span>';
+      btn.disabled = true;
+
+      try {
+        const data = await WiserAuth.login({ email, password });
+        const user = data.user;
+        // Fetch profile for role
+        const profile = await WiserAuth.getProfile();
+        // Store user info for UI
+        localStorage.setItem('wiser_user', JSON.stringify({
+          role: profile?.role || 'student',
+          name: profile?.display_name || profile?.first_name || 'User',
+          photo: profile?.avatar_url || ''
+        }));
+        // Redirect based on role
+        const redirects = { student: '../student/dashboard.html', teacher: '../teacher/dashboard.html', admin: '../admin/dashboard.html' };
+        window.location.href = redirects[profile?.role] || redirects.student;
+      } catch (err) {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        const errorDiv = document.getElementById('loginError');
+        const msg = err.message === 'Invalid login credentials' ? 'Invalid email or password. Please try again.' : err.message;
+        if (errorDiv) {
+          errorDiv.style.display = 'flex';
+          errorDiv.textContent = msg;
+        } else {
+          const el = document.createElement('div');
+          el.id = 'loginError';
+          el.style.cssText = 'display:flex;align-items:center;gap:8px;padding:12px 16px;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;color:#DC2626;font-size:0.875rem;margin-bottom:16px;';
+          el.textContent = msg;
+          document.getElementById('loginForm').prepend(el);
+        }
+      }
+      return false;
+    }
+
+    async function socialLogin(provider) {
+      try {
+        await WiserAuth.socialLogin(provider);
+      } catch (err) {
+        alert('Social login failed: ' + err.message);
+      }
+    }
+  </script>
+<script>if(typeof ThemeManager==='undefined'){var ThemeManager={toggle:function(){var c=document.documentElement.getAttribute('data-theme')||'light';var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('wiser_theme',n);document.querySelectorAll('.theme-toggle').forEach(function(b){var s=b.querySelector('.icon-sun');var m=b.querySelector('.icon-moon');if(s&&m){s.style.display=n==='dark'?'block':'none';m.style.display=n==='dark'?'none':'block'}});document.querySelectorAll('.logo-light').forEach(function(e){e.style.display=n==='dark'?'none':'block'});document.querySelectorAll('.logo-dark').forEach(function(e){e.style.display=n==='dark'?'block':'none'})}}}</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+</body>
+</html>

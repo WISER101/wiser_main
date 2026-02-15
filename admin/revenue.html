@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revenue — Admin — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Admin Sidebar -->
+    <aside class="sidebar admin-sidebar">
+      <div class="sidebar-logo">
+        <a href="dashboard.html">
+          <img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-icon logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-icon logo-dark">
+        </a>
+        <span class="admin-badge">Admin</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-label">Overview</div>
+        <a href="dashboard.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a href="users.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Users
+        </a>
+        <div class="sidebar-nav-label">Content</div>
+        <a href="courses.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Courses
+        </a>
+        <a href="reports.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Reports
+        </a>
+        <div class="sidebar-nav-label">Finance</div>
+        <a href="revenue.html" class="sidebar-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Revenue
+        </a>
+        <div class="sidebar-nav-label">System</div>
+        <a href="settings.html" class="sidebar-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </a>
+      </nav>
+      <div class="sidebar-user">
+        <div class="avatar avatar-sm" style="background: linear-gradient(135deg, #DC2626, #5ab82e)">A</div>
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name">Admin</span>
+          <span class="sidebar-user-role">Super Admin</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" onclick="document.body.classList.remove('sidebar-open')"></div>
+
+    <main class="main-content">
+      <header class="top-header">
+        <button class="sidebar-toggle" onclick="document.body.classList.toggle('sidebar-open')">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <h2 class="page-title">Revenue & Finance</h2>
+        <div style="flex:1"></div>
+        <div class="header-actions">
+          <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" style="background:none;border:none;cursor:pointer;padding:6px;"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+          <button class="btn btn-primary btn-sm" onclick="exportRevenueCSV()"><span class="wi wi-file"></span> Export CSV</button>
+        </div>
+      </header>
+
+      <div class="page-content">
+      <!-- Revenue KPI -->
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon" style="background:rgba(90,184,46,0.1);color:#5ab82e;"><span class="wi wi-dollar"></span></div>
+          <div class="admin-stat-value" data-count="284590" data-prefix="$">0</div>
+          <div class="admin-stat-label">Monthly Revenue</div>
+          <div class="admin-stat-trend up">+22% vs last month</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon" style="background:rgba(61,139,28,0.1);color:#3d8b1c;"><span class="wi wi-chart"></span></div>
+          <div class="admin-stat-value" data-count="3241820" data-prefix="$">0</div>
+          <div class="admin-stat-label">Annual Revenue</div>
+          <div class="admin-stat-trend up">+18% YoY</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon" style="background:rgba(159,232,112,0.1);color:#9fe870;"><span class="wi wi-chart"></span></div>
+          <div class="admin-stat-value" data-count="47" data-prefix="$">0</div>
+          <div class="admin-stat-label">Avg. Order Value</div>
+          <div class="admin-stat-trend up">+$3 vs prior</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon" style="background:rgba(194,65,12,0.1);color:#1e4a0d;"><span class="wi wi-wrench"></span></div>
+          <div class="admin-stat-value" data-count="1847">0</div>
+          <div class="admin-stat-label">Refund Requests</div>
+          <div class="admin-stat-trend down">+5% vs prior</div>
+        </div>
+      </div>
+
+      <!-- Revenue Chart -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Revenue Overview</h3>
+          <select onchange="updateRevenueChart()" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border-light);font-size:12px;">
+            <option>This Month</option>
+            <option>Last 3 Months</option>
+            <option>Last 6 Months</option>
+            <option>This Year</option>
+          </select>
+        </div>
+        <div class="admin-chart-container" style="height:320px;">
+          <canvas id="revenueOverviewChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Revenue Breakdown -->
+      <div class="admin-grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Revenue by Source</h3>
+          </div>
+          <div style="padding:20px;" id="revenueBySource"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Payout Summary</h3>
+          </div>
+          <div style="padding:20px;" id="payoutSummary"></div>
+        </div>
+      </div>
+
+      <!-- Transactions -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Recent Transactions</h3>
+          <button class="btn btn-secondary btn-sm" onclick="showAllTransactions()">View All</button>
+        </div>
+        <div class="admin-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>User</th>
+              <th>Course</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsTable"></tbody>
+        </table>
+        </div>
+      </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="admin-toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/admin.js"></script>
+  <script>
+    // ---- Revenue Overview Chart ----
+    (function() {
+      const canvas = document.getElementById('revenueOverviewChart');
+      if (!canvas) return;
+      function draw() {
+        const ctx = canvas.getContext('2d');
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width * 2; canvas.height = rect.height * 2;
+        canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px';
+        ctx.scale(2,2);
+        const w = rect.width, h = rect.height;
+        const pad = { top:20, right:20, bottom:40, left:65 };
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const revenue =  [180200, 195400, 210800, 198600, 224100, 242300, 231500, 258900, 247200, 268400, 276800, 284590];
+        const expenses = [92000, 98500, 105200, 99800, 112400, 118600, 115200, 128900, 124600, 132100, 138400, 142300];
+        const maxVal = Math.max(...revenue) * 1.1;
+        const chartW = w - pad.left - pad.right;
+        const chartH = h - pad.top - pad.bottom;
+
+        // Grid
+        for (let i = 0; i <= 5; i++) {
+          const y = pad.top + (chartH/5)*i;
+          ctx.strokeStyle = 'rgba(0,0,0,0.06)'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w-pad.right, y); ctx.stroke();
+          ctx.fillStyle = '#9CA3AF'; ctx.font = '11px Inter, sans-serif'; ctx.textAlign = 'right';
+          const val = Math.round(maxVal - (maxVal/5)*i);
+          ctx.fillText('$'+(val/1000).toFixed(0)+'k', pad.left - 8, y + 4);
+        }
+
+        // Revenue bars
+        const barGroupW = chartW / months.length;
+        const barW = barGroupW * 0.28;
+        months.forEach((month, i) => {
+          const x = pad.left + barGroupW * i + barGroupW / 2;
+          // Revenue
+          const rH = (revenue[i]/maxVal)*chartH;
+          const rGrad = ctx.createLinearGradient(0, pad.top+chartH-rH, 0, pad.top+chartH);
+          rGrad.addColorStop(0, '#5ab82e'); rGrad.addColorStop(1, '#FACC15');
+          ctx.fillStyle = rGrad;
+          ctx.beginPath(); ctx.roundRect(x - barW - 2, pad.top+chartH-rH, barW, rH, [4,4,0,0]); ctx.fill();
+          // Expenses
+          const eH = (expenses[i]/maxVal)*chartH;
+          const eGrad = ctx.createLinearGradient(0, pad.top+chartH-eH, 0, pad.top+chartH);
+          eGrad.addColorStop(0, '#EF4444'); eGrad.addColorStop(1, '#FCA5A5');
+          ctx.fillStyle = eGrad;
+          ctx.beginPath(); ctx.roundRect(x + 2, pad.top+chartH-eH, barW, eH, [4,4,0,0]); ctx.fill();
+
+          ctx.fillStyle = '#9CA3AF'; ctx.font = '11px Inter, sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText(month, x, h - pad.bottom + 18);
+        });
+
+        // Legend
+        ctx.fillStyle = '#5ab82e'; ctx.fillRect(w - 180, 8, 10, 10);
+        ctx.fillStyle = '#374151'; ctx.font = '11px Inter, sans-serif'; ctx.textAlign = 'left';
+        ctx.fillText('Revenue', w - 165, 17);
+        ctx.fillStyle = '#EF4444'; ctx.fillRect(w - 100, 8, 10, 10);
+        ctx.fillStyle = '#374151'; ctx.fillText('Expenses', w - 85, 17);
+      }
+      setTimeout(draw, 100);
+      window.addEventListener('resize', draw);
+    })();
+
+    // ---- Revenue by Source ----
+    (function() {
+      const el = document.getElementById('revenueBySource');
+      if (!el) return;
+      const sources = [
+        { name: 'Course Sales', amount: '$198,213', pct: 70, color: '#3d8b1c' },
+        { name: 'Subscriptions', amount: '$54,134', pct: 19, color: '#5ab82e' },
+        { name: 'Certificates', amount: '$22,787', pct: 8, color: '#9fe870' },
+        { name: 'Sponsorships', amount: '$9,456', pct: 3, color: '#1e4a0d' },
+      ];
+      el.innerHTML = sources.map(s => `
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:${s.color};flex-shrink:0;"></div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-weight:500;font-size:13px;">${s.name}</span>
+              <span style="font-weight:600;font-size:13px;">${s.amount}</span>
+            </div>
+            <div style="height:6px;background:var(--bg-secondary);border-radius:3px;overflow:hidden;">
+              <div style="height:100%;width:${s.pct}%;background:${s.color};border-radius:3px;transition:width 1s ease;"></div>
+            </div>
+          </div>
+          <span style="font-size:12px;color:var(--text-tertiary);width:36px;text-align:right;">${s.pct}%</span>
+        </div>
+      `).join('');
+    })();
+
+    // ---- Payout Summary ----
+    (function() {
+      const el = document.getElementById('payoutSummary');
+      if (!el) return;
+      const payouts = [
+        { instructor: 'Sarah Chen', amount: '$8,562', courses: 3, status: 'paid' },
+        { instructor: 'Marcus Lee', amount: '$6,306', courses: 2, status: 'paid' },
+        { instructor: 'Emily Watson', amount: '$5,620', courses: 2, status: 'pending' },
+        { instructor: 'John Park', amount: '$5,125', courses: 1, status: 'pending' },
+        { instructor: 'Ana Silva', amount: '$4,610', courses: 1, status: 'processing' },
+      ];
+      el.innerHTML = payouts.map(p => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border-light);">
+          <div style="flex:1;">
+            <div style="font-weight:500;font-size:13px;">${p.instructor}</div>
+            <div style="font-size:11px;color:var(--text-tertiary);">${p.courses} course${p.courses > 1 ? 's' : ''}</div>
+          </div>
+          <span style="font-weight:600;font-size:13px;">${p.amount}</span>
+          <span class="admin-status-pill ${p.status === 'paid' ? 'active' : p.status === 'pending' ? 'pending' : 'review'}">${p.status}</span>
+        </div>
+      `).join('');
+    })();
+
+    // ---- Transactions Table ----
+    (function() {
+      const tbody = document.getElementById('transactionsTable');
+      if (!tbody) return;
+      const txns = [
+        { id: 'TXN-92841', user: 'Emma Thompson', course: 'Advanced React', amount: '$49.99', type: 'Purchase', date: 'Dec 15, 2024', status: 'active' },
+        { id: 'TXN-92840', user: 'Noah Kim', course: 'Python DS', amount: '$39.99', type: 'Purchase', date: 'Dec 15, 2024', status: 'active' },
+        { id: 'TXN-92839', user: 'Liam Nguyen', course: 'Full-Stack JS', amount: '-$49.99', type: 'Refund', date: 'Dec 14, 2024', status: 'suspended' },
+        { id: 'TXN-92838', user: 'Ava Patel', course: 'UI/UX Design', amount: '$29.99', type: 'Purchase', date: 'Dec 14, 2024', status: 'active' },
+        { id: 'TXN-92837', user: 'Sophia Cruz', course: 'ML A-Z', amount: '$59.99', type: 'Purchase', date: 'Dec 14, 2024', status: 'active' },
+        { id: 'TXN-92836', user: 'Mason Davis', course: 'Cloud Arch.', amount: '$44.99', type: 'Purchase', date: 'Dec 13, 2024', status: 'pending' },
+        { id: 'TXN-92835', user: 'Olivia Brown', course: 'Marketing', amount: '-$34.99', type: 'Refund', date: 'Dec 13, 2024', status: 'suspended' },
+        { id: 'TXN-92834', user: 'James Wilson', course: 'React', amount: '$49.99', type: 'Sub Renewal', date: 'Dec 12, 2024', status: 'active' },
+      ];
+      tbody.innerHTML = txns.map(t => `
+        <tr>
+          <td style="font-family:monospace;font-size:12px;">${t.id}</td>
+          <td style="font-weight:500;">${t.user}</td>
+          <td style="color:var(--text-secondary);">${t.course}</td>
+          <td style="font-weight:600;color:${t.amount.startsWith('-') ? '#EF4444' : '#5ab82e'};">${t.amount}</td>
+          <td><span class="badge badge-${t.type === 'Refund' ? 'accent' : 'primary'}" style="font-size:10px;">${t.type}</span></td>
+          <td style="font-size:12px;color:var(--text-tertiary);">${t.date}</td>
+          <td><span class="admin-status-pill ${t.status}">${t.status === 'active' ? 'completed' : t.status}</span></td>
+        </tr>
+      `).join('');
+    })();
+
+    function exportRevenueCSV() {
+      const headers = ['Transaction ID','User','Course','Amount','Type','Date','Status'];
+      const rows = [
+        ['TXN-92841','Emma Thompson','Advanced React','$49.99','Purchase','Dec 15, 2024','completed'],
+        ['TXN-92840','Noah Kim','Python DS','$39.99','Purchase','Dec 15, 2024','completed'],
+        ['TXN-92839','Liam Nguyen','Full-Stack JS','-$49.99','Refund','Dec 14, 2024','refunded'],
+        ['TXN-92838','Ava Patel','UI/UX Design','$29.99','Purchase','Dec 14, 2024','completed'],
+        ['TXN-92837','Sophia Cruz','ML A-Z','$59.99','Purchase','Dec 14, 2024','completed'],
+        ['TXN-92836','Mason Davis','Cloud Arch.','$44.99','Purchase','Dec 13, 2024','pending'],
+        ['TXN-92835','Olivia Brown','Marketing','-$34.99','Refund','Dec 13, 2024','refunded'],
+        ['TXN-92834','James Wilson','React','$49.99','Sub Renewal','Dec 12, 2024','completed'],
+      ];
+      const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'wiser-revenue-' + new Date().toISOString().slice(0,10) + '.csv';
+      a.click(); URL.revokeObjectURL(url);
+      showToast('Revenue report downloaded!');
+    }
+
+    function showAllTransactions() {
+      window.location.href = 'revenue.html';
+      showToast('Showing all transactions', 'info');
+      // Scroll to transactions table
+      setTimeout(() => {
+        document.querySelector('#transactionsTable')?.closest('.card')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  </script>
+<script>if(typeof ThemeManager==='undefined'){var ThemeManager={toggle:function(){var c=document.documentElement.getAttribute('data-theme')||'light';var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('wiser_theme',n);document.querySelectorAll('.theme-toggle').forEach(function(b){var s=b.querySelector('.icon-sun');var m=b.querySelector('.icon-moon');if(s&&m){s.style.display=n==='dark'?'block':'none';m.style.display=n==='dark'?'none':'block'}});document.querySelectorAll('.logo-light').forEach(function(e){e.style.display=n==='dark'?'none':'block'});document.querySelectorAll('.logo-dark').forEach(function(e){e.style.display=n==='dark'?'block':'none'})}}}</script>
+</body>
+</html>

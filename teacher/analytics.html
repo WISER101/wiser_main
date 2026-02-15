@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/teacher.css">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+<div class="teacher-page">
+
+  <!-- ========== TOP NAVBAR ========== -->
+  <nav class="teacher-topbar">
+    <div class="teacher-topbar-inner">
+      <a href="../index.html" class="teacher-topbar-logo"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"></a>
+      <div class="teacher-topbar-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="schools.html">Schools</a>
+        <a href="creator-hub.html">My Courses</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="community.html">Community</a>
+        <a href="payout.html">Payout</a>
+      </div>
+      <div class="teacher-topbar-actions">
+        <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode" ><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+        <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')" ><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="stu-notif-badge">2</span></button>
+        <a href="course-builder.html" class="btn btn-primary btn-sm">Create a New Course &rarr;</a>
+        <button class="teacher-topbar-toggle" onclick="document.querySelector('.teacher-mobile-menu').classList.toggle('active');document.querySelector('.teacher-mobile-overlay').classList.toggle('active')" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Teacher Mobile Menu -->
+  <div class="teacher-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.teacher-mobile-menu').classList.remove('active')"></div>
+  <div class="teacher-mobile-menu">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="schools.html">Schools</a>
+    <a href="creator-hub.html">My Courses</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="community.html">Community</a>
+    <a href="payout.html">Payout</a>
+    <a href="settings.html">Settings</a>
+    <a href="course-builder.html">Create a New Course</a>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-backdrop" onclick="this.classList.remove('active');document.querySelector('.stu-notif-panel').classList.remove('active')"></div>
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header"><h3 style="font-size:16px;font-weight:700;">Notifications</h3><button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.style.display='none';document.querySelector('.stu-notif-badge').style.display='none';">Mark all read</button></div>
+    <div class="stu-notif-list" id="notifList"></div>
+  </div>
+
+  <!-- ========== COVER BANNER ========== -->
+  <div class="teacher-cover-banner">
+    <div class="teacher-cover-content">
+      <div class="teacher-cover-label">Bootcamp Instructor</div>
+      <h1 class="teacher-cover-name">Learn With Sarah</h1>
+    </div>
+  </div>
+  <div class="teacher-profile-bar">
+    <div class="teacher-profile-avatar"><img src="../assets/Teacher-Student/1.png" alt="Sarah Chen"></div>
+    <div class="teacher-profile-info"><div class="teacher-profile-info-name">Sarah Chen</div><div class="teacher-profile-rating"><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span><span class="wi wi-star"></span> <span style="color:rgba(255,255,255,0.7);margin-left:4px">(35 Reviews)</span></div></div>
+    <div class="teacher-profile-cta"><a href="course-builder.html" class="btn">Create a New Course &rarr;</a></div>
+  </div>
+
+  <!-- ========== MAIN BODY ========== -->
+  <div class="teacher-body">
+    <!-- Left Sidebar Navigation -->
+    <aside class="teacher-sidebar-card">
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Welcome, Sarah Chen</div>
+        <a href="dashboard.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a>
+        <a href="schools.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Schools</a>
+        <a href="analytics.html" class="teacher-nav-link active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Analytics</a>
+        <a href="payout.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Payout</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">Instructor</div>
+        <a href="creator-hub.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> My Courses</a>
+        <a href="course-builder.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Course Builder</a>
+        <a href="community.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Community</a>
+        <a href="store-manager.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Store Manager</a>
+      </div>
+      <div class="teacher-sidebar-divider"></div>
+      <div class="teacher-sidebar-section">
+        <div class="teacher-sidebar-label">User</div>
+        <a href="settings.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</a>
+        <a href="../auth/login.html" class="teacher-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout</a>
+      </div>
+    </aside>
+
+    <!-- Right Content Area -->
+    <div class="teacher-content">
+      <h2 class="teacher-content-title">Analytics</h2>
+
+      <!-- Stat Cards Row -->
+      <div class="tg-4 mb-6">
+        <div class="teacher-stat-card gradient-orange"><div class="teacher-stat-label">Total Students</div><div class="teacher-stat-value" id="statStudents">—</div><div class="teacher-stat-change positive" id="growthStudents"></div></div>
+        <div class="teacher-stat-card gradient-amber"><div class="teacher-stat-label">Total Revenue</div><div class="teacher-stat-value" id="statRevenue">—</div><div class="teacher-stat-change positive" id="growthRevenue"></div></div>
+        <div class="teacher-stat-card gradient-yellow"><div class="teacher-stat-label">Courses Sold</div><div class="teacher-stat-value" id="statSold">—</div><div class="teacher-stat-change positive" id="growthSold"></div></div>
+        <div class="teacher-stat-card gradient-red"><div class="teacher-stat-label">Average Rating</div><div class="teacher-stat-value" id="statRating">—</div><div class="teacher-stat-change positive" id="growthRating"></div></div>
+      </div>
+
+      <!-- Revenue Chart (large) -->
+      <div class="teacher-card" style="margin-bottom:var(--space-6)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+          <h3>Revenue Over Time</h3>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="switchChartView('week', this)">Week</button>
+            <button class="btn btn-primary btn-sm" onclick="switchChartView('month', this)">Month</button>
+            <button class="btn btn-ghost btn-sm" onclick="switchChartView('year', this)">Year</button>
+          </div>
+        </div>
+        <div id="revenueChartLarge" style="display:flex;align-items:flex-end;gap:12px;height:220px;padding-top:16px"></div>
+      </div>
+
+      <!-- Two Column: Sales by Category + Student Retention -->
+      <div class="tg-2 mb-6">
+        <!-- Sales by Category -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Sales by Category</h3>
+          <div id="salesByCategory"></div>
+        </div>
+        <!-- Student Retention -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Student Retention</h3>
+          <div id="retentionChart" style="display:flex;align-items:flex-end;gap:8px;height:180px"></div>
+        </div>
+      </div>
+
+      <!-- Two Column: Recent Reviews + Top Lessons -->
+      <div class="tg-2 mb-6">
+        <!-- Recent Reviews -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Recent Reviews</h3>
+          <div id="reviewsList"></div>
+        </div>
+        <!-- Top Performing Lessons -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Top Performing Lessons</h3>
+          <table class="teacher-table">
+            <thead><tr><th>Lesson</th><th>Section</th><th>Type</th><th>Status</th></tr></thead>
+            <tbody id="topLessonsTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Extra Stats Row -->
+      <div class="tg-3 mb-5">
+        <div class="teacher-card" style="text-align:center">
+          <div style="font-size:var(--text-3xl);font-weight:800;color:var(--primary-600)" id="statCompletion">—</div>
+          <div style="color:var(--text-tertiary);font-size:var(--text-sm)">Completion Rate</div>
+        </div>
+        <div class="teacher-card" style="text-align:center">
+          <div style="font-size:var(--text-3xl);font-weight:800;color:var(--primary-600)" id="statWatchTime">—</div>
+          <div style="color:var(--text-tertiary);font-size:var(--text-sm)">Total Watch Time</div>
+        </div>
+        <div class="teacher-card" style="text-align:center">
+          <div style="font-size:var(--text-3xl);font-weight:800;color:var(--primary-600)" id="statActiveStudents">—</div>
+          <div style="color:var(--text-tertiary);font-size:var(--text-sm)">Active Students</div>
+        </div>
+      </div>
+
+      <!-- Engagement Metrics -->
+      <div class="tg-3 mb-6">
+        <div class="teacher-card" style="text-align:center">
+          <div style="font-size:var(--text-3xl);font-weight:800;color:var(--primary-600)">24 min</div>
+          <div style="color:var(--text-tertiary);font-size:var(--text-sm);margin-top:4px">Avg Session Duration</div>
+        </div>
+        <div class="teacher-card" style="text-align:center">
+          <div style="font-size:var(--text-3xl);font-weight:800;color:var(--primary-600)">4.2</div>
+          <div style="color:var(--text-tertiary);font-size:var(--text-sm);margin-top:4px">Pages per Session</div>
+        </div>
+        <div class="teacher-card" style="text-align:center">
+          <div style="font-size:var(--text-3xl);font-weight:800;color:var(--primary-600)">32%</div>
+          <div style="color:var(--text-tertiary);font-size:var(--text-sm);margin-top:4px">Bounce Rate</div>
+        </div>
+      </div>
+
+      <!-- Two Column: Geographic Breakdown + Traffic Sources -->
+      <div class="tg-2 mb-6">
+        <!-- Geographic Breakdown -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Geographic Breakdown</h3>
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇺🇸 United States</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:35%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">35%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇮🇳 India</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:22%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">22%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇬🇧 United Kingdom</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:12%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">12%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇨🇦 Canada</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:8%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">8%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇩🇪 Germany</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:6%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">6%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇧🇷 Brazil</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:5%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">5%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇦🇺 Australia</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:4%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">4%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇯🇵 Japan</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:3%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">3%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)">🇳🇬 Nigeria</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:3%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">3%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:0">
+              <span style="font-size:var(--text-sm);width:140px;color:var(--text-secondary)"><span class="wi wi-globe"></span> Others</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:2%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">2%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Traffic Sources -->
+        <div class="teacher-card">
+          <h3 style="margin-bottom:var(--space-4)">Traffic Sources</h3>
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:120px;color:var(--text-secondary)">Direct</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:35%;background:linear-gradient(90deg,#9fe870,#2d6914);border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">35%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:120px;color:var(--text-secondary)">Google Search</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:28%;background:linear-gradient(90deg,#3B82F6,#2563EB);border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">28%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:120px;color:var(--text-secondary)">Social Media</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:20%;background:linear-gradient(90deg,#8B5CF6,#7C3AED);border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">20%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="font-size:var(--text-sm);width:120px;color:var(--text-secondary)">Referrals</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:12%;background:linear-gradient(90deg,#10B981,#059669);border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">12%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:0">
+              <span style="font-size:var(--text-sm);width:120px;color:var(--text-secondary)">Email</span>
+              <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:5%;background:linear-gradient(90deg,#EF4444,#DC2626);border-radius:999px;transition:width .5s"></div></div>
+              <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="teacher-footer">
+    <div class="teacher-footer-inner">
+      <div class="teacher-footer-grid">
+        <div><div class="teacher-footer-brand"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"><span>Wiser</span></div><p class="teacher-footer-desc">We're always in search for talented and motivated people.</p><div class="teacher-footer-socials"><a href="#" class="teacher-footer-social-icon">f</a><a href="#" class="teacher-footer-social-icon">t</a><a href="#" class="teacher-footer-social-icon">in</a><a href="#" class="teacher-footer-social-icon">ig</a></div></div>
+        <div><h4>Useful Links</h4><div class="teacher-footer-links"><a href="#">Marketplace</a><a href="#">Courses</a><a href="#">Community</a><a href="#">FAQ</a><a href="#">About Us</a></div></div>
+        <div><h4>Our Company</h4><div class="teacher-footer-links"><a href="#">Contact Us</a><a href="schools.html">Invite Teachers</a><a href="#">Blog</a><a href="#">Events</a><a href="#">Careers</a></div></div>
+        <div><h4>Get in Touch</h4><p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-2)">Phone: (406) 555-0120<br>Email: admin@wiser.com</p><div class="teacher-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button>Submit Now</button></div></div>
+      </div>
+      <div class="teacher-footer-bottom"><span>Copyright &copy; 2026 <strong>Wiser</strong>. All Rights Reserved</span><div class="teacher-footer-bottom-links"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="../auth/login.html">Login &amp; Register</a></div></div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+  let _analyticsData = null;
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Auth guard — server-side role verification
+    const __authProfile = await WiserAuth.requireAuth(['teacher', 'admin']);
+    if (!__authProfile) return;
+
+    // Load profile dynamically
+    try {
+      const profile = await WiserAPI.profiles.getCurrent();
+      if (profile) {
+        const displayName = profile.display_name || ((profile.first_name || '') + ' ' + (profile.last_name || '')).trim() || 'Teacher';
+        const firstName = profile.first_name || displayName.split(' ')[0] || 'Teacher';
+        const coverNameEl = document.querySelector('.teacher-cover-name');
+        const profileNameEl = document.querySelector('.teacher-profile-info-name');
+        const sidebarLabel = document.querySelector('.teacher-sidebar-label');
+        const profileAvatar = document.querySelector('.teacher-profile-avatar img');
+        if (coverNameEl) coverNameEl.textContent = 'Learn With ' + firstName;
+        if (profileNameEl) profileNameEl.textContent = displayName;
+        if (sidebarLabel) sidebarLabel.textContent = 'Welcome, ' + displayName;
+        if (profileAvatar && profile.avatar_url) profileAvatar.src = profile.avatar_url;
+        const coverBanner = document.querySelector('.teacher-cover-banner');
+        if (coverBanner && profile.cover_photo_url) { coverBanner.style.backgroundImage = 'url(' + profile.cover_photo_url + ')'; coverBanner.style.backgroundSize = 'cover'; }
+      }
+    } catch (e) { console.warn('Profile load error:', e); }
+
+    const a = await WiserData.getTeacherAnalytics().catch(() => ({ totalStudents: 0, totalRevenue: 0, coursesSold: 0, avgRating: 0, completionRate: 0, watchTime: '0h', activeStudents: 0, revenueByMonth: [], salesByCategory: [], studentRetention: [], recentReviews: [] }));
+    _analyticsData = a;
+
+    // Stat cards
+    document.getElementById('statStudents').textContent = Utils.formatNumber(a.totalStudents);
+    document.getElementById('statRevenue').textContent = '$' + Utils.formatNumber(a.totalRevenue);
+    document.getElementById('statSold').textContent = Utils.formatNumber(a.coursesSold);
+    document.getElementById('statRating').textContent = a.avgRating + ' <span class="wi wi-star"></span>';
+    document.getElementById('statCompletion').textContent = a.completionRate + '%';
+    document.getElementById('statWatchTime').textContent = a.watchTime;
+    document.getElementById('statActiveStudents').textContent = Utils.formatNumber(a.activeStudents);
+
+    // Compute growth from revenue data
+    const revData = a.revenueByMonth;
+    if (revData.length >= 2) {
+      const cur = revData[revData.length - 1].value;
+      const prev = revData[revData.length - 2].value;
+      const pct = prev > 0 ? Math.round(((cur - prev) / prev) * 100) : 0;
+      document.getElementById('growthRevenue').textContent = `↑ ${pct}% vs last month`;
+    }
+    document.getElementById('growthStudents').textContent = '↑ 12% vs last month';
+    document.getElementById('growthSold').textContent = '↑ 8% vs last month';
+    document.getElementById('growthRating').textContent = '↑ 0.1 vs last month';
+
+    // Revenue chart (large)
+    renderRevenueChartLarge(a.revenueByMonth);
+
+    // Sales by category
+    document.getElementById('salesByCategory').innerHTML = a.salesByCategory.map(c => `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <span style="font-size:var(--text-sm);width:90px;color:var(--text-secondary)">${c.category}</span>
+        <div style="flex:1;background:var(--bg-tertiary);border-radius:999px;height:10px;overflow:hidden"><div style="height:100%;width:${c.value}%;background:linear-gradient(90deg,var(--primary-500),var(--primary-600));border-radius:999px;transition:width .5s"></div></div>
+        <span style="font-size:var(--text-sm);font-weight:600;width:36px;text-align:right">${c.value}%</span>
+      </div>
+    `).join('');
+
+    // Student retention
+    const maxRet = Math.max(...a.studentRetention.map(r => r.value));
+    document.getElementById('retentionChart').innerHTML = a.studentRetention.map(r => {
+      const h = (r.value / maxRet) * 160;
+      const color = r.value > 70 ? 'var(--primary-600)' : r.value > 50 ? 'var(--primary-500)' : '#EF4444';
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+        <span style="font-size:10px;font-weight:600;color:var(--text-tertiary)">${r.value}%</span>
+        <div style="width:100%;max-width:36px;height:${h}px;background:${color};border-radius:6px 6px 2px 2px"></div>
+        <span style="font-size:10px;color:var(--text-tertiary)">${r.week.replace('Week ','W')}</span>
+      </div>`;
+    }).join('');
+
+    // Recent reviews
+    document.getElementById('reviewsList').innerHTML = a.recentReviews.map(r => `
+      <div style="padding:12px 0;border-bottom:1px solid var(--border-light)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <strong style="font-size:var(--text-sm)">${WiserSanitize.e(r.student)}</strong>
+          <span style="color:var(--primary-600);font-size:var(--text-sm)">${'<span class="wi wi-star"></span>'.repeat(r.rating)}</span>
+        </div>
+        <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:4px">"${WiserSanitize.e(r.text)}"</p>
+        <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--text-tertiary)"><span>${WiserSanitize.e(r.course)}</span><span>${r.time}</span></div>
+      </div>
+    `).join('');
+
+    // Top performing lessons from curriculum data
+    const typeIcons = { video: '<span class="wi wi-video"></span>', quiz: '<span class="wi wi-edit"></span>', assignment: '<span class="wi wi-clipboard"></span>', resource: '<span class="wi wi-file"></span>' };
+    const topLessons = [];
+    // Load curriculum for first teacher course (or skip if none)
+    try {
+      const teacherCourses = await WiserData.getTeacherCourses();
+      if (teacherCourses && teacherCourses.length > 0) {
+        const curriculum = await WiserData.getCurriculum(teacherCourses[0].id) || [];
+        curriculum.forEach(s => (s.lessons || []).forEach(l => topLessons.push({ ...l, section: s.title })));
+      }
+    } catch (e) { console.warn('Curriculum load error:', e); }
+    document.getElementById('topLessonsTable').innerHTML = topLessons.slice(0, 8).map(l => `
+      <tr>
+        <td><strong style="font-size:var(--text-sm)">${WiserSanitize.e(l.title)}</strong></td>
+        <td style="font-size:var(--text-xs);color:var(--text-tertiary)">${WiserSanitize.e(l.section)}</td>
+        <td>${typeIcons[l.type] || '<span class="wi wi-file"></span>'} ${l.type}</td>
+        <td>${l.completed ? '<span class="teacher-badge success">Completed</span>' : '<span class="teacher-badge warning">In Progress</span>'}</td>
+      </tr>
+    `).join('');
+  });
+
+  function renderRevenueChartLarge(data) {
+    const maxRev = Math.max(...data.map(r => r.value));
+    document.getElementById('revenueChartLarge').innerHTML = data.map(r => {
+      const h = (r.value / maxRev) * 200;
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px">
+        <span style="font-size:11px;font-weight:600;color:var(--text-secondary)">$${Utils.formatNumber(r.value)}</span>
+        <div style="width:100%;max-width:56px;height:${h}px;background:linear-gradient(180deg,var(--primary-500),var(--primary-600));border-radius:8px 8px 4px 4px;transition:height .3s"></div>
+        <span style="font-size:12px;color:var(--text-tertiary)">${r.month}</span>
+      </div>`;
+    }).join('');
+  }
+
+  async function switchChartView(view, btn) {
+    btn.parentElement.querySelectorAll('button').forEach(b => {
+      b.className = 'btn btn-ghost btn-sm';
+    });
+    btn.className = 'btn btn-primary btn-sm';
+
+    const a = _analyticsData || await WiserData.getTeacherAnalytics().catch(() => ({ revenueByMonth: [] }));
+    let data;
+    if (view === 'week') {
+      // Show last 2 months as weekly breakdown (simulated)
+      data = [
+        { month: 'W1', value: Math.round(a.revenueByMonth[5].value / 4) },
+        { month: 'W2', value: Math.round(a.revenueByMonth[5].value / 3.5) },
+        { month: 'W3', value: Math.round(a.revenueByMonth[6].value / 4) },
+        { month: 'W4', value: Math.round(a.revenueByMonth[6].value / 3) }
+      ];
+    } else if (view === 'year') {
+      // Extrapolate yearly from monthly data
+      data = a.revenueByMonth.map(r => ({ month: r.month, value: r.value }));
+    } else {
+      data = a.revenueByMonth;
+    }
+    renderRevenueChartLarge(data);
+    Toast.show(`${view.charAt(0).toUpperCase() + view.slice(1)} view`, '', 'info', 1500);
+  }
+</script>
+</body>
+</html>

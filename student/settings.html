@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Wiser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/student.css">
+  <link rel="icon" type="image/png" href="../assets/wiser-logo.png">
+  <script>(function(){var t=localStorage.getItem('wiser_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')})()</script>
+</head>
+<body>
+
+  <nav class="stu-navbar">
+    <a href="../index.html" class="stu-navbar-logo"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"></a>
+    <div class="stu-navbar-center"><a href="../index.html">Home</a><a href="explore.html">Courses</a><a href="dashboard.html">Dashboard</a><a href="schools.html">Schools</a><a href="learning-hub.html">Learning Hub</a><a href="shop.html">Marketplace</a></div>
+    <div class="stu-navbar-right">
+      <button class="theme-toggle" onclick="ThemeManager.toggle()" aria-label="Toggle dark mode"><svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+      <button class="stu-search-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+      <button class="stu-notif-btn" onclick="document.querySelector('.stu-notif-panel').classList.toggle('active');document.querySelector('.stu-notif-backdrop').classList.toggle('active')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="stu-notif-badge">3</span></button>
+      <button class="stu-cart-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="stu-cart-badge">4</span></button>
+      <a href="explore.html" class="stu-enroll-btn">Enroll Now</a>
+      <button class="stu-mobile-toggle" onclick="document.querySelector('.stu-mobile-menu').classList.toggle('active');document.querySelector('.stu-mobile-overlay').classList.toggle('active')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </nav>
+
+  <!-- Notification Panel -->
+  <div class="stu-notif-backdrop" onclick="this.classList.remove('active');document.querySelector('.stu-notif-panel').classList.remove('active')"></div>
+  <div class="stu-notif-panel">
+    <div class="stu-notif-panel-header"><h3 style="font-size:16px;font-weight:700;">Notifications</h3><button class="stu-notif-mark-all" onclick="document.querySelectorAll('.stu-notif-item').forEach(i=>i.classList.remove('unread'));this.style.display='none';document.querySelector('.stu-notif-badge').style.display='none';">Mark all read</button></div>
+    <div class="stu-notif-list" id="notifList"></div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="stu-mobile-overlay" onclick="this.classList.remove('active');document.querySelector('.stu-mobile-menu').classList.remove('active')"></div>
+  <div class="stu-mobile-menu" id="mobileMenu">
+    <a href="dashboard.html"><span class="wi wi-chart"></span> Dashboard</a>
+    <a href="explore.html"><span class="wi wi-search"></span> Explore</a>
+    <a href="enrolled-courses.html"><span class="wi wi-book"></span> My Courses</a>
+    <a href="learning-hub.html"><span class="wi wi-bulb"></span> Learning Hub</a>
+    <a href="schools.html"><span class="wi wi-building"></span> Schools</a>
+    <a href="shop.html"><span class="wi wi-shopping-bag"></span> Marketplace</a>
+    <a href="my-profile.html"><span class="wi wi-user"></span> My Profile</a>
+    <a href="settings.html"><span class="wi wi-wrench"></span> Settings</a>
+    <a href="../auth/login.html"><span class="wi wi-door"></span> Logout</a>
+  </div>
+
+  <!-- Search Overlay -->
+  <div class="stu-search-overlay" id="searchOverlay">
+    <div class="stu-search-overlay-inner">
+      <input type="text" placeholder="Search courses, topics, instructors..." autofocus>
+      <button onclick="document.getElementById('searchOverlay').classList.remove('active')">✕</button>
+    </div>
+  </div>
+
+  <div class="stu-banner">
+    <img src="../assets/Cover-Photo/2.png" alt="" class="stu-banner-img">
+    <div class="stu-banner-content">
+      <div class="stu-banner-avatar" style="background: var(--gradient-primary)"><img src="../assets/Teacher-Student/3.png" alt="Jordan Rivera"></div>
+      <div class="stu-banner-info"><h1 class="stu-banner-name">Jordan Rivera</h1><div class="stu-banner-meta"><span><span class="wi wi-book"></span> 5 Courses Enrolled</span><span><span class="wi wi-trophy"></span> 4 Certificates</span></div></div>
+      <div class="stu-banner-actions"><a href="../auth/register.html?role=teacher" class="stu-become-instructor-btn">Become an Instructor →</a></div>
+    </div>
+  </div>
+
+  <div class="stu-body">
+    <aside class="stu-sidebar">
+      <div class="stu-sidebar-greeting">Welcome, Jordan Rivera</div>
+      <ul class="stu-sidebar-nav">
+        <li><a href="dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a></li>
+        <li><a href="my-profile.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> My Profile</a></li>
+        <li><a href="enrolled-courses.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Enrolled Courses</a></li>
+        <li><a href="shop.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Marketplace</a></li>
+        <li><a href="wishlist.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Wishlist</a></li>
+        <li><a href="reviews.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Reviews</a></li>
+        <li><a href="quiz-attempts.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> My Quiz Attempts</a></li>
+        <li><a href="order-history.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Order History</a></li>
+      </ul>
+      <div class="stu-sidebar-divider"></div>
+      <div class="stu-sidebar-section-label">User</div>
+      <ul class="stu-sidebar-nav">
+        <li><a href="settings.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09"/></svg> Settings</a></li>
+        <li><a href="../auth/login.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout</a></li>
+      </ul>
+    </aside>
+
+    <div class="stu-main">
+      <h2 class="stu-main-title">Settings</h2>
+
+      <!-- Settings Tabs -->
+      <div class="stu-tabs">
+        <button class="stu-tab-btn active" data-settings-tab="profile">Profile</button>
+        <button class="stu-tab-btn" data-settings-tab="password">Password</button>
+        <button class="stu-tab-btn" data-settings-tab="social">Social Share</button>
+        <button class="stu-tab-btn" data-settings-tab="notifications">Notifications</button>
+        <button class="stu-tab-btn" data-settings-tab="preferences">Preferences</button>
+      </div>
+
+      <!-- Profile Settings Tab -->
+      <div class="stu-settings-panel active" id="settings-profile">
+        <!-- Cover Photo Section inside Settings -->
+        <div class="stu-settings-cover">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); width:100%; height:100%; border-radius: 8px;"></div>
+          <button class="stu-cover-edit-btn" onclick="document.getElementById('coverFileInput').click()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit Cover Photo
+          </button>
+          <input type="file" id="coverFileInput" accept="image/*" hidden onchange="handleCoverUpload(this)">
+        </div>
+
+        <!-- Avatar -->
+        <div class="stu-settings-avatar-section">
+          <div class="stu-settings-avatar" style="background: var(--gradient-primary)">JR</div>
+          <div class="stu-settings-avatar-info">
+            <h3>Jordan Rivera</h3>
+            <p>Update your photo and personal details.</p>
+          </div>
+          <button class="stu-settings-avatar-edit" onclick="document.getElementById('avatarFileInput').click()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <input type="file" id="avatarFileInput" accept="image/*" hidden onchange="handleAvatarUpload(this)">
+        </div>
+
+        <form class="stu-settings-form" onsubmit="event.preventDefault(); saveProfileSettings(this);">
+          <div class="stu-form-grid">
+            <div class="stu-form-group">
+              <label>First Name</label>
+              <input type="text" value="Jordan" placeholder="First Name">
+            </div>
+            <div class="stu-form-group">
+              <label>Last Name</label>
+              <input type="text" value="Rivera" placeholder="Last Name">
+            </div>
+            <div class="stu-form-group">
+              <label>User Name</label>
+              <input type="text" value="instructor" placeholder="User Name">
+            </div>
+            <div class="stu-form-group">
+              <label>Phone Number</label>
+              <input type="text" value="+1-202-555-0174" placeholder="Phone Number">
+            </div>
+            <div class="stu-form-group">
+              <label>Skill / Occupation</label>
+              <input type="text" value="Application Developer" placeholder="Your Occupation">
+            </div>
+            <div class="stu-form-group">
+              <label>Display Name</label>
+              <input type="text" value="Jordan Rivera" placeholder="Display Name">
+            </div>
+          </div>
+          <div class="stu-form-grid" style="margin-top: 16px;">
+            <div class="stu-form-group">
+              <label>City</label>
+              <input type="text" value="San Francisco" placeholder="Your City">
+            </div>
+            <div class="stu-form-group">
+              <label>Country</label>
+              <select>
+                <option value="">Select Country</option>
+                <option selected>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>Australia</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>India</option>
+                <option>Japan</option>
+                <option>Brazil</option>
+                <option>South Korea</option>
+                <option>Singapore</option>
+                <option>Netherlands</option>
+              </select>
+            </div>
+          </div>
+          <div class="stu-form-group" style="margin-top: 16px;">
+            <label>Interests & Topics</label>
+            <div id="interestsPicker" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;"></div>
+          </div>
+          <div class="stu-form-group" style="margin-top: 16px;">
+            <label>Biography</label>
+            <textarea rows="4" placeholder="Tell us about yourself...">Passionate learner exploring the world of machine learning and web development. Always curious, always growing. <span class="wi wi-rocket"></span></textarea>
+          </div>
+          <button type="submit" class="stu-update-btn">Update Info</button>
+        </form>
+      </div>
+
+      <!-- Password Tab -->
+      <div class="stu-settings-panel" id="settings-password">
+        <h3 class="stu-settings-section-title">Change Password</h3>
+        <form class="stu-settings-form" onsubmit="event.preventDefault(); (async()=>{ const np = this.querySelector('[name=newPassword]').value; const cp = this.querySelector('[name=confirmPassword]').value; if(np !== cp){ Toast.show('Passwords do not match', '', 'error'); return; } try{ await WiserAuth.updatePassword(np); this.reset(); Toast.show('Password changed!', 'Your password has been updated securely.', 'success'); }catch(err){ Toast.show('Error', err.message, 'error'); } })()">
+          <div class="stu-form-group">
+            <label>Current Password</label>
+            <input type="password" name="currentPassword" placeholder="Current Password" required>
+          </div>
+          <div class="stu-form-group">
+            <label>New Password</label>
+            <input type="password" name="newPassword" placeholder="New Password" required minlength="8">
+          </div>
+          <div class="stu-form-group">
+            <label>Re-Type New Password</label>
+            <input type="password" name="confirmPassword" placeholder="Confirm New Password" required minlength="8">
+          </div>
+          <button type="submit" class="stu-update-btn">Reset Password</button>
+        </form>
+
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--gray-200);">
+          <h3 class="stu-settings-section-title">Two-Factor Authentication</h3>
+          <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 16px;">Add an extra layer of security to your account.</p>
+          <div class="stu-toggle-row">
+            <div class="stu-toggle-info">
+              <strong>Enable 2FA</strong>
+              <p>Use an authenticator app for login verification</p>
+            </div>
+            <label class="stu-toggle"><input type="checkbox"><span class="stu-toggle-slider"></span></label>
+          </div>
+        </div>
+
+        <div style="margin-top: 32px; padding: 20px; border: 1px solid var(--danger-border, #fecaca); border-radius: 8px; background: var(--danger-bg, #fef2f2);">
+          <h3 style="font-size: 15px; font-weight: 600; color: #dc2626; margin-bottom: 8px;">Danger Zone</h3>
+          <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 12px;">Permanently delete your account and all associated data. This action cannot be undone.</p>
+          <button style="background: #dc2626; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; font-weight: 500;" onclick="if(confirm('Are you sure you want to delete your account? This cannot be undone.')) { (async()=>{ try{ await WiserAuth.deleteAccount(); }catch(err){ Toast.show('Error', err.message, 'error'); } })(); }">Delete Account</button>
+        </div>
+      </div>
+
+      <!-- Social Share Tab -->
+      <div class="stu-settings-panel" id="settings-social">
+        <h3 class="stu-settings-section-title">Social Share Links</h3>
+        <form class="stu-settings-form" onsubmit="event.preventDefault(); saveSocialLinks(this); Toast.show('Social links saved!', 'Your social profiles have been updated.', 'success');">
+          <div class="stu-form-group stu-social-input">
+            <label>Website</label>
+            <div class="stu-input-with-icon">
+              <span class="stu-input-icon"><span class="wi wi-globe"></span></span>
+              <input type="url" placeholder="https://yourwebsite.com">
+            </div>
+          </div>
+          <div class="stu-form-group stu-social-input">
+            <label>Facebook</label>
+            <div class="stu-input-with-icon">
+              <span class="stu-input-icon">f</span>
+              <input type="url" placeholder="https://facebook.com/username">
+            </div>
+          </div>
+          <div class="stu-form-group stu-social-input">
+            <label>Twitter / X</label>
+            <div class="stu-input-with-icon">
+              <span class="stu-input-icon">𝕏</span>
+              <input type="url" placeholder="https://x.com/username">
+            </div>
+          </div>
+          <div class="stu-form-group stu-social-input">
+            <label>LinkedIn</label>
+            <div class="stu-input-with-icon">
+              <span class="stu-input-icon">in</span>
+              <input type="url" placeholder="https://linkedin.com/in/username">
+            </div>
+          </div>
+          <div class="stu-form-group stu-social-input">
+            <label>Instagram</label>
+            <div class="stu-input-with-icon">
+              <span class="stu-input-icon"><span class="wi wi-video"></span></span>
+              <input type="url" placeholder="https://instagram.com/username">
+            </div>
+          </div>
+          <div class="stu-form-group stu-social-input">
+            <label>GitHub</label>
+            <div class="stu-input-with-icon">
+              <span class="stu-input-icon"><span class="wi wi-github"></span></span>
+              <input type="url" placeholder="https://github.com/username">
+            </div>
+          </div>
+          <button type="submit" class="stu-update-btn">Save Social Links</button>
+        </form>
+      </div>
+
+      <!-- Notifications Tab -->
+      <div class="stu-settings-panel" id="settings-notifications">
+        <h3 class="stu-settings-section-title">Notification Preferences</h3>
+        <div class="stu-toggle-row">
+          <div class="stu-toggle-info"><strong>Course Updates</strong><p>Get notified when instructors add new content</p></div>
+          <label class="stu-toggle"><input type="checkbox" checked><span class="stu-toggle-slider"></span></label>
+        </div>
+        <div class="stu-toggle-row">
+          <div class="stu-toggle-info"><strong>Learning Reminders</strong><p>Daily reminders to continue your learning streak</p></div>
+          <label class="stu-toggle"><input type="checkbox" checked><span class="stu-toggle-slider"></span></label>
+        </div>
+        <div class="stu-toggle-row">
+          <div class="stu-toggle-info"><strong>Quiz Results</strong><p>Notifications when quiz scores are available</p></div>
+          <label class="stu-toggle"><input type="checkbox" checked><span class="stu-toggle-slider"></span></label>
+        </div>
+        <div class="stu-toggle-row">
+          <div class="stu-toggle-info"><strong>Community Activity</strong><p>Updates on replies and mentions in discussions</p></div>
+          <label class="stu-toggle"><input type="checkbox"><span class="stu-toggle-slider"></span></label>
+        </div>
+        <div class="stu-toggle-row">
+          <div class="stu-toggle-info"><strong>Promotional Emails</strong><p>Special offers and new course announcements</p></div>
+          <label class="stu-toggle"><input type="checkbox"><span class="stu-toggle-slider"></span></label>
+        </div>
+        <div class="stu-toggle-row">
+          <div class="stu-toggle-info"><strong>Weekly Progress Report</strong><p>Summary of your learning progress each week</p></div>
+          <label class="stu-toggle"><input type="checkbox" checked><span class="stu-toggle-slider"></span></label>
+        </div>
+        <button class="stu-update-btn" onclick="saveNotificationPrefs(); Toast.show('Notification settings saved!', 'Your preferences have been updated.', 'success')">Save Preferences</button>
+      </div>
+
+      <!-- Preferences Tab -->
+      <div class="stu-settings-panel" id="settings-preferences">
+        <h3 class="stu-settings-section-title">Learning Preferences</h3>
+        <div class="stu-form-grid">
+          <div class="stu-form-group">
+            <label>Preferred Language</label>
+            <select>
+              <option selected>English</option>
+              <option>Spanish</option>
+              <option>French</option>
+              <option>German</option>
+              <option>Japanese</option>
+              <option>Korean</option>
+              <option>Portuguese</option>
+              <option>Chinese (Simplified)</option>
+            </select>
+          </div>
+          <div class="stu-form-group">
+            <label>Daily Study Goal</label>
+            <select>
+              <option>15 minutes</option>
+              <option selected>30 minutes</option>
+              <option>45 minutes</option>
+              <option>1 hour</option>
+              <option>2 hours</option>
+            </select>
+          </div>
+          <div class="stu-form-group">
+            <label>Video Quality</label>
+            <select>
+              <option>Auto</option>
+              <option>360p</option>
+              <option>480p</option>
+              <option selected>720p</option>
+              <option>1080p</option>
+            </select>
+          </div>
+          <div class="stu-form-group">
+            <label>Playback Speed</label>
+            <select>
+              <option>0.5x</option>
+              <option>0.75x</option>
+              <option selected>1x</option>
+              <option>1.25x</option>
+              <option>1.5x</option>
+              <option>2x</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top: 20px;">
+          <div class="stu-toggle-row">
+            <div class="stu-toggle-info"><strong>Auto-play Next Lesson</strong><p>Automatically start the next lesson when current one ends</p></div>
+            <label class="stu-toggle"><input type="checkbox" checked><span class="stu-toggle-slider"></span></label>
+          </div>
+          <div class="stu-toggle-row">
+            <div class="stu-toggle-info"><strong>Show Subtitles</strong><p>Display subtitles by default on video lessons</p></div>
+            <label class="stu-toggle"><input type="checkbox"><span class="stu-toggle-slider"></span></label>
+          </div>
+          <div class="stu-toggle-row">
+            <div class="stu-toggle-info"><strong>Dark Mode</strong><p>Use dark theme across the platform</p></div>
+            <label class="stu-toggle"><input type="checkbox"><span class="stu-toggle-slider"></span></label>
+          </div>
+        </div>
+        <button class="stu-update-btn" onclick="saveLearningPrefs(); Toast.show('Preferences saved!', 'Your learning preferences have been updated.', 'success')">Save Preferences</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="stu-footer">
+    <div class="stu-footer-content">
+      <div class="stu-footer-brand"><img src="../assets/logo-Light-Theme.png" alt="Wiser" class="logo-light"><img src="../assets/Logo-Dark-Theme.png" alt="Wiser" class="logo-dark"><p>We're always in search for talented and motivated people. Don't be shy introduce yourself!</p><div class="stu-footer-socials"><a href="#">f</a><a href="#">𝕏</a><a href="#"><span class="wi wi-video"></span></a><a href="#">in</a></div><button class="stu-footer-contact-btn">Contact With Us →</button></div>
+      <div class="stu-footer-col"><h4>Useful Links</h4><ul><li><a href="explore.html">Marketplace</a></li><li><a href="#">Kindergarten</a></li><li><a href="#">University</a></li><li><a href="#">GYM Coaching</a></li><li><a href="#">FAQ</a></li><li><a href="#">About Us</a></li><li><a href="#">Privacy policy</a></li></ul></div>
+      <div class="stu-footer-col"><h4>Our Company</h4><ul><li><a href="#">Contact Us</a></li><li><a href="../auth/register.html?role=teacher">Become Teacher</a></li><li><a href="#">Blog</a></li><li><a href="#">Instructor</a></li><li><a href="#">Events</a></li><li><a href="explore.html">Course</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="stu-footer-col"><h4>Get in Touch</h4><ul><li><a href="#">Phone: (406) 555-0120</a></li><li><a href="#">E-mail: admin@wiser.com</a></li></ul><h4 style="margin-top:16px;color:var(--primary-600);">Newsletter</h4><p style="font-size:12px;color:var(--gray-500);margin-bottom:8px;">2000+ Our students are subscribe Around the World.</p><div class="stu-footer-newsletter-form"><input type="email" placeholder="Enter Your Email Here"><button><span class="wi wi-mail"></span></button></div><button class="stu-footer-submit-btn">Submit Now</button></div>
+    </div>
+    <div class="stu-footer-bottom"><span>Copyright © 2026 <span class="highlight">Wiser</span>. All Rights Reserved</span><div><a href="#">Terms of service</a><a href="#">Privacy policy</a><a href="#">Subscription</a><a href="../auth/login.html">Login & Register</a></div></div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.2/dist/umd/supabase.min.js" integrity="sha384-zhtfJ1S/qkpAToBl4XpbM2NH5uZgfUq2z4qo30Ed7TxgPxmkM+L1Gm94iyexzcJ6" crossorigin="anonymous"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/data.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Auth guard — server-side role verification
+      const __authProfile = await WiserAuth.requireAuth(['student', 'admin']);
+      if (!__authProfile) return;
+
+      const { user, profile, displayName } = await StudentPage.init();
+      if (!user) return;
+
+      // Populate settings form with real profile data
+      if (profile || user) {
+        const form = document.querySelector('#settings-profile .stu-settings-form');
+        if (form) {
+          const inputs = form.querySelectorAll('input[type="text"]');
+          const fn = user.user_metadata?.first_name || profile?.name?.split(' ')[0] || '';
+          const ln = user.user_metadata?.last_name || profile?.name?.split(' ').slice(1).join(' ') || '';
+          if (inputs[0]) inputs[0].value = fn;
+          if (inputs[1]) inputs[1].value = ln;
+          if (inputs[2]) inputs[2].value = user.email?.split('@')[0] || '';
+          if (inputs[5]) inputs[5].value = displayName || '';
+          const textarea = form.querySelector('textarea');
+          if (textarea && profile?.bio) textarea.value = profile.bio;
+        }
+        // Update avatar initials
+        const avatarEl = document.querySelector('.stu-settings-avatar');
+        if (avatarEl) avatarEl.textContent = profile?.avatar || displayName?.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || '';
+        const avatarName = document.querySelector('.stu-settings-avatar-info h3');
+        if (avatarName) avatarName.textContent = displayName || '';
+      }
+
+      // Settings tab switching
+      const settingsTabs = document.querySelectorAll('[data-settings-tab]');
+      const settingsPanels = document.querySelectorAll('.stu-settings-panel');
+      settingsTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          settingsTabs.forEach(t => t.classList.remove('active'));
+          settingsPanels.forEach(p => p.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById('settings-' + tab.dataset.settingsTab).classList.add('active');
+        });
+      });
+
+      // Toggle persistence — save to Supabase learning preferences
+      document.querySelectorAll('.stu-toggle input').forEach(tog => {
+        tog.addEventListener('change', () => {
+          // Preferences will be saved when Save button is clicked
+        });
+      });
+
+      // Load profile data from Supabase
+      try {
+        const fullProfile = await WiserAPI.profiles.getCurrent();
+        if (fullProfile) {
+          const form = document.querySelector('#settings-profile .stu-settings-form');
+          if (form) {
+            const inputs = form.querySelectorAll('input[type="text"]');
+            if (inputs[0]) inputs[0].value = fullProfile.first_name || '';
+            if (inputs[1]) inputs[1].value = fullProfile.last_name || '';
+            if (inputs[2]) inputs[2].value = fullProfile.username || '';
+            if (inputs[3]) inputs[3].value = fullProfile.phone || '';
+            if (inputs[4]) inputs[4].value = fullProfile.occupation || '';
+            if (inputs[5]) inputs[5].value = fullProfile.display_name || `${fullProfile.first_name || ''} ${fullProfile.last_name || ''}`.trim();
+            if (inputs[6]) inputs[6].value = fullProfile.city || '';
+            const countrySelect = form.querySelector('select');
+            if (countrySelect && fullProfile.country) countrySelect.value = fullProfile.country;
+            const textarea = form.querySelector('textarea');
+            if (textarea) textarea.value = fullProfile.bio || '';
+          }
+
+          // Load interests from profile
+          const interestTopics = ['Web Development', 'Data Science', 'UI/UX Design', 'Mobile Development', 'Cloud Computing', 'Cybersecurity', 'Machine Learning', 'Digital Marketing', 'Photography', 'Finance', 'Business', 'Languages', 'Game Development', 'Blockchain'];
+          const savedInterests = fullProfile.interests || [];
+          const picker = document.getElementById('interestsPicker');
+          if (picker) {
+            picker.innerHTML = interestTopics.map(t => {
+              const selected = savedInterests.includes(t);
+              return `<button type="button" onclick="toggleInterest(this,'${t}')" style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;border:1.5px solid ${selected ? 'var(--primary-600)' : 'var(--gray-200)'};background:${selected ? 'var(--primary-50)' : 'var(--bg-primary, #fff)'};color:${selected ? 'var(--primary-600)' : 'var(--gray-600)'};">${selected ? '✓ ' : ''}${t}</button>`;
+            }).join('');
+          }
+
+          // Load social links from profile
+          const socialForm = document.querySelector('#settings-social .stu-settings-form');
+          if (socialForm) {
+            const socialInputs = socialForm.querySelectorAll('input[type="url"]');
+            if (socialInputs[0]) socialInputs[0].value = fullProfile.website || '';
+            if (socialInputs[1]) socialInputs[1].value = fullProfile.social_facebook || '';
+            if (socialInputs[2]) socialInputs[2].value = fullProfile.social_twitter || '';
+            if (socialInputs[3]) socialInputs[3].value = fullProfile.social_linkedin || '';
+            if (socialInputs[4]) socialInputs[4].value = fullProfile.social_instagram || '';
+            if (socialInputs[5]) socialInputs[5].value = fullProfile.social_github || '';
+          }
+
+          // Load notification preferences
+          try {
+            const notifPrefs = await WiserAPI.notificationPreferences.get();
+            if (notifPrefs) {
+              const toggles = document.querySelectorAll('#settings-notifications .stu-toggle input');
+              const notifKeys = ['course_updates', 'learning_reminders', 'quiz_results', 'community_activity', 'promotional_emails', 'weekly_report'];
+              notifKeys.forEach((key, i) => {
+                if (toggles[i] && notifPrefs[key] !== undefined) toggles[i].checked = notifPrefs[key];
+              });
+            }
+          } catch (e) {}
+
+          // Load learning preferences
+          try {
+            const learnPrefs = await WiserAPI.learningPreferences.get();
+            if (learnPrefs) {
+              const selects = document.querySelectorAll('#settings-preferences select');
+              if (selects[0] && learnPrefs.preferred_language) selects[0].value = learnPrefs.preferred_language;
+              if (selects[1] && learnPrefs.daily_study_goal) selects[1].value = learnPrefs.daily_study_goal;
+              if (selects[2] && learnPrefs.video_quality) selects[2].value = learnPrefs.video_quality;
+              if (selects[3] && learnPrefs.playback_speed) selects[3].value = learnPrefs.playback_speed;
+              const learnToggles = document.querySelectorAll('#settings-preferences .stu-toggle input');
+              if (learnToggles[0] && learnPrefs.auto_play !== undefined) learnToggles[0].checked = learnPrefs.auto_play;
+              if (learnToggles[1] && learnPrefs.show_subtitles !== undefined) learnToggles[1].checked = learnPrefs.show_subtitles;
+            }
+          } catch (e) {}
+
+          // 2FA state
+          const tfaToggle = document.querySelector('#settings-password .stu-toggle input');
+          if (tfaToggle) {
+            tfaToggle.checked = fullProfile.two_factor_enabled || false;
+            tfaToggle.addEventListener('change', async () => {
+              try {
+                await WiserAPI.profiles.updateCurrent({ two_factor_enabled: tfaToggle.checked });
+                Toast.show(tfaToggle.checked ? '2FA Enabled' : '2FA Disabled', '', 'success', 2000);
+              } catch (err) {
+                tfaToggle.checked = !tfaToggle.checked;
+                Toast.show('Error', err.message, 'error');
+              }
+            });
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to load profile data:', err);
+      }
+    });
+
+    function handleCoverUpload(input) {
+      const file = input.files[0];
+      if (!file) return;
+      // Show preview immediately
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const coverDiv = document.querySelector('.stu-settings-cover div');
+        coverDiv.style.background = `url(${e.target.result}) center/cover`;
+      };
+      reader.readAsDataURL(file);
+      // Upload to Supabase
+      (async () => {
+        try {
+          const coverUrl = await WiserStorage.uploadCover(file);
+          await WiserAPI.profiles.updateCurrent({ cover_photo_url: coverUrl });
+          WiserData.clearCache('studentProfile');
+          // Also update the banner cover image on the page
+          const bannerImg = document.querySelector('.stu-banner-img');
+          if (bannerImg) bannerImg.src = coverUrl;
+          Toast.show('Cover photo updated!', 'Saved to your profile', 'success', 2000);
+        } catch (err) {
+          console.error('Cover upload error:', err);
+          Toast.show('Upload failed', err.message || 'Could not save cover photo', 'error', 3000);
+        }
+      })();
+    }
+
+    function handleAvatarUpload(input) {
+      const file = input.files[0];
+      if (!file) return;
+      // Show preview immediately
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const avatarEl = document.querySelector('.stu-settings-avatar');
+        avatarEl.style.background = `url(${e.target.result}) center/cover`;
+        avatarEl.textContent = '';
+      };
+      reader.readAsDataURL(file);
+      // Upload to Supabase
+      (async () => {
+        try {
+          const avatarUrl = await WiserStorage.uploadAvatar(file);
+          await WiserAPI.profiles.updateCurrent({ avatar_url: avatarUrl });
+          WiserData.clearCache('studentProfile');
+          // Also update the banner avatar
+          const bannerAvatar = document.querySelector('.stu-banner-avatar img');
+          if (bannerAvatar) bannerAvatar.src = avatarUrl;
+          Toast.show('Profile photo updated!', 'Saved to your profile', 'success', 2000);
+        } catch (err) {
+          console.error('Avatar upload error:', err);
+          Toast.show('Upload failed', err.message || 'Could not save avatar', 'error', 3000);
+        }
+      })();
+    }
+
+    async function saveProfileSettings(form) {
+      const inputs = form.querySelectorAll('input[type="text"]');
+      const firstName = inputs[0]?.value?.trim() || '';
+      const lastName = inputs[1]?.value?.trim() || '';
+      const username = inputs[2]?.value?.trim() || '';
+      const phone = inputs[3]?.value?.trim() || '';
+      const occupation = inputs[4]?.value?.trim() || '';
+      const displayNameVal = inputs[5]?.value?.trim() || '';
+      const city = inputs[6]?.value?.trim() || '';
+      const country = form.querySelector('select')?.value || '';
+      const bio = form.querySelector('textarea')?.value?.trim() || '';
+
+      try {
+        const user = await WiserAuth.getUser();
+        if (!user) { Toast.show('Not logged in', 'Please sign in again', 'error', 3000); return; }
+
+        // Update profiles table via API
+        await WiserAPI.profiles.updateCurrent({
+          first_name: firstName,
+          last_name: lastName,
+          display_name: displayNameVal || `${firstName} ${lastName}`,
+          username: username,
+          phone: phone,
+          occupation: occupation,
+          city: city,
+          country: country,
+          bio: bio
+        });
+
+        // Clear data cache so fresh data loads next time
+        WiserData.clearCache();
+
+        // Update visible UI immediately
+        const bannerName = document.querySelector('.stu-banner-name');
+        const sidebarGreeting = document.querySelector('.stu-sidebar-greeting');
+        const avatarName = document.querySelector('.stu-settings-avatar-info h3');
+        const newDisplay = displayNameVal || `${firstName} ${lastName}`;
+        if (bannerName) bannerName.textContent = newDisplay;
+        if (sidebarGreeting) sidebarGreeting.textContent = 'Welcome, ' + newDisplay;
+        if (avatarName) avatarName.textContent = newDisplay;
+
+        Toast.show('Profile updated!', 'Your changes have been saved to your account.', 'success', 3000);
+      } catch (err) {
+        console.error('Profile save error:', err);
+        Toast.show('Save failed', err.message || 'Could not update profile. Changes saved locally.', 'error', 3000);
+      }
+    }
+
+    // Track interests in memory then save to Supabase
+    let _interestsList = [];
+    function toggleInterest(btn, topic) {
+      const idx = _interestsList.indexOf(topic);
+      if (idx >= 0) {
+        _interestsList.splice(idx, 1);
+        btn.style.border = '1.5px solid var(--gray-200)';
+        btn.style.background = 'var(--bg-primary, #fff)';
+        btn.style.color = 'var(--gray-600)';
+        btn.textContent = topic;
+      } else {
+        _interestsList.push(topic);
+        btn.style.border = '1.5px solid var(--primary-600)';
+        btn.style.background = 'var(--primary-50)';
+        btn.style.color = 'var(--primary-600)';
+        btn.textContent = '✓ ' + topic;
+      }
+      // Save interests to Supabase immediately
+      WiserAPI.profiles.updateCurrent({ interests: _interestsList }).catch(err => console.warn('Interests save error:', err));
+    }
+    // Initialize interests list from profile
+    (async () => {
+      try { const p = await WiserAPI.profiles.getCurrent(); _interestsList = p?.interests || []; } catch (e) {}
+    })();
+
+    async function saveSocialLinks(form) {
+      const inputs = form.querySelectorAll('input[type="url"]');
+      try {
+        await WiserAPI.profiles.updateCurrent({
+          website: inputs[0]?.value || '',
+          social_facebook: inputs[1]?.value || '',
+          social_twitter: inputs[2]?.value || '',
+          social_linkedin: inputs[3]?.value || '',
+          social_instagram: inputs[4]?.value || '',
+          social_github: inputs[5]?.value || ''
+        });
+        WiserData.clearCache('studentProfile');
+      } catch (err) {
+        Toast.show('Save failed', err.message, 'error');
+      }
+    }
+
+    async function saveNotificationPrefs() {
+      const prefs = {};
+      const keys = ['course_updates', 'learning_reminders', 'quiz_results', 'community_activity', 'promotional_emails', 'weekly_report'];
+      document.querySelectorAll('#settings-notifications .stu-toggle input').forEach((tog, i) => {
+        if (keys[i]) prefs[keys[i]] = tog.checked;
+      });
+      try {
+        await WiserAPI.notificationPreferences.update(prefs);
+      } catch (err) {
+        Toast.show('Save failed', err.message, 'error');
+      }
+    }
+
+    async function saveLearningPrefs() {
+      const selects = document.querySelectorAll('#settings-preferences select');
+      const toggles = document.querySelectorAll('#settings-preferences .stu-toggle input');
+      const prefs = {
+        preferred_language: selects[0]?.value || 'English',
+        daily_study_goal: selects[1]?.value || '30 minutes',
+        video_quality: selects[2]?.value || '720p',
+        playback_speed: selects[3]?.value || '1x',
+        auto_play: toggles[0]?.checked ?? true,
+        show_subtitles: toggles[1]?.checked ?? false
+      };
+      try {
+        await WiserAPI.learningPreferences.update(prefs);
+      } catch (err) {
+        Toast.show('Save failed', err.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>
